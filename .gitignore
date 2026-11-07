@@ -1,0 +1,7 @@
+node_modules/
+web/dist/
+.local/
+.env
+coverage/
+*.log
+*.tsbuildinfo

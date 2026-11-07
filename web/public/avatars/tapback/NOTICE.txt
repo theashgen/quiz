@@ -1,0 +1,6 @@
+Tapback Memojis by Wes Wimell
+Source: https://github.com/Wimell/Tapback-Memojis
+Revision: 2044fef695febaf43ddcf58932e39da7f5fe6b60
+Original assets: src/public/images/avatars/v1/1.png through 58.png
+The original 256px PNG assets are distributed here as WebP images.
+See LICENSE for the upstream MIT license.

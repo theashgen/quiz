@@ -1,0 +1,6 @@
+.git
+.local
+web/node_modules
+web/dist
+coverage
+*.log

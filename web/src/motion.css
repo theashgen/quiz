@@ -1,0 +1,182 @@
+.hero-line {
+    display: inline-block;
+}
+
+@keyframes blur-reveal {
+    from {
+        opacity: 0;
+        filter: blur(var(--enter-blur, 10px));
+        translate: var(--enter-x, 0px) var(--enter-y, 28px);
+        scale: var(--enter-scale, 0.98);
+    }
+    to {
+        opacity: 1;
+        filter: blur(0px);
+        translate: 0px 0px;
+        scale: 1;
+    }
+}
+
+@keyframes avatar-switch {
+    from {
+        opacity: 0;
+        transform: translateX(8px) scale(0.92);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    :is(
+        .primary,
+        .outline,
+        .avatar-carousel-arrow,
+        .avatars button,
+        .avatar-library button
+    ) {
+        transition:
+            background 160ms,
+            border-color 160ms,
+            box-shadow 160ms,
+            transform 160ms,
+            scale 160ms;
+    }
+
+    :is(
+            .primary,
+            .outline,
+            .avatar-carousel-arrow,
+            .avatars button,
+            .avatar-library button
+        ):active:not(:disabled) {
+        scale: 0.97;
+    }
+
+    .primary:active:not(:disabled) {
+        transform: translateY(1px);
+        box-shadow: 0 1px 0 var(--ink);
+    }
+
+    .avatar-carousel-face .memoji-avatar {
+        animation: avatar-switch 240ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    }
+
+    .podium-player,
+    .ranked-players > li {
+        transition:
+            translate 180ms,
+            box-shadow 180ms;
+    }
+
+    input:not([type="checkbox"]):not([type="radio"]),
+    textarea {
+        transition:
+            border-color 160ms,
+            box-shadow 160ms;
+    }
+
+    :is(input, textarea):focus {
+        border-color: #8c68b3;
+        box-shadow: 0 0 0 4px #8c68b312;
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine) {
+    .compact-podium > .podium-player:hover {
+        translate: 0 -3px;
+        box-shadow: 0 6px 16px #65537912;
+    }
+
+    .ranked-players > li:hover {
+        translate: 2px 0;
+        box-shadow: 0 3px 10px #6553790d;
+    }
+
+    .avatars button:hover,
+    .avatar-library button:hover {
+        scale: 1.04;
+    }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .home
+        :is(
+            .hero-kicker,
+            .hero-line,
+            .hero-perks,
+            .hero-mascot,
+            .hero-sticker,
+            .hero-spark,
+            .home-entry
+        ) {
+        animation: blur-reveal var(--enter-duration, 800ms)
+            cubic-bezier(0.16, 1, 0.3, 1) var(--enter-delay, 0ms) backwards;
+    }
+
+    .hero-kicker {
+        --enter-delay: 80ms;
+        --enter-y: 14px;
+        --enter-blur: 6px;
+        --enter-scale: 1;
+    }
+
+    .hero-line {
+        --enter-y: 32px;
+        --enter-blur: 12px;
+        --enter-duration: 950ms;
+    }
+
+    .hero-line-first {
+        --enter-delay: 160ms;
+    }
+
+    .hero-line-second {
+        --enter-delay: 280ms;
+    }
+
+    .hero-perks {
+        --enter-delay: 400ms;
+        --enter-y: 16px;
+        --enter-blur: 6px;
+        --enter-scale: 1;
+    }
+
+    .hero-mascot {
+        --enter-delay: 440ms;
+        --enter-x: -14px;
+        --enter-y: 20px;
+        --enter-scale: 0.9;
+    }
+
+    .hero-sticker {
+        --enter-delay: 520ms;
+        --enter-x: 10px;
+        --enter-y: 14px;
+        --enter-scale: 0.95;
+    }
+
+    .hero-spark {
+        --enter-delay: 580ms;
+        --enter-y: 0px;
+        --enter-scale: 0.65;
+    }
+
+    .home-entry {
+        --enter-y: 20px;
+        --enter-scale: 1;
+    }
+
+    .host-action {
+        --enter-delay: 480ms;
+    }
+
+    .join-flow {
+        --enter-delay: 600ms;
+    }
+
+    .solo-action-row {
+        --enter-delay: 720ms;
+    }
+}

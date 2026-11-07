@@ -1,0 +1,722 @@
+[
+  {
+    "id": "dev-1",
+    "category": "Science",
+    "text": "Which planet is known as the Red Planet?",
+    "options": [
+      "Mars",
+      "Venus",
+      "Jupiter",
+      "Neptune"
+    ],
+    "correct": 0
+  },
+  {
+    "id": "dev-2",
+    "category": "Science",
+    "text": "What is the chemical symbol for oxygen?",
+    "options": [
+      "Om",
+      "O",
+      "Ox",
+      "Og"
+    ],
+    "correct": 1
+  },
+  {
+    "id": "dev-3",
+    "category": "Science",
+    "text": "Which organ pumps blood around the human body?",
+    "options": [
+      "Lung",
+      "Kidney",
+      "Heart",
+      "Liver"
+    ],
+    "correct": 2
+  },
+  {
+    "id": "dev-4",
+    "category": "Science",
+    "text": "At sea level, pure water freezes at which Celsius temperature?",
+    "options": [
+      "10",
+      "32",
+      "100",
+      "0"
+    ],
+    "correct": 3
+  },
+  {
+    "id": "dev-5",
+    "category": "Science",
+    "text": "Which force keeps planets in orbit around the Sun?",
+    "options": [
+      "Gravity",
+      "Friction",
+      "Magnetism alone",
+      "Buoyancy"
+    ],
+    "correct": 0
+  },
+  {
+    "id": "dev-6",
+    "category": "Science",
+    "text": "What is the largest planet in our Solar System?",
+    "options": [
+      "Mercury",
+      "Jupiter",
+      "Earth",
+      "Mars"
+    ],
+    "correct": 1
+  },
+  {
+    "id": "dev-7",
+    "category": "Science",
+    "text": "What gas do plants absorb for photosynthesis?",
+    "options": [
+      "Neon",
+      "Hydrogen",
+      "Carbon dioxide",
+      "Helium"
+    ],
+    "correct": 2
+  },
+  {
+    "id": "dev-8",
+    "category": "Science",
+    "text": "What is the basic unit of life?",
+    "options": [
+      "Atom",
+      "Organ",
+      "Tissue",
+      "Cell"
+    ],
+    "correct": 3
+  },
+  {
+    "id": "dev-9",
+    "category": "Science",
+    "text": "How many bones are typically in an adult human skeleton?",
+    "options": [
+      "206",
+      "106",
+      "306",
+      "406"
+    ],
+    "correct": 0
+  },
+  {
+    "id": "dev-10",
+    "category": "Science",
+    "text": "What is the chemical formula for water?",
+    "options": [
+      "NaCl",
+      "H₂O",
+      "CO₂",
+      "O₂"
+    ],
+    "correct": 1
+  },
+  {
+    "id": "dev-11",
+    "category": "Science",
+    "text": "Which part of a plant usually absorbs water from soil?",
+    "options": [
+      "Fruit",
+      "Seeds",
+      "Roots",
+      "Petals"
+    ],
+    "correct": 2
+  },
+  {
+    "id": "dev-12",
+    "category": "Science",
+    "text": "Which particle has a negative electric charge?",
+    "options": [
+      "Proton",
+      "Neutron",
+      "Photon",
+      "Electron"
+    ],
+    "correct": 3
+  },
+  {
+    "id": "dev-13",
+    "category": "Science",
+    "text": "What is the closest star to Earth?",
+    "options": [
+      "The Sun",
+      "Sirius",
+      "Polaris",
+      "Betelgeuse"
+    ],
+    "correct": 0
+  },
+  {
+    "id": "dev-14",
+    "category": "Science",
+    "text": "Which metal is liquid at typical room temperature?",
+    "options": [
+      "Gold",
+      "Mercury",
+      "Iron",
+      "Copper"
+    ],
+    "correct": 1
+  },
+  {
+    "id": "dev-15",
+    "category": "Science",
+    "text": "Which unit measures electric current?",
+    "options": [
+      "Ohm",
+      "Watt",
+      "Ampere",
+      "Volt"
+    ],
+    "correct": 2
+  },
+  {
+    "id": "dev-16",
+    "category": "General Knowledge",
+    "text": "What is the capital of Japan?",
+    "options": [
+      "Tokyo",
+      "Kyoto",
+      "Osaka",
+      "Sapporo"
+    ],
+    "correct": 0
+  },
+  {
+    "id": "dev-17",
+    "category": "General Knowledge",
+    "text": "How many sides does a hexagon have?",
+    "options": [
+      "8",
+      "6",
+      "5",
+      "7"
+    ],
+    "correct": 1
+  },
+  {
+    "id": "dev-18",
+    "category": "General Knowledge",
+    "text": "Which ocean is the largest by area?",
+    "options": [
+      "Indian",
+      "Arctic",
+      "Pacific",
+      "Atlantic"
+    ],
+    "correct": 2
+  },
+  {
+    "id": "dev-19",
+    "category": "General Knowledge",
+    "text": "Which instrument has keys, pedals, and strings?",
+    "options": [
+      "Flute",
+      "Trumpet",
+      "Drum",
+      "Piano"
+    ],
+    "correct": 3
+  },
+  {
+    "id": "dev-20",
+    "category": "General Knowledge",
+    "text": "In chess, which piece moves in an L shape?",
+    "options": [
+      "Knight",
+      "Bishop",
+      "Rook",
+      "King"
+    ],
+    "correct": 0
+  },
+  {
+    "id": "dev-21",
+    "category": "General Knowledge",
+    "text": "How many minutes are in three hours?",
+    "options": [
+      "240",
+      "180",
+      "120",
+      "150"
+    ],
+    "correct": 1
+  },
+  {
+    "id": "dev-22",
+    "category": "General Knowledge",
+    "text": "Which country contains the city of Barcelona?",
+    "options": [
+      "Portugal",
+      "France",
+      "Spain",
+      "Italy"
+    ],
+    "correct": 2
+  },
+  {
+    "id": "dev-23",
+    "category": "General Knowledge",
+    "text": "What currency is used in Japan?",
+    "options": [
+      "Won",
+      "Euro",
+      "Rupee",
+      "Yen"
+    ],
+    "correct": 3
+  },
+  {
+    "id": "dev-24",
+    "category": "General Knowledge",
+    "text": "What is the largest hot desert on Earth?",
+    "options": [
+      "Sahara",
+      "Gobi",
+      "Kalahari",
+      "Mojave"
+    ],
+    "correct": 0
+  },
+  {
+    "id": "dev-25",
+    "category": "General Knowledge",
+    "text": "Which language has the greeting “bonjour”?",
+    "options": [
+      "Dutch",
+      "French",
+      "German",
+      "Italian"
+    ],
+    "correct": 1
+  },
+  {
+    "id": "dev-26",
+    "category": "General Knowledge",
+    "text": "How many rings are in the Olympic symbol?",
+    "options": [
+      "6",
+      "7",
+      "5",
+      "4"
+    ],
+    "correct": 2
+  },
+  {
+    "id": "dev-27",
+    "category": "General Knowledge",
+    "text": "Which continent contains Kenya?",
+    "options": [
+      "Asia",
+      "Europe",
+      "South America",
+      "Africa"
+    ],
+    "correct": 3
+  },
+  {
+    "id": "dev-28",
+    "category": "General Knowledge",
+    "text": "Which shape has three sides?",
+    "options": [
+      "Triangle",
+      "Square",
+      "Pentagon",
+      "Circle"
+    ],
+    "correct": 0
+  },
+  {
+    "id": "dev-29",
+    "category": "General Knowledge",
+    "text": "Which sport uses a shuttlecock?",
+    "options": [
+      "Squash",
+      "Badminton",
+      "Tennis",
+      "Cricket"
+    ],
+    "correct": 1
+  },
+  {
+    "id": "dev-30",
+    "category": "General Knowledge",
+    "text": "What is the capital of Australia?",
+    "options": [
+      "Melbourne",
+      "Perth",
+      "Canberra",
+      "Sydney"
+    ],
+    "correct": 2
+  },
+  {
+    "id": "dev-31",
+    "category": "History",
+    "text": "In which year did the first crewed Moon landing occur?",
+    "options": [
+      "1969",
+      "1959",
+      "1979",
+      "1989"
+    ],
+    "correct": 0
+  },
+  {
+    "id": "dev-32",
+    "category": "History",
+    "text": "Which ancient civilization built the pyramids at Giza?",
+    "options": [
+      "Aztecs",
+      "Ancient Egyptians",
+      "Romans",
+      "Vikings"
+    ],
+    "correct": 1
+  },
+  {
+    "id": "dev-33",
+    "category": "History",
+    "text": "Who was the first president of the United States?",
+    "options": [
+      "Thomas Jefferson",
+      "John Adams",
+      "George Washington",
+      "Abraham Lincoln"
+    ],
+    "correct": 2
+  },
+  {
+    "id": "dev-34",
+    "category": "History",
+    "text": "In which year did India become independent from British rule?",
+    "options": [
+      "1937",
+      "1957",
+      "1967",
+      "1947"
+    ],
+    "correct": 3
+  },
+  {
+    "id": "dev-35",
+    "category": "History",
+    "text": "Which city was buried by Mount Vesuvius in 79 CE?",
+    "options": [
+      "Pompeii",
+      "Athens",
+      "Carthage",
+      "Sparta"
+    ],
+    "correct": 0
+  },
+  {
+    "id": "dev-36",
+    "category": "History",
+    "text": "Who painted the Mona Lisa?",
+    "options": [
+      "Donatello",
+      "Leonardo da Vinci",
+      "Michelangelo",
+      "Raphael"
+    ],
+    "correct": 1
+  },
+  {
+    "id": "dev-37",
+    "category": "History",
+    "text": "Which empire built the Colosseum?",
+    "options": [
+      "Ottoman Empire",
+      "Inca Empire",
+      "Roman Empire",
+      "Mongol Empire"
+    ],
+    "correct": 2
+  },
+  {
+    "id": "dev-38",
+    "category": "History",
+    "text": "In which year did World War II end?",
+    "options": [
+      "1939",
+      "1918",
+      "1955",
+      "1945"
+    ],
+    "correct": 3
+  },
+  {
+    "id": "dev-39",
+    "category": "History",
+    "text": "Who is associated with developing movable metal type printing in Europe?",
+    "options": [
+      "Johannes Gutenberg",
+      "Isaac Newton",
+      "Galileo Galilei",
+      "James Watt"
+    ],
+    "correct": 0
+  },
+  {
+    "id": "dev-40",
+    "category": "History",
+    "text": "In which country did the Renaissance begin?",
+    "options": [
+      "Ireland",
+      "Italy",
+      "Norway",
+      "Poland"
+    ],
+    "correct": 1
+  },
+  {
+    "id": "dev-41",
+    "category": "History",
+    "text": "Who was the first woman to win a Nobel Prize?",
+    "options": [
+      "Rosalind Franklin",
+      "Jane Goodall",
+      "Marie Curie",
+      "Ada Lovelace"
+    ],
+    "correct": 2
+  },
+  {
+    "id": "dev-42",
+    "category": "History",
+    "text": "Which wall divided a German city until 1989?",
+    "options": [
+      "Hadrian’s Wall",
+      "Great Wall",
+      "Antonine Wall",
+      "Berlin Wall"
+    ],
+    "correct": 3
+  },
+  {
+    "id": "dev-43",
+    "category": "History",
+    "text": "Which civilization used the city of Machu Picchu?",
+    "options": [
+      "Inca",
+      "Maya",
+      "Roman",
+      "Egyptian"
+    ],
+    "correct": 0
+  },
+  {
+    "id": "dev-44",
+    "category": "History",
+    "text": "Which document was sealed by King John in 1215?",
+    "options": [
+      "Domesday Book",
+      "Magna Carta",
+      "Bill of Rights 1689",
+      "Treaty of Versailles"
+    ],
+    "correct": 1
+  },
+  {
+    "id": "dev-45",
+    "category": "History",
+    "text": "Who led the Salt March in 1930?",
+    "options": [
+      "Subhas Chandra Bose",
+      "Bhagat Singh",
+      "Mahatma Gandhi",
+      "Jawaharlal Nehru"
+    ],
+    "correct": 2
+  },
+  {
+    "id": "dev-46",
+    "category": "Computers",
+    "text": "What does CPU stand for?",
+    "options": [
+      "Central Processing Unit",
+      "Computer Power Utility",
+      "Central Program Upload",
+      "Core Peripheral Unit"
+    ],
+    "correct": 0
+  },
+  {
+    "id": "dev-47",
+    "category": "Computers",
+    "text": "Which number system uses only 0 and 1?",
+    "options": [
+      "Octal",
+      "Binary",
+      "Decimal",
+      "Hexadecimal"
+    ],
+    "correct": 1
+  },
+  {
+    "id": "dev-48",
+    "category": "Computers",
+    "text": "What does HTML primarily describe?",
+    "options": [
+      "Audio compression",
+      "Processor speed",
+      "Web page structure",
+      "Electrical circuits"
+    ],
+    "correct": 2
+  },
+  {
+    "id": "dev-49",
+    "category": "Computers",
+    "text": "Which device routes packets between networks?",
+    "options": [
+      "Monitor",
+      "Keyboard",
+      "Printer",
+      "Router"
+    ],
+    "correct": 3
+  },
+  {
+    "id": "dev-50",
+    "category": "Computers",
+    "text": "What does RAM stand for?",
+    "options": [
+      "Random Access Memory",
+      "Read All Media",
+      "Rapid Array Module",
+      "Remote Access Machine"
+    ],
+    "correct": 0
+  },
+  {
+    "id": "dev-51",
+    "category": "Computers",
+    "text": "Which protocol is used for encrypted web browsing?",
+    "options": [
+      "SMTP",
+      "HTTPS",
+      "FTP",
+      "Telnet"
+    ],
+    "correct": 1
+  },
+  {
+    "id": "dev-52",
+    "category": "Computers",
+    "text": "Which symbol commonly begins a CSS ID selector?",
+    "options": [
+      "$",
+      "&",
+      "#",
+      "@"
+    ],
+    "correct": 2
+  },
+  {
+    "id": "dev-53",
+    "category": "Computers",
+    "text": "Which language is commonly executed by browsers for page interactivity?",
+    "options": [
+      "SQL",
+      "Bash",
+      "Assembly",
+      "JavaScript"
+    ],
+    "correct": 3
+  },
+  {
+    "id": "dev-54",
+    "category": "Computers",
+    "text": "How many bits are in a byte?",
+    "options": [
+      "8",
+      "4",
+      "16",
+      "32"
+    ],
+    "correct": 0
+  },
+  {
+    "id": "dev-55",
+    "category": "Computers",
+    "text": "Which tool records versions of source files?",
+    "options": [
+      "HDMI",
+      "Git",
+      "JPEG",
+      "DNS"
+    ],
+    "correct": 1
+  },
+  {
+    "id": "dev-56",
+    "category": "Computers",
+    "text": "What does DNS translate domain names into?",
+    "options": [
+      "Passwords",
+      "Source code",
+      "IP addresses",
+      "Image files"
+    ],
+    "correct": 2
+  },
+  {
+    "id": "dev-57",
+    "category": "Computers",
+    "text": "Which data structure follows first in, first out?",
+    "options": [
+      "Stack",
+      "Tree",
+      "Set",
+      "Queue"
+    ],
+    "correct": 3
+  },
+  {
+    "id": "dev-58",
+    "category": "Computers",
+    "text": "Which file format commonly stores structured key-value data?",
+    "options": [
+      "JSON",
+      "MP3",
+      "PNG",
+      "WAV"
+    ],
+    "correct": 0
+  },
+  {
+    "id": "dev-59",
+    "category": "Computers",
+    "text": "Which component typically stores data persistently?",
+    "options": [
+      "CPU cache",
+      "SSD",
+      "CPU register",
+      "RAM cell"
+    ],
+    "correct": 1
+  },
+  {
+    "id": "dev-60",
+    "category": "Computers",
+    "text": "What does an SQL SELECT statement do?",
+    "options": [
+      "Compiles an image",
+      "Encrypts a cable",
+      "Retrieves data",
+      "Powers off a server"
+    ],
+    "correct": 2
+  }
+]
