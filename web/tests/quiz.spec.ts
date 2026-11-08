@@ -1,4 +1,5 @@
-import { test, expect, type Page } from "@playwright/test";
+import { test, expect } from "./teacher-fixture";
+import type { Page } from "@playwright/test";
 
 async function home(page: Page) {
     await page.goto("/");

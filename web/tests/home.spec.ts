@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./teacher-fixture";
 
 for (const width of [320, 390, 768, 1440]) {
     test(`home actions and layouts work at ${width}px`, async ({ page }) => {

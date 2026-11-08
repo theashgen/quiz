@@ -1,0 +1,336 @@
+.auth-page {
+    padding: 32px 0 24px;
+}
+.auth-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(40px, 7vw, 100px);
+    align-items: center;
+}
+.auth-welcome {
+    padding: 24px 0;
+}
+.auth-welcome > .eyebrow,
+.auth-form-column > .eyebrow {
+    color: #77618e;
+    font-size: 9px;
+}
+.auth-welcome h1 {
+    font-size: clamp(42px, 5.4vw, 72px);
+    line-height: 1.05;
+}
+.auth-welcome h1 span {
+    background: var(--lilac-light);
+    padding: 0 10px 3px;
+}
+.auth-welcome > p {
+    color: var(--muted);
+    font-size: 15px;
+}
+.auth-people {
+    display: flex;
+    position: relative;
+    align-items: center;
+    gap: 16px;
+    padding: 34px 0 40px;
+    max-width: 360px;
+}
+.auth-person {
+    width: 92px;
+    height: 102px;
+    padding: 5px;
+    border: 1px solid #d5cabb;
+    border-radius: 25px;
+    background: #f9e0d0;
+    transform: rotate(-9deg);
+    box-shadow: 0 4px 0 #e6dfd2;
+}
+.auth-person:nth-child(2) {
+    width: 110px;
+    height: 120px;
+    background: #fff0bc;
+    transform: rotate(5deg);
+}
+.auth-person:nth-child(3) {
+    background: #e5eafa;
+    transform: rotate(-5deg);
+}
+.auth-people-spark {
+    position: absolute;
+    top: 0;
+    right: 0;
+    color: #9e7dc0;
+    font-size: 35px;
+}
+.auth-guest-note {
+    border-top: 1px solid var(--line);
+    padding-top: 20px;
+    max-width: 360px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 12px;
+}
+.auth-guest-note > span {
+    color: var(--muted);
+    font-size: 11px;
+}
+.auth-guest-note button {
+    color: #68448c;
+}
+.auth-form-column {
+    max-width: 470px;
+    width: 100%;
+    padding: 18px 0;
+}
+.auth-form-column h2 {
+    font-size: clamp(28px, 3vw, 38px);
+}
+.auth-description {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 24px;
+}
+.auth-roles {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin: 0 0 20px;
+}
+.auth-roles legend {
+    font-size: 11px;
+}
+.auth-role {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0;
+    padding: 17px 14px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--paper);
+    cursor: pointer;
+}
+.auth-role.selected {
+    background: var(--lilac-light);
+    border-color: #8867af;
+}
+.auth-role input {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+}
+.auth-role:has(input:focus-visible) {
+    outline: 3px solid #7450b4;
+    outline-offset: 3px;
+}
+.auth-role strong {
+    font-size: 13px;
+    padding-right: 15px;
+}
+.auth-role small {
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--muted);
+}
+.auth-role-check {
+    position: absolute;
+    right: 13px;
+    top: 15px;
+    color: #7450b4;
+}
+.auth-form-column input {
+    min-height: 48px;
+    font-size: 14px;
+}
+.auth-password {
+    position: relative;
+    margin-top: -8px;
+}
+.auth-password input {
+    padding-right: 64px;
+}
+.auth-password button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 48px;
+    padding: 0 14px;
+    font-size: 11px;
+    color: #68448c;
+    font-weight: 600;
+}
+.auth-field-hint {
+    color: var(--muted);
+    font-size: 10px;
+    line-height: 1.6;
+    margin: 10px 0 0;
+}
+.auth-submit {
+    margin-top: 24px;
+    min-height: 50px;
+}
+.auth-switch {
+    font-size: 12px;
+    text-align: center;
+    margin: 20px 0 0;
+    color: var(--muted);
+}
+.auth-switch button {
+    color: #68448c;
+    font-weight: 700;
+    margin-left: 5px;
+}
+.account-navigation {
+    position: absolute;
+    top: 18px;
+    right: clamp(18px, 3.5vw, 60px);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.account-navigation .account-signup {
+    min-height: 36px;
+    padding: 8px 13px;
+    font-size: 10px;
+    border-color: var(--line);
+    box-shadow: none;
+}
+.account-link {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    max-width: 260px;
+    overflow-wrap: anywhere;
+}
+.account-dot {
+    flex-shrink: 0;
+    width: 7px;
+    height: 7px;
+    background: #8c69b2;
+    border-radius: 50%;
+}
+.account-role-label {
+    color: #77618e;
+    font-size: 9px;
+    text-transform: capitalize;
+}
+.account-page {
+    max-width: 850px;
+    margin: auto;
+    padding: 40px 0 24px;
+}
+.account-page > .eyebrow {
+    color: #77618e;
+}
+.account-heading {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    justify-content: space-between;
+}
+.account-heading h1 {
+    margin-bottom: 10px;
+}
+.account-role-badge {
+    flex-shrink: 0;
+    padding: 9px 14px;
+    border: 1px solid #d3c0e9;
+    border-radius: 20px;
+    background: var(--lilac-light);
+    color: #68448c;
+    font-size: 11px;
+}
+.account-actions {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 28px 0 40px;
+}
+.account-details {
+    border-top: 1px solid var(--line);
+    margin-bottom: 24px;
+}
+.account-details > div {
+    display: grid;
+    grid-template-columns: 140px minmax(0, 1fr);
+    gap: 20px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--line);
+}
+.account-details dt {
+    color: var(--muted);
+    font-size: 12px;
+}
+.account-details dd {
+    margin: 0;
+    font-size: 13px;
+    overflow-wrap: anywhere;
+}
+@media (max-width: 740px) {
+    .auth-page {
+        padding-top: 24px;
+    }
+    .auth-layout {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 14px;
+    }
+    .auth-welcome {
+        padding: 0;
+    }
+    .auth-welcome h1 {
+        font-size: 38px;
+        margin-bottom: 12px;
+    }
+    .auth-welcome h1 br {
+        display: none;
+    }
+    .auth-welcome > p,
+    .auth-people,
+    .auth-guest-note {
+        display: none;
+    }
+    .auth-form-column {
+        max-width: none;
+    }
+    .auth-form-column h2 {
+        font-size: 30px;
+    }
+    .auth-form-column input {
+        font-size: 16px;
+    }
+    .auth-role {
+        padding: 15px 12px;
+    }
+    .account-navigation {
+        gap: 12px;
+        top: 14px;
+    }
+    .account-navigation .account-signup {
+        display: none;
+    }
+    .account-link {
+        max-width: 160px;
+    }
+    .account-page {
+        padding-top: 30px;
+    }
+    .account-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 4px;
+    }
+    .account-heading h1 {
+        font-size: 36px;
+    }
+    .account-details > div {
+        grid-template-columns: 100px minmax(0, 1fr);
+        gap: 12px;
+    }
+}

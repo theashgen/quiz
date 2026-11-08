@@ -25,6 +25,11 @@ const Lifetime = 30 * 24 * time.Hour
 
 type localHTTPKey struct{}
 
+func IsLocalHTTP(ctx context.Context) bool {
+    local, _ := ctx.Value(localHTTPKey{}).(bool)
+    return local
+}
+
 func LocalHTTP(next http.Handler) http.Handler {
     return http.HandlerFunc(func(response http.ResponseWriter, request *http.Request) {
         ctx := context.WithValue(request.Context(), localHTTPKey{}, true)

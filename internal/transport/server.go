@@ -11,6 +11,7 @@ import (
     "net/http"
     "os"
     "path/filepath"
+    "quiz/internal/accounts"
     "quiz/internal/content"
     "quiz/internal/gameplay"
     "quiz/internal/rooms"
@@ -31,6 +32,7 @@ type Server struct {
     Static    string
     mu        sync.Mutex
     listeners map[string]map[chan struct{}]bool
+    authSlots chan struct{}
 }
 
 func New(s *storage.Store, origins, static string) *Server {
@@ -39,6 +41,7 @@ func New(s *storage.Store, origins, static string) *Server {
         Origins:   strings.Split(origins, ","),
         Static:    static,
         listeners: map[string]map[chan struct{}]bool{},
+        authSlots: make(chan struct{}, 4),
     }
 }
 
@@ -84,6 +87,7 @@ func decode(w http.ResponseWriter, r *http.Request, v any) error {
 
 func (s *Server) Handler() http.Handler {
     router := mux.NewRouter()
+    s.authRoutes(router)
     router.HandleFunc("/api/health", func(w http.ResponseWriter, r *http.Request) {
         ctx, cancel := context.WithTimeout(r.Context(), time.Second)
         defer cancel()
@@ -183,6 +187,18 @@ func (s *Server) Handler() http.Handler {
 }
 
 func (s *Server) identity(w http.ResponseWriter, r *http.Request) (string, bool) {
+    user, accountErr := accounts.Current(r.Context(), s.Store, r)
+    if accountErr != nil {
+        if errors.Is(accountErr, accounts.ErrSignedOut) {
+            fail(w, 401, accountErr)
+        } else {
+            fail(w, 503, errors.New("Account service unavailable"))
+        }
+        return "", false
+    }
+    if user != nil {
+        return user.PlayerID, true
+    }
     id, err := sessions.Get(r.Context(), s.Store, r)
 
     if err != nil {
@@ -216,6 +232,9 @@ func roomCode() string {
 }
 
 func (s *Server) create(w http.ResponseWriter, r *http.Request, solo bool) {
+    if !solo && !s.teacher(w, r) {
+        return
+    }
     id, ok := s.identity(w, r)
 
     if !ok {
@@ -549,6 +568,15 @@ func (s *Server) socket(w http.ResponseWriter, r *http.Request) {
         return
     }
 
+    account, accountErr := accounts.Current(r.Context(), s.Store, r)
+    if accountErr != nil {
+        fail(w, 401, accounts.ErrSignedOut)
+        return
+    }
+    if account != nil && account.ExpiresAt.Before(expires) {
+        expires = account.ExpiresAt
+    }
+
     code := strings.ToUpper(mux.Vars(r)["code"])
     mode := r.URL.Query().Get("mode")
     owner := r.URL.Query().Get("owner")
@@ -666,6 +694,7 @@ func (s *Server) socket(w http.ResponseWriter, r *http.Request) {
     defer tick.Stop()
     dirty := true
     last := time.Time{}
+    lastAccountCheck := time.Now()
 
     for {
         if dirty && time.Since(last) >= 200*time.Millisecond {
@@ -728,10 +757,25 @@ func (s *Server) socket(w http.ResponseWriter, r *http.Request) {
         case <-notices:
             dirty = true
         case <-tick.C:
+            if account != nil && time.Since(lastAccountCheck) >= time.Second {
+                current, err := accounts.Current(ctx, s.Store, r)
+                if err != nil || current == nil {
+                    _ = conn.Close(websocket.StatusPolicyViolation, "Account session ended")
+                    return
+                }
+                lastAccountCheck = time.Now()
+            }
             if time.Since(last) >= time.Second {
                 dirty = true
             }
         case c := <-commands:
+            if account != nil || c.Type == "start" || c.Type == "prepare" || c.Type == "cancel_prepare" || c.Type == "configure" {
+                current, err := accounts.Current(ctx, s.Store, r)
+                if err != nil || current == nil || ((c.Type == "start" || c.Type == "prepare" || c.Type == "cancel_prepare" || c.Type == "configure") && current.Role != "teacher") {
+                    _ = send(Event{Type: "error", RequestID: c.RequestID, Error: "Sign in as a teacher to host; your account session may have ended"})
+                    continue
+                }
+            }
             receipt, snapshot, e := s.commandSnapshot(ctx, code, id, owner, c)
             if e != nil {
                 if send(Event{

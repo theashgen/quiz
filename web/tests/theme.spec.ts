@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./teacher-fixture";
 
 test("shared dotted canvas stays consistent across pages and screen sizes", async ({
     page,
