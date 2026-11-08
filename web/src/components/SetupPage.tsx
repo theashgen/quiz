@@ -24,14 +24,19 @@ export function SetupPage({
     rematch = false,
     onBack,
     onSubmit,
+    accountName,
 }: {
     catalog: Catalog;
     solo?: boolean;
     rematch?: boolean;
     onBack: () => void;
     onSubmit: (s: Setup) => Promise<void>;
+    accountName?: string;
 }) {
-    const [setup, setSetup] = useState<Setup>(base);
+    const [setup, setSetup] = useState<Setup>(() => ({
+        ...base(),
+        ...(accountName ? { name: accountName } : {}),
+    }));
     const [busy, setBusy] = useState(false);
     const [error, setError] = useState("");
     const [saved, setSaved] = useState<Saved[]>([]);

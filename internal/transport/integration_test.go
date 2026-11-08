@@ -330,6 +330,11 @@ func TestHTTPWebSocketSessionAndTakeover(t *testing.T) {
         t.Fatal("insecure guest cookie")
     }
 
+    response = request("/api/auth/signup", `{"name":"Host","email":"host@example.com","password":"a strong test passphrase","role":"teacher"}`)
+    if response.StatusCode != http.StatusCreated {
+        t.Fatal("teacher signup failed", response.StatusCode)
+    }
+    response.Body.Close()
     response = request("/api/rooms", `{"source":"preset","categories":["Science"],"count":5,"timer":10,"participate":true,"name":"Host","avatar":"🦉"}`)
     var created struct{ Code string }
     _ = json.NewDecoder(response.Body).Decode(&created)

@@ -8,15 +8,17 @@ import "../join.css";
 export function Join({
     catalog,
     go,
+    defaultName,
 }: {
     catalog: Catalog;
     go: (p: string) => void;
+    defaultName?: string;
 }) {
     const initialCode = normalizeRoomCode(
         new URLSearchParams(location.search).get("code") ?? "",
     );
     const [code, setCode] = useState(initialCode);
-    const [setup, setSetup] = useState({ ...base(), name: "" });
+    const [setup, setSetup] = useState({ ...base(), name: defaultName ?? "" });
     const [error, setError] = useState("");
     const [busy, setBusy] = useState(false);
 
@@ -80,6 +82,7 @@ export function Join({
                             Room code
                             <input
                                 className="code-input"
+                                aria-label="Room code"
                                 value={code}
                                 onChange={(e) =>
                                     setCode(normalizeRoomCode(e.target.value))

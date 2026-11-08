@@ -5,6 +5,13 @@ export type Question = {
     correct: number;
 };
 
+export type Account = {
+    id: string;
+    name: string;
+    email: string;
+    role: "teacher" | "student";
+};
+
 export type Setup = {
     source: "preset" | "custom";
     categories: string[];

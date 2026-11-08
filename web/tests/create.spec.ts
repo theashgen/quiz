@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./teacher-fixture";
 
 test("custom studio uses a flat writing surface instead of nested cards", async ({
     page,

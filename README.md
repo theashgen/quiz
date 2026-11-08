@@ -8,6 +8,8 @@ The app supports preset and custom quizzes with a **10-second timer** per questi
 
 ## Run locally
 
+Teacher and student accounts are available through **Create an account** on the homepage. Only signed-in teachers can create and host multiplayer quizzes; students and guests can join, and solo play remains open. See [account authentication](docs/auth.md) for the API contract, session handling, and public-deployment prerequisites. For load testing, supply an existing teacher's `QUIZ_TEACHER_EMAIL` and `QUIZ_TEACHER_PASSWORD` as environment variables.
+
 Prerequisites: Docker Compose v2 and OpenSSL. Development outside containers also needs Go 1.27.3, Node 26.8.2 (or a compatible current Node), and npm.
 
 ```sh

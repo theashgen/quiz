@@ -1,4 +1,4 @@
-import { test, expect } from "@playwright/test";
+import { test, expect } from "./teacher-fixture";
 
 test("all Memojis load locally and the picker works on small screens", async ({
     page,

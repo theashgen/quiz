@@ -136,6 +136,13 @@ func main() {
     }
     host := newRobot("Load host")
 
+    if os.Getenv("QUIZ_TEACHER_EMAIL") == "" || os.Getenv("QUIZ_TEACHER_PASSWORD") == "" {
+        fatal(fmt.Errorf("set QUIZ_TEACHER_EMAIL and QUIZ_TEACHER_PASSWORD for a registered teacher before load testing"))
+    }
+    if e = post(host, "/api/auth/login", map[string]string{"email": os.Getenv("QUIZ_TEACHER_EMAIL"), "password": os.Getenv("QUIZ_TEACHER_PASSWORD")}, nil); e != nil {
+        fatal(e)
+    }
+
     if e = post(host, "/api/session", map[string]any{}, nil); e != nil {
         fatal(e)
     }
