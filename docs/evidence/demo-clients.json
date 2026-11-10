@@ -1,0 +1,756 @@
+{
+  "capturedAt": "2026-11-10T11:44:37.191Z",
+  "room": "D75JLU",
+  "automatedPlayers": 11,
+  "note": "11 automated guests plus one browser-driven guest. Real HTTP sessions and WebSockets; no mocked responses.",
+  "clients": [
+    {
+      "name": "Maya",
+      "answersAcknowledged": 3,
+      "status": "results",
+      "score": 300,
+      "leaderboard": [
+        {
+          "name": "Maya",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Zara",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Kenton",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Priya",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Evander",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Sam",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Sofia",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Arjun",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Claire",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Noah",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Leo",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Ada",
+          "score": 100,
+          "rank": 12
+        }
+      ]
+    },
+    {
+      "name": "Arjun",
+      "answersAcknowledged": 3,
+      "status": "results",
+      "score": 200,
+      "leaderboard": [
+        {
+          "name": "Maya",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Zara",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Kenton",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Priya",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Evander",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Sam",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Sofia",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Arjun",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Claire",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Noah",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Leo",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Ada",
+          "score": 100,
+          "rank": 12
+        }
+      ]
+    },
+    {
+      "name": "Sofia",
+      "answersAcknowledged": 3,
+      "status": "results",
+      "score": 200,
+      "leaderboard": [
+        {
+          "name": "Maya",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Zara",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Kenton",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Priya",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Evander",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Sam",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Sofia",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Arjun",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Claire",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Noah",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Leo",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Ada",
+          "score": 100,
+          "rank": 12
+        }
+      ]
+    },
+    {
+      "name": "Noah",
+      "answersAcknowledged": 3,
+      "status": "results",
+      "score": 200,
+      "leaderboard": [
+        {
+          "name": "Maya",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Zara",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Kenton",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Priya",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Evander",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Sam",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Sofia",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Arjun",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Claire",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Noah",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Leo",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Ada",
+          "score": 100,
+          "rank": 12
+        }
+      ]
+    },
+    {
+      "name": "Zara",
+      "answersAcknowledged": 3,
+      "status": "results",
+      "score": 300,
+      "leaderboard": [
+        {
+          "name": "Maya",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Zara",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Kenton",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Priya",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Evander",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Sam",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Sofia",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Arjun",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Claire",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Noah",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Leo",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Ada",
+          "score": 100,
+          "rank": 12
+        }
+      ]
+    },
+    {
+      "name": "Leo",
+      "answersAcknowledged": 3,
+      "status": "results",
+      "score": 200,
+      "leaderboard": [
+        {
+          "name": "Maya",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Zara",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Kenton",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Priya",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Evander",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Sam",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Sofia",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Arjun",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Claire",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Noah",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Leo",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Ada",
+          "score": 100,
+          "rank": 12
+        }
+      ]
+    },
+    {
+      "name": "Claire",
+      "answersAcknowledged": 3,
+      "status": "results",
+      "score": 200,
+      "leaderboard": [
+        {
+          "name": "Maya",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Zara",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Kenton",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Priya",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Evander",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Sam",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Sofia",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Arjun",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Claire",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Noah",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Leo",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Ada",
+          "score": 100,
+          "rank": 12
+        }
+      ]
+    },
+    {
+      "name": "Evander",
+      "answersAcknowledged": 3,
+      "status": "results",
+      "score": 200,
+      "leaderboard": [
+        {
+          "name": "Maya",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Zara",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Kenton",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Priya",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Evander",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Sam",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Sofia",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Arjun",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Claire",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Noah",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Leo",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Ada",
+          "score": 100,
+          "rank": 12
+        }
+      ]
+    },
+    {
+      "name": "Kenton",
+      "answersAcknowledged": 3,
+      "status": "results",
+      "score": 300,
+      "leaderboard": [
+        {
+          "name": "Maya",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Zara",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Kenton",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Priya",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Evander",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Sam",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Sofia",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Arjun",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Claire",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Noah",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Leo",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Ada",
+          "score": 100,
+          "rank": 12
+        }
+      ]
+    },
+    {
+      "name": "Priya",
+      "answersAcknowledged": 3,
+      "status": "results",
+      "score": 200,
+      "leaderboard": [
+        {
+          "name": "Maya",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Zara",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Kenton",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Priya",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Evander",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Sam",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Sofia",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Arjun",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Claire",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Noah",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Leo",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Ada",
+          "score": 100,
+          "rank": 12
+        }
+      ]
+    },
+    {
+      "name": "Sam",
+      "answersAcknowledged": 3,
+      "status": "results",
+      "score": 200,
+      "leaderboard": [
+        {
+          "name": "Maya",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Zara",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Kenton",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Priya",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Evander",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Sam",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Sofia",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Arjun",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Claire",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Noah",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Leo",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Ada",
+          "score": 100,
+          "rank": 12
+        }
+      ]
+    }
+  ]
+}

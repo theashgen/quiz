@@ -1,0 +1,25 @@
+Captured: 2026-11-10T11:48:03.989Z
+Application revision: ec8936c
+Source: PostgreSQL, read-only query in docs/demo/verify.sql
+
+  code  |             round_id             | answer_records | players | total_points | timeouts 
+--------+----------------------------------+----------------+---------+--------------+----------
+ D75JLU | df60564312db9681cc98920bccb151ba |             36 |      12 |         2600 |        1
+(1 row)
+
+ player  | answer_records | score | timeouts 
+---------+----------------+-------+----------
+ Kenton  |              3 |   300 |        0
+ Maya    |              3 |   300 |        0
+ Zara    |              3 |   300 |        0
+ Arjun   |              3 |   200 |        0
+ Claire  |              3 |   200 |        0
+ Evander |              3 |   200 |        0
+ Leo     |              3 |   200 |        0
+ Noah    |              3 |   200 |        0
+ Priya   |              3 |   200 |        0
+ Sam     |              3 |   200 |        0
+ Sofia   |              3 |   200 |        0
+ Ada     |              3 |   100 |        1
+(12 rows)
+

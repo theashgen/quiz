@@ -1,0 +1,25 @@
+{
+  "width": 1440,
+  "height": 1000,
+  "fps": 30,
+  "codec": "H.264",
+  "durationSeconds": 81.8,
+  "audio": "silent",
+  "chapters": [
+    {
+      "title": "Teacher: sign up, create and save a custom quiz",
+      "start": 0.0,
+      "duration": 16.28
+    },
+    {
+      "title": "Guest: join 12 players, answer, view results and replay",
+      "start": 16.28,
+      "duration": 43.76
+    },
+    {
+      "title": "Solo: play a complete five-question round",
+      "start": 60.04,
+      "duration": 21.76
+    }
+  ]
+}

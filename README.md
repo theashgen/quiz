@@ -1,128 +1,153 @@
-<img src="assets/icon.svg" width="48" height="48" alt="">
+<img src="assets/icon.svg" width="48" height="48" alt="Quiz icon">
 
 # Quiz
 
-Private multiplayer trivia and preset solo play, with anonymous guest sessions and server-controlled timing. React/Vite, a modular Go backend, PostgreSQL authority, and disposable Redis coordination/cache.
+**A full-stack multiplayer trivia app: create a quiz, invite a room, play against the clock, and see the results live.**
 
-The app supports preset and custom quizzes with a **10-second timer** per question. Product requirements are in [SPEC.md](SPEC.md).
+Built with **React · TypeScript · Go · WebSockets · PostgreSQL · Redis**. Teachers host preset or custom quizzes; students and anonymous guests join with a six-character code. Solo play works without an account.
+
+[Watch the full walkthrough](docs/media/video/quiz-walkthrough.mp4) · [Explore every captured state](#application-walkthrough) · [Verify the backend](#backend-you-can-verify) · [Run locally](#run-locally)
+
+[![Quiz — 12-player multiplayer room](docs/media/screenshots/08-player-lobby.png)](docs/media/video/quiz-walkthrough.mp4)
+
+## Watch someone use it
+
+**[Play the workflow video →](docs/media/video/quiz-walkthrough.mp4)** · 82 seconds · 1440 × 1000 · 30 fps · 9.5 MB
+
+Video chapters: **0:00** teacher signup and quiz creation · **0:16** guest joins the 12-player round · **1:00** solo play.
+
+The recording follows teacher signup and quiz creation, then a guest joining a **12-player room**, answering questions, receiving feedback, timing out, viewing the final standings, and opting into another round. A solo round follows. It uses the running Go service, PostgreSQL and Redis.
+
+The room contains **one browser-driven player and 11 automated guest clients**, plus a teacher hosting without playing. Each guest has an independent session and live WebSocket connection. These are local demonstration clients, not a claim of 12 human users. See the [capture and reproduction notes](docs/demo/README.md).
+
+The MP4 is linked through a clickable screenshot because repository README renderers do not consistently support inline video playback. Open the link to play or download it.
+
+## What this project demonstrates
+
+| Area                     | Implementation                                                                                    | Where to inspect                                                                                                             |
+| ------------------------ | ------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| Product UI               | Responsive onboarding, avatar selection, quiz editor, lobby, timed questions and podium standings | [React components](web/src/components)                                                                                       |
+| Identity and permissions | Teacher/student accounts; anonymous guest sessions; hosting checks on the server                  | [Authentication contract](docs/auth.md), [account code](internal/accounts), [HTTP authorization](internal/transport/auth.go) |
+| Real-time interaction    | WebSocket snapshots, command acknowledgements, reconnects and newer-tab ownership                 | [Browser connection lifecycle](web/src/useRoom.ts), [server transport](internal/transport/server.go)                         |
+| Durable scoring          | Row-locked transactions; accepted-answer ledger; retry-safe submissions                           | [Storage](internal/storage/storage.go), [integration tests](internal/transport/integration_test.go)                          |
+| Game rules               | Server-owned 10-second deadlines, 2-second reveals, 100 points per correct answer, tied ranks     | [Gameplay](internal/gameplay), [scoring](internal/scoring)                                                                   |
+| Repeatable delivery      | Versioned migrations, container setup, browser tests and a protocol load harness                  | [Migrations](migrations), [Compose](compose.yaml), [tests](web/tests), [load client](cmd/loadtest)                           |
+
+## Application walkthrough
+
+These are captures of the actual application, with browser chrome excluded. Click any image for the full-resolution file. The expanded views cover the main workflow; additional account, mobile and recovery states are grouped below.
+
+### 1. Arrive, register and create a quiz
+
+| Home                                                                                      | Teacher or student signup                                                              |
+| ----------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| ![Landing page with host, join and solo entry points](docs/media/screenshots/01-home.png) | ![Account signup with teacher and student roles](docs/media/screenshots/02-signup.png) |
+
+| Ready-made trivia                                                                             | Custom quiz editor                                                                                                                    |
+| --------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| ![Preset setup with category and length controls](docs/media/screenshots/04-preset-setup.png) | ![Custom questions with four answers, correct-answer selection and browser-local saving](docs/media/screenshots/05-custom-editor.png) |
+
+Custom quizzes can be reordered, duplicated and explicitly saved in the browser. **Save a copy** uses local storage; it does not sync quizzes to the account. Teacher role selection is self-declared, not verified by an institution.
+
+### 2. Join a room and bring the group together
+
+| Guest identity and room code                                                          | Host view: 12 players ready                                                                             |
+| ------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| ![Guest chooses a name and avatar before joining](docs/media/screenshots/07-join.png) | ![Teacher lobby showing twelve players and the start control](docs/media/screenshots/09-host-lobby.png) |
+
+The host controls the start. Joining does not extend the lobby's 10-minute expiry. The teacher can host without answering; all 12 players take part in the captured round.
+
+### 3. Answer, learn and see the standings
+
+| Live question                                                                                    | Answer feedback                                                                                         |
+| ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------- |
+| ![Four-option question with server-controlled countdown](docs/media/screenshots/10-question.png) | ![Correct answer highlighted after a committed submission](docs/media/screenshots/12-answer-reveal.png) |
+
+![Final leaderboard for the twelve-player room](docs/media/screenshots/13-leaderboard.png)
+
+Each player receives the same questions in a different order. The server reveals the answer after submission or timeout. The final leaderboard includes every player and preserves tied competition ranks.
+
+### 4. Play again or go solo
+
+| Opt into the next round                                                                                  | Personal solo result                                                               |
+| -------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| ![Player opts into another quiz while waiting for the host](docs/media/screenshots/15-replay-opt-in.png) | ![Solo score and another-round action](docs/media/screenshots/24-solo-results.png) |
+
+<details>
+<summary><strong>Account, identity and mobile screens</strong></summary>
+
+| State               | Screenshot                                                                                                   |
+| ------------------- | ------------------------------------------------------------------------------------------------------------ |
+| Teacher account     | ![Teacher account details and actions](docs/media/screenshots/03-account.png)                                |
+| Sign in             | ![Sign-in form](docs/media/screenshots/22-login.png)                                                         |
+| Avatar gallery      | ![Full avatar selection dialog](docs/media/screenshots/06-avatar-picker.png)                                 |
+| Solo setup          | ![Solo category and length selection](docs/media/screenshots/23-solo-setup.png)                              |
+| Mobile home (390px) | <img src="docs/media/screenshots/29-mobile-home.png" width="300" alt="Home page at a mobile viewport">       |
+| Mobile join (390px) | <img src="docs/media/screenshots/30-mobile-join.png" width="300" alt="Guest join page at a mobile viewport"> |
+
+</details>
+
+<details>
+<summary><strong>Answer, host, replay and recovery states</strong></summary>
+
+| State                   | Screenshot                                                                                                      |
+| ----------------------- | --------------------------------------------------------------------------------------------------------------- |
+| Selected answer         | ![Selected option before submission](docs/media/screenshots/11-selected-answer.png)                             |
+| Incorrect answer reveal | ![Correct answer shown after an incorrect selection](docs/media/screenshots/19-incorrect-reveal.png)            |
+| Urgent timer            | ![Countdown near the server deadline](docs/media/screenshots/20-timer-urgent.png)                               |
+| Timeout reveal          | ![Answer reveal after no answer was submitted](docs/media/screenshots/21-timeout-reveal.png)                    |
+| Host watches progress   | ![Host-only progress while players answer](docs/media/screenshots/18-host-live-progress.png)                    |
+| Host final standings    | ![Results shown to the teacher](docs/media/screenshots/14-host-results.png)                                     |
+| Host preparing replay   | ![Player notice while host configures the next round](docs/media/screenshots/16-host-preparing.png)             |
+| Next lobby              | ![Player enrolled in the next lobby](docs/media/screenshots/17-next-lobby.png)                                  |
+| Unknown room            | ![Server error for a room code that does not exist](docs/media/screenshots/25-room-not-found.png)               |
+| Invalid credentials     | ![Sign-in error from the authentication endpoint](docs/media/screenshots/26-login-error.png)                    |
+| Student hosting denied  | ![Student account redirected away from teacher-only hosting](docs/media/screenshots/27-student-permissions.png) |
+| Newer-tab takeover      | ![Older tab yields control to the newer session](docs/media/screenshots/28-tab-takeover.png)                    |
+| Connection recovery     | ![Reconnecting notice with the room preserved](docs/media/screenshots/32-reconnecting.png)                      |
+| Expired lobby           | ![Server expires an isolated lobby fixture](docs/media/screenshots/33-expired-lobby.png)                        |
+| Browser save failure    | ![Editor retained after local storage rejects a save](docs/media/screenshots/34-save-failure.png)               |
+| Initial loading         | ![Loading while the initial catalog request is pending](docs/media/screenshots/35-loading.png)                  |
+
+The recovery images use isolated fixtures; see [capture notes](docs/demo/README.md) for how network loss, expiry and storage failure are triggered.
+
+</details>
+
+## Backend you can verify
+
+The UI runs against a modular Go server. PostgreSQL is the source of truth for room state and accepted answers. Redis provides disposable coordination and caching; losing Redis does not erase committed points.
+
+| Evidence                                                                                      | What it establishes                                                                                              |
+| --------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| [Database query output](docs/evidence/database.txt) and [read-only SQL](docs/demo/verify.sql) | The demonstrated room's player count, answer records, timeouts and per-player scores                             |
+| [Guest-client receipts](docs/evidence/demo-clients.json)                                      | Eleven separate protocol clients received answer acknowledgements and a twelve-player final leaderboard          |
+| [Validation record](docs/evidence/validation.md)                                              | Commands and results for Go race tests, PostgreSQL/Redis integration tests, frontend build and browser workflows |
+| [Reproducible capture](docs/demo/capture.cjs)                                                 | Real signup, room creation, guest joining, answers, results, replay and solo navigation                          |
+
+![Backend verification from the recorded room](docs/media/screenshots/31-backend-evidence.png)
+
+To follow an answer through the code: [the browser sends a command](web/src/useRoom.ts), [Go checks identity and game state](internal/transport/server.go), [storage commits the answer and room update together](internal/storage/storage.go), and the server publishes the updated view. Accepted-answer uniqueness prevents a retried submission from scoring twice. Correct answers are excluded from the live question view until the player's submission or timeout.
 
 ## Run locally
 
-Teacher and student accounts are available through **Create an account** on the homepage. Only signed-in teachers can create and host multiplayer quizzes; students and guests can join, and solo play remains open. See [account authentication](docs/auth.md) for the API contract, session handling, and public-deployment prerequisites. For load testing, supply an existing teacher's `QUIZ_TEACHER_EMAIL` and `QUIZ_TEACHER_PASSWORD` as environment variables.
-
-Prerequisites: Docker Compose v2 and OpenSSL. Development outside containers also needs Go 1.27.3, Node 26.8.2 (or a compatible current Node), and npm.
+Prerequisites: Docker Compose v2 and OpenSSL.
 
 ```sh
 make up
 ```
 
-Open **https://localhost:8443** for Docker Compose. This creates a local self-signed certificate; accept its localhost browser exception or replace it with a locally trusted certificate. For local development without certificate warnings, use **http://localhost:8443** with `make dev`, or **http://localhost:5173** with Vite as described below. HTTPS keeps Secure, HttpOnly guest cookies; explicit local HTTP mode uses a separate HttpOnly development cookie and refuses non-loopback bind addresses.
+Open **https://localhost:8443** and accept the local self-signed certificate. Create a teacher account to host, or join as a guest. No external API or paid service is required.
 
-`make up` builds the UI/backend, starts PostgreSQL 18.6 and Redis 8.10.3, and applies versioned SQL migrations automatically. PostgreSQL data lives in the `postgres-data` Compose volume. `make down` stops containers and preserves that volume. No external API, account, or paid service is needed. The published ports bind only to loopback. The Compose app runs as root solely to read the owner-only, bind-mounted development TLS key; the image's default user is unprivileged.
-
-## Develop with hot reload
+For hot reload, native dependencies, configuration and troubleshooting, see [development and operations](docs/development.md). The [product specification](SPEC.md) and [authentication contract](docs/auth.md) describe the behavior in more detail.
 
 ```sh
-make infra
-npm --prefix web ci
-make dev
+make test         # Go race tests and TypeScript checks
+make integration  # Isolated PostgreSQL schemas and Redis integration
+make e2e          # Browser workflows; requires a running app and Chromium
 ```
 
-In a second terminal:
+## Scope and limitations
 
-```sh
-npm --prefix web run dev
-```
+This is a locally validated portfolio project. The 12-player recording demonstrates the application workflow; it is not a production capacity benchmark. The separate [load harness](cmd/loadtest) supports larger synthetic runs.
 
-Use **http://localhost:5173**. Vite proxies HTTP and WebSocket API traffic to Go on port 8443. No certificate is needed. To run the built UI directly at **http://localhost:8443**:
-
-```sh
-npm --prefix web run build
-make dev
-```
-
-`make dev` sets `LOCAL_HTTP=true` and binds to `127.0.0.1:8443`. Running `go run ./cmd/server` without that flag keeps HTTPS; generate certificates first with `make certs`. Switching protocols starts a separate guest identity, so rejoin a room if necessary.
-
-Migrations in `migrations/` run at backend startup, under an advisory lock and a transaction. Do not modify an already-applied migration; add another numbered file. Development trivia is embedded, so no seed command is needed. Review the seed questions for accuracy and ambiguity before public use.
-
-### Use a Tailscale IP over HTTP
-
-Start the backend with the tailnet address in its allowed origins:
-
-```sh
-TAILSCALE_IP="$(tailscale ip -4)"
-APP_ORIGIN="http://localhost:8443,http://localhost:5173,http://127.0.0.1:8443,http://127.0.0.1:5173,http://${TAILSCALE_IP}:5174" make dev
-```
-
-In another terminal, bind Vite directly to the Tailscale interface, without a Tailscale Serve web handler:
-
-```sh
-cd web
-npm exec -- vite --host "$(tailscale ip -4)" --port 5174
-```
-
-Open `http://<your-tailscale-ip>:5174` on a device connected to your tailnet. Vite handles HTTP and WebSockets directly on that interface; Go, PostgreSQL, and Redis remain on loopback. This does not publish the site to the public internet or bind Vite to your LAN interface. The built app is still available locally at `http://localhost:8443`. If you previously configured the port 5173 forward, remove only that forward with `tailscale serve --tcp=5173 off`; do not reset unrelated Tailscale Serve services.
-
-For a phone on your LAN, supply a certificate trusted by that device with the appropriate hostname/IP SAN, bind Go to the LAN interface, and set `APP_ORIGIN` to the exact HTTPS address used by the phone. This setup has not been validated on a physical phone. Mobile Chromium viewport checks have been run. Never reuse the sample database credentials for an exposed deployment.
-
-## Verify
-
-```sh
-make test
-make integration
-make e2e
-make load
-```
-
-`make test` runs Go tests with the race detector plus TypeScript checks. Database integration tests skip unless `TEST_DATABASE_URL` is set; `make integration` supplies the local Compose defaults and creates/drops isolated test schemas. It never clears an existing application's schema. PostgreSQL must be reachable; Redis-loss behavior is covered independently.
-
-Browser tests require the running built app (`make dev` for HTTP) and Playwright Chromium. Set `APP_URL=https://localhost:8443` to test an HTTPS server instead:
-
-```sh
-npm --prefix web exec playwright install chromium
-npm --prefix web run test:e2e
-```
-
-These tests use isolated browser profiles. Failures retain traces under `.local/playwright-results`. To test another local address, set `APP_URL`.
-
-Load testing creates a real room and 150 secure-cookie guests, opens their WebSockets, answers five questions per player, retries every answer, verifies committed receipts against every final score, and waits for all final leaderboards:
-
-```sh
-go run ./cmd/loadtest -players 150 -output .local/load-150.json
-```
-
-The local load client accepts the self-signed application certificate only for localhost/127.0.0.1. For a trusted certificate, pass `-insecure-local=false`. Set `-url` and `-timeout` as needed. The report includes acknowledgement latency percentiles. This is a single-room synthetic load test, not a production capacity guarantee.
-
-## Configuration
-
-All variables configure the Go server; defaults support the native development workflow.
-
-| Variable            | Default                                                                | Purpose                                                               |
-| ------------------- | ---------------------------------------------------------------------- | --------------------------------------------------------------------- |
-| `DATABASE_URL`      | `postgres://quiz:local-quiz-only@localhost:55432/quiz?sslmode=disable` | Local development PostgreSQL; durable authority                       |
-| `REDIS_URL`         | `redis://localhost:56379/0`                                            | Disposable presence, internal views, pub/sub                          |
-| `APP_ORIGIN`        | localhost and 127.0.0.1 on ports 8443 and 5173; HTTPS unless `LOCAL_HTTP=true` | Exact allowed browser origins, comma separated                        |
-| `LISTEN_ADDR`       | `127.0.0.1:8443`                                                       | Bind address; Compose overrides to `:8443` inside its container |
-| `LOCAL_HTTP`        | unset (`make dev` sets `true`)                                        | Enable plain HTTP with a separate development cookie; numeric loopback bind only |
-| `TLS_CERT`          | `.local/certs/localhost.pem`                                           | HTTPS certificate                                                     |
-| `TLS_KEY`           | `.local/certs/localhost-key.pem`                                       | HTTPS private key                                                     |
-| `STATIC_DIR`        | `web/dist`                                                             | Compiled React app                                                    |
-| `MIGRATIONS_DIR`    | `migrations`                                                           | SQL migrations                                                        |
-| `TEST_DATABASE_URL` | unset                                                                  | Enables isolated PostgreSQL integration tests                         |
-| `TEST_REDIS_URL`    | `redis://localhost:56379/0`                                            | Integration-test Redis                                                |
-
-The displayed sample password is a local development credential. Real credentials belong in environment/secret files outside version control. `.env` is ignored, but Go does not automatically load it; export variables in your shell or provide them through Compose.
-
-## Work with the code
-
-- `internal/content`, `rooms`, `gameplay`, `scoring`, `sessions`: core rules and identities.
-- `internal/storage`: migrations, row-locked transactions, answer uniqueness, cache.
-- `internal/transport`: HTTP/WebSocket protocol, permissions, recovery worker.
-- `web/src/components`: home, setup/editor, join, room/game/results views.
-- `cmd/loadtest`: reproducible single-room protocol load harness.
-
-No correct answers are exposed before an individual submission/timeout. Accepted answers and aggregate progress commit together. Reconnects keep deadlines; opening a new tab transfers control away from the old one. Redis loss cannot erase earned points.
-
-Custom quizzes save only when you choose **Save a copy**. Open/Delete operate in that browser, with no account sync. Replay preserves identities; players opt into the next round and newcomers can join its lobby. Results stay visible until the host creates the next lobby, whose fixed 10-minute start deadline begins then. Competition ranks use 1, 1, 3 as a reversible engineering default.
-
-Room history is currently a row-locked JSONB aggregate plus a relational accepted-answer ledger. It is deliberately simple and measured locally, but large custom quizzes, long histories, multiple simultaneous rooms, and deployment topology require additional validation. Automated durable data deletion, session rotation/revocation controls, final content review, additional timer choices, formal accessibility targets, and real-device/cross-browser certification remain open. There is no login or public deployment.
+Room state currently uses a row-locked JSONB aggregate plus a relational answer ledger. Production deployment, automatic durable-data deletion, session rotation/revocation controls, formal accessibility targets, content review and physical-device/cross-browser certification need further work. Mobile images show Chromium viewport checks, not physical-phone certification.
