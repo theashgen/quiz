@@ -163,3 +163,63 @@ test("auth forms fit mobile and desktop and support keyboard role selection", as
         ).toBeInViewport({ ratio: 1 });
     }
 });
+
+test("account details have aligned rows with thin horizontal dividers", async ({
+    page,
+    baseURL,
+}) => {
+    const response = await page.request.post("/api/auth/signup", {
+        headers: { Origin: new URL(baseURL!).origin },
+        data: {
+            name: "Curious Student",
+            email: `student-${randomUUID()}@example.test`,
+            password: "A curious student passphrase",
+            role: "student",
+        },
+    });
+    expect(response.status()).toBe(201);
+    await page.goto("/create");
+    await expect(page.getByRole("status")).toContainText(
+        "Only teachers can create quizzes",
+    );
+
+    const details = page.locator(".account-details");
+    const rows = details.locator(":scope > div");
+    await expect(rows).toHaveCount(3);
+    for (const width of [1440, 390, 320]) {
+        await page.setViewportSize({ width, height: 900 });
+        await expect(details).toHaveCSS("border-top-width", "1px");
+        await expect(details).toHaveCSS(
+            "border-top-color",
+            "rgb(217, 213, 204)",
+        );
+        for (const side of ["left", "right", "bottom"]) {
+            await expect(details).toHaveCSS(`border-${side}-width`, "0px");
+        }
+        const bounds = await details.boundingBox();
+        let valueColumn: number | undefined;
+        for (const row of await rows.all()) {
+            await expect(row).toHaveCSS("border-bottom-width", "1px");
+            await expect(row).toHaveCSS(
+                "border-bottom-color",
+                "rgb(217, 213, 204)",
+            );
+            for (const side of ["left", "right", "top"]) {
+                await expect(row).toHaveCSS(`border-${side}-width`, "0px");
+            }
+            const rowBounds = await row.boundingBox();
+            const label = await row.locator("dt").boundingBox();
+            const value = await row.locator("dd").boundingBox();
+            expect(rowBounds!.x).toBeCloseTo(bounds!.x, 0);
+            expect(rowBounds!.width).toBeCloseTo(bounds!.width, 0);
+            expect(label!.x).toBeCloseTo(bounds!.x, 0);
+            valueColumn ??= value!.x;
+            expect(value!.x).toBeCloseTo(valueColumn, 0);
+        }
+        expect(
+            await page.evaluate(
+                () => document.documentElement.scrollWidth <= innerWidth,
+            ),
+        ).toBeTruthy();
+    }
+});

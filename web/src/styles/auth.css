@@ -141,7 +141,7 @@
     @apply border-t-[1px] border-solid border-t-line mb-6;
 }
 .account-details > div {
-    @apply grid grid-cols-[140px_minmax(0,_1fr)] gap-5 py-5 px-0 border-b-[1px] border-solid border-b-line;
+    @apply grid grid-cols-[140px_minmax(0,_1fr)] items-baseline gap-5 py-5 px-0 border-b-[1px] border-solid border-b-line;
 }
 .account-details dt {
     @apply text-muted text-[12px];

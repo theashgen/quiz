@@ -2,8 +2,11 @@
     @apply font-sans text-ink bg-canvas bg-dot-grid bg-size-[var(--grid-spacing)_var(--grid-spacing)] bg-position-[12px_12px] [font-synthesis:none];
 }
 
-* {
-    @apply box-border;
+/* Side-specific borders need zero widths on the other edges without Preflight. */
+*,
+::before,
+::after {
+    @apply box-border border-0 border-solid;
 }
 
 html {
