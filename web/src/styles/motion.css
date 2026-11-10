@@ -1,5 +1,5 @@
 .hero-line {
-    display: inline-block;
+    @apply inline-block;
 }
 
 @keyframes blur-reveal {
@@ -31,72 +31,59 @@
 @media (prefers-reduced-motion: no-preference) {
     :is(
         .primary,
-        .outline,
+        .button-outline,
         .avatar-carousel-arrow,
         .avatars button,
         .avatar-library button
     ) {
-        transition:
-            background 160ms,
-            border-color 160ms,
-            box-shadow 160ms,
-            transform 160ms,
-            scale 160ms;
+        @apply [transition:background_160ms,_border-color_160ms,_box-shadow_160ms,_transform_160ms,_scale_160ms];
     }
 
     :is(
             .primary,
-            .outline,
+            .button-outline,
             .avatar-carousel-arrow,
             .avatars button,
             .avatar-library button
         ):active:not(:disabled) {
-        scale: 0.97;
+        @apply [scale:0.97];
     }
 
     .primary:active:not(:disabled) {
-        transform: translateY(1px);
-        box-shadow: 0 1px 0 var(--ink);
+        @apply transform-[translateY(1px)] shadow-[0_1px_0_var(--color-ink)];
     }
 
     .avatar-carousel-face .memoji-avatar {
-        animation: avatar-switch 240ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+        @apply [animation:avatar-switch_240ms_cubic-bezier(0.2,_0.8,_0.2,_1)_both];
     }
 
     .podium-player,
     .ranked-players > li {
-        transition:
-            translate 180ms,
-            box-shadow 180ms;
+        @apply [transition:translate_180ms,_box-shadow_180ms];
     }
 
     input:not([type="checkbox"]):not([type="radio"]),
     textarea {
-        transition:
-            border-color 160ms,
-            box-shadow 160ms;
+        @apply [transition:border-color_160ms,_box-shadow_160ms];
     }
 
     :is(input, textarea):focus {
-        border-color: #8c68b3;
-        box-shadow: 0 0 0 4px #8c68b312;
+        @apply border-[#8c68b3] shadow-[0_0_0_4px_#8c68b312];
     }
 }
 
 @media (prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine) {
     .compact-podium > .podium-player:hover {
-        translate: 0 -3px;
-        box-shadow: 0 6px 16px #65537912;
+        @apply [translate:0_-3px] shadow-[0_6px_16px_#65537912];
     }
 
     .ranked-players > li:hover {
-        translate: 2px 0;
-        box-shadow: 0 3px 10px #6553790d;
+        @apply [translate:2px_0] shadow-[0_3px_10px_#6553790d];
     }
 
     .avatars button:hover,
     .avatar-library button:hover {
-        scale: 1.04;
+        @apply [scale:1.04];
     }
 }
 
@@ -111,72 +98,54 @@
             .hero-spark,
             .home-entry
         ) {
-        animation: blur-reveal var(--enter-duration, 800ms)
-            cubic-bezier(0.16, 1, 0.3, 1) var(--enter-delay, 0ms) backwards;
+        @apply [animation:blur-reveal_var(--enter-duration,_800ms)_cubic-bezier(0.16,_1,_0.3,_1)_var(--enter-delay,_0ms)_backwards];
     }
 
     .hero-kicker {
-        --enter-delay: 80ms;
-        --enter-y: 14px;
-        --enter-blur: 6px;
-        --enter-scale: 1;
+        @apply [--enter-delay:80ms] [--enter-y:14px] [--enter-blur:6px] [--enter-scale:1];
     }
 
     .hero-line {
-        --enter-y: 32px;
-        --enter-blur: 12px;
-        --enter-duration: 950ms;
+        @apply [--enter-y:32px] [--enter-blur:12px] [--enter-duration:950ms];
     }
 
     .hero-line-first {
-        --enter-delay: 160ms;
+        @apply [--enter-delay:160ms];
     }
 
     .hero-line-second {
-        --enter-delay: 280ms;
+        @apply [--enter-delay:280ms];
     }
 
     .hero-perks {
-        --enter-delay: 400ms;
-        --enter-y: 16px;
-        --enter-blur: 6px;
-        --enter-scale: 1;
+        @apply [--enter-delay:400ms] [--enter-y:16px] [--enter-blur:6px] [--enter-scale:1];
     }
 
     .hero-mascot {
-        --enter-delay: 440ms;
-        --enter-x: -14px;
-        --enter-y: 20px;
-        --enter-scale: 0.9;
+        @apply [--enter-delay:440ms] [--enter-x:-14px] [--enter-y:20px] [--enter-scale:0.9];
     }
 
     .hero-sticker {
-        --enter-delay: 520ms;
-        --enter-x: 10px;
-        --enter-y: 14px;
-        --enter-scale: 0.95;
+        @apply [--enter-delay:520ms] [--enter-x:10px] [--enter-y:14px] [--enter-scale:0.95];
     }
 
     .hero-spark {
-        --enter-delay: 580ms;
-        --enter-y: 0px;
-        --enter-scale: 0.65;
+        @apply [--enter-delay:580ms] [--enter-y:0px] [--enter-scale:0.65];
     }
 
     .home-entry {
-        --enter-y: 20px;
-        --enter-scale: 1;
+        @apply [--enter-y:20px] [--enter-scale:1];
     }
 
     .host-action {
-        --enter-delay: 480ms;
+        @apply [--enter-delay:480ms];
     }
 
     .join-flow {
-        --enter-delay: 600ms;
+        @apply [--enter-delay:600ms];
     }
 
     .solo-action-row {
-        --enter-delay: 720ms;
+        @apply [--enter-delay:720ms];
     }
 }

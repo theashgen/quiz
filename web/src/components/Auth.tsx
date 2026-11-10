@@ -2,7 +2,6 @@ import { useState, type FormEvent } from "react";
 import { api, type Account } from "../types";
 import { Avatar } from "./Avatar";
 import { ErrorMessage } from "./Common";
-import "../auth.css";
 
 export function AuthPage({
     mode,
@@ -225,7 +224,7 @@ export function AuthPage({
                         )}
                         {error && <ErrorMessage>{error}</ErrorMessage>}
                         <button
-                            className="primary full auth-submit"
+                            className="primary w-full auth-submit"
                             disabled={busy}
                         >
                             {busy
@@ -287,7 +286,7 @@ export function AccountMenu({
                         Sign in
                     </button>
                     <button
-                        className="outline account-signup"
+                        className="button-outline account-signup"
                         onClick={() => go("/signup")}
                     >
                         Create an account ↗
@@ -354,7 +353,7 @@ export function AccountPage({
                         Create a quiz →
                     </button>
                 )}
-                <button className="outline" onClick={() => go("/join")}>
+                <button className="button-outline" onClick={() => go("/join")}>
                     Join a room ↗
                 </button>
                 <button className="text-button" onClick={() => go("/solo")}>

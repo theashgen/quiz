@@ -1,0 +1,809 @@
+.footer-brand {
+    @apply flex items-center gap-[15px] text-ink text-[27px] font-black tracking-[-1.6px];
+}
+
+.footer-brand > span {
+    @apply text-[10px] font-normal tracking-normal text-muted;
+}
+
+.eyebrow {
+    @apply text-[10px] tracking-[1.6px] font-[750] flex items-center gap-2 mb-5;
+}
+
+.primary,
+.button-outline {
+    @apply min-h-[47px] border-[1.5px] border-solid border-ink rounded-[10px] py-[13px] px-[22px] text-[12px] font-bold inline-flex items-center justify-center gap-[22px] [transition:background_150ms,_transform_150ms,_box-shadow_150ms];
+}
+
+.primary {
+    @apply bg-ink text-paper shadow-[0_3px_0_var(--color-ink)];
+}
+
+.primary:hover:not(:disabled) {
+    @apply bg-[#393532] transform-[translateY(-2px)] shadow-[0_5px_0_var(--color-ink)];
+}
+
+.button-outline {
+    @apply bg-paper;
+}
+
+.button-outline:hover:not(:disabled) {
+    @apply bg-lilac-light;
+}
+
+.text-button {
+    @apply text-[12px] py-[9px] px-0;
+}
+
+.text-button:hover {
+    @apply underline underline-offset-[4px];
+}
+
+.panel {
+    @apply bg-paper border-[1.5px] border-solid border-ink rounded-[20px] p-[30px];
+}
+
+.narrow {
+    @apply max-w-130 my-[50px] mx-auto;
+}
+
+.panel.narrow {
+    @apply mt-[55px];
+}
+
+.back {
+    @apply mb-7 block text-muted;
+}
+
+.page-heading {
+    @apply mb-8;
+}
+
+.page-heading h1 {
+    @apply text-[clamp(2.3rem,_4vw,_3rem)];
+}
+
+.page-heading > p {
+    @apply text-muted text-[14px];
+}
+
+.setup-page,
+.room-page,
+.results-page {
+    @apply pt-[35px];
+}
+
+.setup-page > .page-heading {
+    @apply max-w-200;
+}
+
+.setup-page .eyebrow {
+    @apply mb-3;
+}
+
+.source-tabs {
+    @apply grid grid-cols-[1fr_1fr] gap-4 p-0 border-0 mt-0 mx-0 mb-[22px] max-w-[750px];
+}
+
+.source-tabs button {
+    @apply flex flex-col text-left border-[1px] border-solid border-line rounded-[12px] p-[19px] bg-paper gap-[7px];
+}
+
+.source-tabs button.selected {
+    @apply bg-lilac-light border-ink shadow-[inset_0_0_0_1px_var(--color-ink)];
+}
+
+.source-tabs strong {
+    @apply text-[14px];
+}
+
+.source-tabs span {
+    @apply text-[12px] text-muted;
+}
+
+.setup-grid {
+    @apply grid grid-cols-[minmax(0,_1fr)_330px] gap-6 items-start;
+}
+
+.setup-main h2,
+.setup-aside h2 {
+    @apply text-[27px];
+}
+
+.muted {
+    @apply text-muted text-[13px];
+}
+
+.categories {
+    @apply grid grid-cols-[1fr_1fr] gap-3 mt-6 mx-0 mb-[30px];
+}
+
+.category {
+    @apply p-[19px] border-[1px] border-solid border-line rounded-[11px] relative grid gap-[7px] cursor-pointer min-h-[121px];
+}
+
+.category > input {
+    @apply absolute top-[14px] right-[14px] w-4 h-4;
+}
+
+.category > span {
+    @apply text-[24px];
+}
+
+.category > strong {
+    @apply text-[13px];
+}
+
+.category > small {
+    @apply text-[10px] text-muted;
+}
+
+.selected.category {
+    @apply bg-lilac-light border-ink;
+}
+
+.identity {
+    @apply my-[25px] mx-0;
+}
+
+label {
+    @apply block text-[12px] font-semibold my-4 mx-0;
+}
+
+input:not([type="checkbox"]):not([type="radio"]),
+textarea {
+    @apply block w-full border-[1px] border-solid border-[#aaa49b] rounded-[8px] bg-paper min-h-11 py-[11px] px-[13px] mt-2 text-ink font-normal;
+}
+
+textarea {
+    @apply min-h-[86px] resize-y;
+}
+
+fieldset {
+    @apply border-0 p-0 my-5 mx-0;
+}
+
+legend {
+    @apply text-[12px] font-semibold mt-0 mx-0 mb-3;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+    @apply accent-[#7450b4];
+}
+
+.avatars {
+    @apply flex gap-[6px] flex-wrap;
+}
+
+.avatars button {
+    @apply text-[24px] p-[6px] min-w-10 border-[1px] border-solid border-line rounded-[10px];
+}
+
+.avatars button.selected {
+    @apply bg-lilac-light border-ink;
+}
+
+.segmented {
+    @apply flex gap-3;
+}
+
+.segmented button {
+    @apply flex flex-col flex-1 gap-1 border-[1px] border-solid border-line rounded-[9px] text-[24px] p-[13px];
+}
+
+.segmented button.selected {
+    @apply bg-lilac-light border-ink;
+}
+
+.segmented small {
+    @apply text-[10px];
+}
+
+.fine-print {
+    @apply text-[10px] text-muted leading-[1.65] mt-[15px] mx-0 mb-0;
+}
+
+.setup-aside > .eyebrow {
+    @apply mt-[5px];
+}
+
+.create-main {
+    @apply min-h-[calc(100dvh_-_64px)];
+}
+
+.create-main + footer {
+    @apply mt-0 pt-4 pb-4;
+}
+
+.create-page {
+    @apply pt-5 pb-4;
+}
+
+.create-page > .back {
+    @apply mb-2;
+}
+
+.create-page > .page-heading {
+    @apply mb-4;
+}
+
+.create-page .source-tabs {
+    @apply mb-4;
+}
+
+.create-page .source-tabs button {
+    @apply py-3 px-4;
+}
+
+.create-page .panel {
+    @apply p-6;
+}
+
+.create-page .categories {
+    @apply my-4 mx-0;
+}
+
+.create-page .category {
+    @apply m-0 p-[14px] min-h-25;
+}
+
+.create-page .identity {
+    @apply my-4 mx-0;
+}
+
+.create-page .identity label,
+.create-page .identity fieldset {
+    @apply my-3 mx-0;
+}
+
+.create-page .checkbox {
+    @apply mt-4 mx-0 mb-5;
+}
+
+.create-page .timer-setting {
+    @apply pt-2;
+}
+
+@media (min-width: 741px) and (min-height: 700px) {
+    .create-page .custom-editor {
+        @apply relative max-h-[calc(100dvh_-_230px)] overflow-y-auto [scrollbar-gutter:stable];
+    }
+}
+
+@media (min-width: 741px) and (max-height: 800px) {
+    .create-main {
+        @apply min-h-[calc(100dvh_-_48px)];
+    }
+    .create-main + footer {
+        @apply pt-2 pb-2;
+    }
+    .create-page {
+        @apply pt-3 pb-3;
+    }
+    .create-page > .back {
+        @apply mb-1;
+    }
+    .create-page > .page-heading,
+    .create-page .source-tabs {
+        @apply mb-3;
+    }
+    .create-page .source-tabs button {
+        @apply pt-[10px] pb-[10px] gap-1;
+    }
+    .create-page .panel {
+        @apply p-5;
+    }
+    .create-page .identity {
+        @apply my-3 mx-0;
+    }
+    .create-page .checkbox {
+        @apply mt-3 mx-0 mb-4;
+    }
+    .create-page .fine-print {
+        @apply mt-[10px];
+    }
+}
+
+.timer-setting {
+    @apply flex items-center gap-3 pt-[17px] px-0 pb-[5px];
+}
+
+.timer-setting > span {
+    @apply text-[29px];
+}
+
+.timer-setting strong {
+    @apply text-[12px] block;
+}
+
+.timer-setting small,
+.checkbox small {
+    @apply text-[10px] text-muted block mt-[6px];
+}
+
+.checkbox {
+    @apply flex items-start gap-[10px] font-medium mt-[22px] mx-0 mb-[30px];
+}
+
+.checkbox input {
+    @apply m-0;
+}
+
+.notice {
+    @apply py-[14px] px-[17px] rounded-[9px] bg-lilac-light border-[1px] border-solid border-[#c5acf3] text-[12px] leading-[1.7] my-[15px] mx-0 text-ink;
+}
+
+.saved-quizzes {
+    @apply p-5 bg-[#f3eee6] rounded-[12px] my-[22px] mx-0;
+}
+
+.saved-quizzes h3 {
+    @apply text-[13px];
+}
+
+.saved-row {
+    @apply flex items-center gap-3 border-b-[1px] border-solid border-b-line text-[12px] py-[6px] px-0;
+}
+
+.saved-row > span {
+    @apply flex-1 [overflow-wrap:anywhere];
+}
+
+.save-controls {
+    @apply flex items-end gap-3;
+}
+
+.save-controls label {
+    @apply flex-1 mb-0 min-w-0;
+}
+
+.editor-question {
+    @apply my-[26px] mx-0 pt-5 border-t-[1px] border-solid border-t-line;
+}
+
+.section-row {
+    @apply flex justify-between items-center gap-[10px];
+}
+
+.section-row h2,
+.section-row h3 {
+    @apply m-0;
+}
+
+.editor-actions {
+    @apply flex gap-[5px];
+}
+
+.editor-actions button {
+    @apply border-[1px] border-solid border-line rounded-[6px] py-[5px] px-2 text-[11px];
+}
+
+.editor-option {
+    @apply flex items-center gap-[10px] my-2 mx-0;
+}
+
+.editor-option input:not([type="radio"]) {
+    @apply m-0;
+}
+
+.code-input {
+    @apply text-[30px]! font-[family-name:ui-monospace,_monospace] tracking-[8px] uppercase;
+}
+
+.centered {
+    @apply text-center;
+}
+
+.centered .eyebrow {
+    @apply justify-center;
+}
+
+.room-code {
+    @apply inline-flex flex-col bg-yellow border-[1px] border-dashed border-ink rounded-[13px] py-5 px-[38px] text-[42px] font-[650] tracking-[8px] mt-[5px] mx-0 mb-2 font-[family-name:ui-monospace,_monospace] select-all;
+}
+
+.room-code small {
+    @apply text-[10px] tracking-normal font-[family-name:Inter,_sans-serif] mt-[9px] select-none;
+}
+
+.lobby-grid {
+    @apply grid grid-cols-[1fr_310px] gap-6 my-[35px] mx-0;
+}
+
+.pill {
+    @apply py-[7px] px-3 bg-lilac-light rounded-[30px] text-[10px] whitespace-nowrap;
+}
+
+.player-grid {
+    @apply grid grid-cols-[repeat(auto-fill,_minmax(140px,_1fr))] gap-3 mt-[25px] max-h-[490px] overflow-auto;
+}
+
+.player {
+    @apply py-[18px] px-[10px] text-center bg-[#f5f0e7] rounded-[10px] flex flex-col gap-2 [overflow-wrap:anywhere];
+}
+
+.player > span {
+    @apply text-[31px];
+}
+
+.player strong {
+    @apply text-[12px];
+}
+
+.player small {
+    @apply text-[9px] text-muted;
+}
+
+.lobby-aside {
+    @apply bg-lilac-light;
+}
+
+.lobby-aside p {
+    @apply text-[12px] text-muted;
+}
+
+.waiting {
+    @apply py-[15px] px-0 text-[12px] flex items-center gap-[7px];
+}
+
+.waiting > span {
+    @apply inline-block bg-[#3a7657] w-[7px] h-[7px] rounded-[50%];
+}
+
+.play-page {
+    @apply max-w-[850px] my-[45px] mx-auto;
+}
+
+.play-top {
+    @apply flex justify-between items-center;
+}
+
+.play-top .eyebrow {
+    @apply m-0;
+}
+
+.progress-track {
+    @apply h-1 bg-[#e1e6d6] rounded-[4px] mt-5 mx-0 mb-[26px] overflow-hidden;
+}
+
+.progress-track > div {
+    @apply bg-ink h-full [transition:width_0.2s];
+}
+
+.question-panel {
+    @apply p-[37px];
+}
+
+.question-panel > .section-row > .eyebrow {
+    @apply m-0;
+}
+
+.question-panel h1 {
+    @apply text-[clamp(1.6rem,_3.4vw,_2.4rem)] mt-[29px] mx-0 mb-8 leading-[1.3] tracking-[-0.025em] [overflow-wrap:anywhere];
+}
+
+.countdown {
+    @apply text-[25px] text-ink whitespace-nowrap;
+}
+
+.countdown small {
+    @apply text-[12px];
+}
+
+.urgent {
+    @apply text-[#ab593c];
+}
+
+.answer-options {
+    @apply grid grid-cols-[1fr_1fr] gap-[14px];
+}
+
+.answer-option {
+    @apply p-[18px] min-h-[82px] flex items-center gap-[14px] border-[1px] border-solid border-[#c7c1b8] rounded-[10px] text-left bg-paper text-[14px] leading-[1.5] [overflow-wrap:anywhere];
+}
+
+.answer-option > span:nth-child(2) {
+    @apply min-w-0 flex-1;
+}
+
+.answer-option:disabled {
+    @apply opacity-100;
+}
+
+.answer-option:disabled:not(.correct) {
+    @apply text-muted;
+}
+
+.answer-option.chosen {
+    @apply bg-lilac-light border-[#7450b4] shadow-[inset_0_0_0_1px_#7450b4];
+}
+
+.answer-option.correct {
+    @apply bg-mint border-[#327a55] shadow-[inset_0_0_0_1px_#327a55] text-ink;
+}
+
+.option-letter {
+    @apply border-[1px] border-solid border-[#c7c1b8] w-[30px] h-[30px] rounded-[7px] grid place-items-center text-[12px] shrink-0 bg-[#f3eee6];
+}
+
+.correct-mark {
+    @apply text-[20px];
+}
+
+.question-bottom {
+    @apply flex justify-between items-center mt-[30px] gap-4;
+}
+
+.question-bottom .muted {
+    @apply text-[11px];
+}
+
+.reveal-footer {
+    @apply pt-6 text-[13px] text-center [overflow-wrap:anywhere];
+}
+
+.reveal-footer small {
+    @apply block text-muted text-[11px] mt-[10px];
+}
+
+.results-page {
+    @apply max-w-[850px] m-auto;
+}
+
+.result-star {
+    @apply text-[62px] text-[#a9ba86] mt-[5px] mx-0 mb-5;
+}
+
+.big-score {
+    @apply text-[65px] font-[family-name:Georgia] tracking-[-0.04em] mt-0 mx-0 mb-4;
+}
+
+.big-score small {
+    @apply text-[25px] text-[#99a28d];
+}
+
+.results-page .page-heading > p {
+    @apply my-[10px] mx-0;
+}
+
+.leaderboard {
+    @apply max-w-[650px] my-[30px] mx-auto;
+}
+
+.leaderboard h2 {
+    @apply text-[25px];
+}
+
+.leaderboard ol {
+    @apply list-none p-0 mt-[25px] mx-0 mb-0;
+}
+
+.leaderboard li {
+    @apply flex items-center gap-[15px] py-4 px-3 border-b-[1px] border-solid border-b-line rounded-[8px];
+}
+
+.leaderboard li:last-child {
+    @apply border-0;
+}
+
+.leaderboard li.me {
+    @apply bg-[#eef3e2];
+}
+
+.rank {
+    @apply w-[25px] text-[18px] text-center;
+}
+
+.leader-avatar {
+    @apply text-[28px];
+}
+
+.leaderboard li > strong {
+    @apply flex-1 text-[13px] [overflow-wrap:anywhere] min-w-0;
+}
+
+.leaderboard small {
+    @apply text-[10px] text-muted font-normal;
+}
+
+.leaderboard li > span:last-child {
+    @apply text-[19px] whitespace-nowrap;
+}
+
+.replay-actions {
+    @apply text-center my-[35px] mx-0;
+}
+
+.replay-actions > button {
+    @apply m-[7px];
+}
+
+.replay-actions > p {
+    @apply text-[13px] text-muted;
+}
+
+.status-panel {
+    @apply text-center;
+}
+
+.status-symbol {
+    @apply text-[60px] block mb-[25px] text-[#7450b4];
+}
+
+.status-panel h1 {
+    @apply text-[32px];
+}
+
+.status-panel p {
+    @apply text-[14px] text-muted;
+}
+
+@media (max-width: 1000px) {
+    main,
+    footer {
+        @apply pl-7 pr-7;
+    }
+    .setup-grid {
+        @apply grid-cols-[minmax(0,_1fr)_290px];
+    }
+    .panel {
+        @apply p-[23px];
+    }
+    .lobby-grid {
+        @apply grid-cols-[minmax(0,_1fr)_275px];
+    }
+    .avatars {
+        @apply gap-[3px];
+    }
+    .avatars button {
+        @apply min-w-[35px] p-1;
+    }
+}
+
+@media (max-width: 740px) {
+    main {
+        @apply py-0 px-[18px];
+    }
+    footer {
+        @apply py-6 px-[18px] gap-[14px] flex-col items-start mt-[15px] text-[9px];
+    }
+    .footer-brand > span {
+        @apply text-[9px];
+    }
+    .setup-page,
+    .room-page,
+    .results-page {
+        @apply pt-7;
+    }
+    .setup-grid,
+    .lobby-grid {
+        @apply grid-cols-[minmax(0,_1fr)];
+    }
+    .setup-aside {
+        @apply static;
+    }
+    .source-tabs {
+        @apply gap-[10px];
+    }
+    .source-tabs button {
+        @apply p-[14px];
+    }
+    .source-tabs strong {
+        @apply text-[12px];
+    }
+    .source-tabs span {
+        @apply text-[10px];
+    }
+    .page-heading h1 {
+        @apply text-[35px];
+    }
+    .page-heading > p {
+        @apply text-[13px];
+    }
+    .narrow {
+        @apply my-[30px] mx-auto;
+    }
+    .categories {
+        @apply gap-[10px];
+    }
+    .category {
+        @apply p-[15px];
+    }
+    .category > strong {
+        @apply text-[12px];
+    }
+    .category > small {
+        @apply text-[9px];
+    }
+    .avatars {
+        @apply gap-2;
+    }
+    .avatars button {
+        @apply p-[6px] min-w-10;
+    }
+    .setup-main h2 {
+        @apply text-[25px];
+    }
+    .save-controls {
+        @apply flex-wrap;
+    }
+    .save-controls label {
+        @apply min-w-[150px];
+    }
+    .save-controls > .button-outline {
+        @apply text-[11px] p-3;
+    }
+    .panel {
+        @apply p-[23px];
+    }
+    .lobby-grid {
+        @apply mt-[25px];
+    }
+    .room-code {
+        @apply text-[37px] tracking-[6px] py-5 px-[25px];
+    }
+    .play-page {
+        @apply mt-[30px];
+    }
+    .question-panel {
+        @apply p-[23px];
+    }
+    .question-panel h1 {
+        @apply text-[25px];
+    }
+    .answer-options {
+        @apply grid-cols-[minmax(0,_1fr)] gap-[10px];
+    }
+    .answer-option {
+        @apply min-h-16 p-[13px] text-[13px];
+    }
+    .question-bottom {
+        @apply flex-col-reverse items-stretch text-center mt-[25px];
+    }
+    .question-bottom button {
+        @apply w-full;
+    }
+    .countdown {
+        @apply text-[22px];
+    }
+    .play-top .eyebrow {
+        @apply text-[9px];
+    }
+    .leaderboard {
+        @apply py-5 px-[13px];
+    }
+    .leaderboard h2 {
+        @apply text-[23px];
+    }
+    .leaderboard li {
+        @apply gap-[10px] py-[15px] px-2;
+    }
+    .leaderboard li > strong {
+        @apply text-[12px];
+    }
+    .leaderboard li > span:last-child {
+        @apply text-[17px];
+    }
+    .results-page .page-heading > p {
+        @apply text-[12px];
+    }
+    .replay-actions > button {
+        @apply block w-full my-[13px] mx-0;
+    }
+    .status-panel h1 {
+        @apply text-[28px];
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        @apply scroll-auto! [transition:none]! [animation:none]!;
+    }
+}
+
+.replay-actions .waiting {
+    @apply justify-center;
+}

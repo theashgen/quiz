@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { avatarNumber, avatarSource } from "../avatars";
-import "../avatars.css";
 
 export function Avatar({
     value,

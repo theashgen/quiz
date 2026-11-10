@@ -4,7 +4,10 @@ import { AvatarPicker } from "./AvatarPicker";
 
 export function ErrorMessage({ children }: { children: ReactNode }) {
     return (
-        <div className="error" role="alert">
+        <div
+            className="error mx-0 my-[15px] rounded-[9px] border border-solid border-[#e6bca9] bg-[#fae9df] px-[15px] py-3 text-[12px] leading-[1.6] text-[#8b3e26]"
+            role="alert"
+        >
             {children}
         </div>
     );
