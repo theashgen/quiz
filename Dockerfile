@@ -14,7 +14,9 @@ COPY internal/ internal/
 RUN CGO_ENABLED=0 go build -trimpath -o /quiz ./cmd/server
 
 FROM debian:bookworm-slim
-RUN groupadd -r quiz && useradd -r -g quiz quiz
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates \
+    && rm -rf /var/lib/apt/lists/* \
+    && groupadd -r quiz && useradd -r -g quiz quiz
 WORKDIR /app
 COPY --from=backend /quiz /app/quiz
 COPY --from=web /build/web/dist /app/web/dist

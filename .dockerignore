@@ -1,5 +1,6 @@
 .git
 .local
+.railway
 web/node_modules
 web/dist
 coverage
