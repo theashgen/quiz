@@ -93,6 +93,15 @@ func TestRouterAPIFallbackAndStaticRoutes(t *testing.T) {
         },
 
         {
+            "room invite deep link",
+            "GET",
+            "/join/ABC123",
+            "",
+            200,
+            "<main>Quiz</main>",
+        },
+
+        {
             "static asset",
             "GET",
             "/app.js",
