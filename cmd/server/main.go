@@ -38,6 +38,7 @@ func main() {
 
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer cancel()
+	slog.Info("database configuration", "database_url_configured", os.Getenv("DATABASE_URL") != "", "redis_url_configured", os.Getenv("REDIS_URL") != "")
 	store, err := storage.Open(ctx, env("DATABASE_URL", "postgres://quiz:local-quiz-only@localhost:55432/quiz?sslmode=disable"), env("REDIS_URL", "redis://localhost:56379/0"))
 
 	if err != nil {
