@@ -93,6 +93,8 @@ The local load client accepts the self-signed application certificate only for l
 
 All variables configure the Go server; defaults support the native development workflow.
 
+For hosted deployment with PostgreSQL and Redis, see [Deploy on Railway](railway.md). `BEHIND_PROXY=true` enables HTTP behind a trusted HTTPS-terminating proxy while retaining secure cookies; it cannot be combined with `LOCAL_HTTP`. In this mode `PORT` controls the default all-interface listener and `APP_ORIGIN` (or `RAILWAY_PUBLIC_DOMAIN`) supplies the required HTTPS browser origin. Local TLS and loopback-only HTTP behavior are unchanged.
+
 | Variable            | Default                                                                        | Purpose                                                                          |
 | ------------------- | ------------------------------------------------------------------------------ | -------------------------------------------------------------------------------- |
 | `DATABASE_URL`      | `postgres://quiz:local-quiz-only@localhost:55432/quiz?sslmode=disable`         | Local development PostgreSQL; durable authority                                  |

@@ -8,6 +8,8 @@ Built with **React · TypeScript · Go · WebSockets · PostgreSQL · Redis**. T
 
 [Watch the full walkthrough](docs/media/video/quiz-walkthrough.mp4) · [Explore every captured state](#application-walkthrough) · [Verify the backend](#backend-you-can-verify) · [Run locally](#run-locally)
 
+**Deploy:** [Railway setup with PostgreSQL and Redis](docs/railway.md).
+
 [![Quiz — 12-player multiplayer room](docs/media/screenshots/08-player-lobby.png)](docs/media/video/quiz-walkthrough.mp4)
 
 ## Watch someone use it

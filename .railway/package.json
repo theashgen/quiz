@@ -1,0 +1,11 @@
+{
+  "name": "quiz-railway",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test railway.test.mjs"
+  },
+  "dependencies": {
+    "railway": "3.16.0"
+  }
+}
