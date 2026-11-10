@@ -34,7 +34,7 @@ export function Room({
                 <span className="status-symbol">↗</span>
                 <h1>This session is active in another tab.</h1>
                 <p>Your progress is safe. Continue in the newer tab.</p>
-                <button className="outline" onClick={() => go("/")}>
+                <button className="button-outline" onClick={() => go("/")}>
                     Back to home
                 </button>
             </div>
@@ -182,7 +182,7 @@ export function Room({
                         </p>
                         {s.isHost ? (
                             <button
-                                className="primary full"
+                                className="primary w-full"
                                 disabled={
                                     disabled ||
                                     !s.members.some((m) => m.playing)
@@ -197,7 +197,7 @@ export function Room({
                             </div>
                         ) : (
                             <button
-                                className="primary full"
+                                className="primary w-full"
                                 disabled={disabled}
                                 onClick={() => send("replay")}
                             >
@@ -398,7 +398,7 @@ export function Room({
                             </p>
                             {!s.members.find((m) => m.id === s.me)?.replay && (
                                 <button
-                                    className="outline"
+                                    className="button-outline"
                                     disabled={disabled}
                                     onClick={() => send("replay")}
                                 >

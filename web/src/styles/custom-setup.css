@@ -1,0 +1,189 @@
+.custom-setup .custom-editor {
+    @apply pt-2 pr-6 pb-4 pl-0 border-0 rounded-[0] bg-transparent [box-shadow:none];
+}
+
+.quiz-draft {
+    @apply pb-[18px];
+}
+
+.quiz-draft .save-controls label {
+    @apply m-0;
+}
+
+.quiz-draft .save-controls > button {
+    @apply min-h-11 py-[10px] px-4 whitespace-nowrap text-[12px] [box-shadow:none];
+}
+
+.quiz-draft .fine-print {
+    @apply mt-[10px];
+}
+
+.draft-status {
+    @apply mt-[10px] mx-0 mb-0 text-[#356345] text-[11px] leading-[1.5];
+}
+
+.custom-setup .saved-quizzes {
+    @apply mt-0 mx-0 mb-[22px] pt-0 px-0 pb-4 border-0 border-b-[1px] border-solid border-b-line rounded-[0] bg-transparent [box-shadow:none];
+}
+
+.saved-quizzes summary {
+    @apply cursor-pointer text-[11px] font-semibold;
+}
+
+.saved-quizzes summary:focus-visible {
+    @apply outline-[3px] outline-solid outline-[#7450b4] outline-offset-[4px];
+}
+
+.saved-quizzes summary > span {
+    @apply inline-block min-w-5 py-[2px] px-[5px] ml-[6px] rounded-[5px] bg-paper text-center text-[10px];
+}
+
+.saved-quizzes > .muted {
+    @apply mt-3 mx-0 mb-0 text-[11px];
+}
+
+.question-list-heading,
+.question-card-title {
+    @apply flex items-center gap-[10px];
+}
+
+.question-list-heading {
+    @apply justify-between;
+}
+
+.question-list-heading h3 {
+    @apply m-0 text-[14px];
+}
+
+.question-list-heading > span {
+    @apply text-muted text-[11px];
+}
+
+.custom-setup .editor-question {
+    @apply mt-[18px] mx-0 mb-0 pt-0 px-0 pb-6 border-0 border-b-[1px] border-solid border-b-line rounded-[0] bg-transparent [box-shadow:none];
+}
+
+.custom-setup .section-row {
+    @apply flex-wrap gap-3;
+}
+
+.question-card-title h3 {
+    @apply text-[12px];
+}
+
+.question-number {
+    @apply flex items-center justify-center w-[30px] h-[30px] border-[1px] border-solid border-[#c7b4e3] rounded-[8px] bg-lilac-light text-[11px] font-bold;
+}
+
+.question-state {
+    @apply rounded-[5px] py-1 px-[7px] bg-[#f0ece5] text-muted text-[9px];
+}
+
+.question-state.ready {
+    @apply bg-[#e0f1e5] text-[#356345];
+}
+
+.custom-setup .editor-actions button {
+    @apply flex items-center justify-center min-w-[30px] min-h-[30px] p-[6px] bg-paper;
+}
+
+.custom-setup .editor-actions button:hover:not(:disabled) {
+    @apply bg-lilac-light border-[#a88acb];
+}
+
+.custom-setup .editor-question > label {
+    @apply my-[18px] mx-0 text-[11px];
+}
+
+.custom-setup .editor-question textarea {
+    @apply min-h-23 text-[14px] leading-[1.6] border-line;
+}
+
+.custom-setup .editor-question fieldset {
+    @apply m-0 min-w-0;
+}
+
+.custom-setup .editor-question legend {
+    @apply text-[11px];
+}
+
+.custom-setup .editor-question legend span {
+    @apply text-muted font-normal;
+}
+
+.editor-options {
+    @apply grid grid-cols-[repeat(2,_minmax(0,_1fr))] gap-[10px];
+}
+
+.custom-setup .editor-option {
+    @apply min-w-0 gap-0 m-0 border-[1px] border-solid border-line rounded-[9px] bg-[#faf8f2] p-[5px];
+}
+
+.custom-setup .editor-option.correct-option {
+    @apply border-[#7aa78a] bg-[#edf6ee];
+}
+
+.custom-setup .answer-selector {
+    @apply relative flex flex-[0_0_34px] items-center justify-center min-h-[34px] m-0 cursor-pointer;
+}
+
+.answer-selector input {
+    @apply absolute [inset:0] w-full h-full m-0 opacity-0 cursor-pointer;
+}
+
+.answer-selector span {
+    @apply flex items-center justify-center w-7 h-7 border-[1px] border-solid border-[#d1cac0] rounded-[6px] bg-paper text-[11px];
+}
+
+.answer-selector input:checked + span {
+    @apply bg-[#356345] border-[#356345] text-white;
+}
+
+.answer-selector input:focus-visible + span {
+    @apply outline-[3px] outline-solid outline-[#7450b4] outline-offset-[2px];
+}
+
+.custom-setup .editor-option input:not([type="radio"]) {
+    @apply min-w-0 min-h-[34px] border-0 py-[6px] px-2 text-[12px] bg-transparent;
+}
+
+.answer-hint {
+    @apply text-[#496653] text-[10px] leading-[1.6] mt-[10px] mx-0 mb-0;
+}
+
+.custom-setup .add-question {
+    @apply mt-4 border-dashed border-[#aaa091] bg-transparent text-[12px];
+}
+
+.custom-setup .add-question:hover {
+    @apply bg-lilac-light;
+}
+
+.custom-setup .setup-aside {
+    @apply pt-2 pr-0 pb-5 pl-6 border-0 rounded-[0] bg-transparent [box-shadow:none];
+}
+
+@media (max-width: 1000px) {
+    .editor-options {
+        @apply grid-cols-[minmax(0,_1fr)];
+    }
+}
+
+@media (max-width: 740px) {
+    .custom-setup .custom-editor {
+        @apply pt-2 px-0 pb-0;
+    }
+    .custom-setup .setup-aside {
+        @apply py-6 px-0 border-t-[1px] border-solid border-t-line;
+    }
+    .custom-setup .editor-actions button,
+    .custom-setup .answer-selector {
+        @apply min-h-10 min-w-10;
+    }
+    .custom-setup .editor-option input:not([type="radio"]) {
+        @apply text-[16px];
+    }
+    .custom-setup .saved-row {
+        @apply flex-wrap;
+    }
+}

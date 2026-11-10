@@ -3,7 +3,6 @@ import { api, type Catalog } from "../types";
 import { base, normalizeRoomCode } from "../setup";
 import { ErrorMessage } from "./Common";
 import { AvatarPicker } from "./AvatarPicker";
-import "../join.css";
 
 export function Join({
     catalog,
@@ -104,7 +103,7 @@ export function Join({
                             </span>
                         </label>
                         {error && <ErrorMessage>{error}</ErrorMessage>}
-                        <button className="primary full" disabled={busy}>
+                        <button className="primary w-full" disabled={busy}>
                             {busy ? "Joining…" : "Join the room →"}
                         </button>
                         <p className="join-form-note">

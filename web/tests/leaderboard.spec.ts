@@ -108,6 +108,33 @@ const tenPlayers = [
     },
 ];
 
+test("result separators use only their intended edges on desktop and mobile", async ({
+    page,
+}) => {
+    await showResults(page, tenPlayers, true);
+    for (const width of [1440, 390, 320]) {
+        await page.setViewportSize({ width, height: 900 });
+        for (const [selector, expected] of [
+            [".replay-actions", [1, 0, 0, 0]],
+            [".results-score", width > 1000 ? [0, 0, 0, 1] : [0, 0, 0, 0]],
+        ] as const) {
+            const element = page.locator(selector);
+            await expect(element).toBeVisible();
+            expect(
+                await element.evaluate((node) => {
+                    const style = getComputedStyle(node);
+                    return [
+                        style.borderTopWidth,
+                        style.borderRightWidth,
+                        style.borderBottomWidth,
+                        style.borderLeftWidth,
+                    ].map(parseFloat);
+                }),
+            ).toEqual(expected);
+        }
+    }
+});
+
 test("laptop results use two columns with score and replay actions in view", async ({
     page,
 }) => {

@@ -7,8 +7,7 @@ import { Join } from "./components/Join";
 import { Room } from "./components/Room";
 import { ErrorMessage } from "./components/Common";
 import { AuthPage, AccountPage, AccountMenu } from "./components/Auth";
-import "./style.css";
-import "./motion.css";
+import "./tailwind.css";
 
 function App() {
     const [path, setPath] = useState(location.pathname);

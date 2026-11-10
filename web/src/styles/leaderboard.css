@@ -1,0 +1,308 @@
+.podium-results > .page-heading {
+    @apply mb-7;
+}
+.podium-results > .page-heading .result-star {
+    @apply hidden;
+}
+.podium-results > .page-heading h1 {
+    @apply text-[24px] mb-2;
+}
+.podium-results > .page-heading .eyebrow {
+    @apply mb-[10px] text-[#77618e];
+}
+.podium-results > .page-heading > p {
+    @apply text-[12px];
+}
+.results-score > p {
+    @apply text-muted text-[12px] my-[10px] mx-0;
+}
+.standings-eyebrow {
+    @apply hidden;
+}
+.podium-results .big-score {
+    @apply mb-2 font-display text-[32px];
+}
+.podium-results .big-score small {
+    @apply text-[16px] text-muted;
+}
+.leaderboard.podium-board {
+    @apply max-w-175 my-0 mx-auto;
+}
+.leaderboard-heading {
+    @apply text-center;
+}
+.leaderboard-heading .eyebrow {
+    @apply justify-center mb-3 text-[9px] text-[#77618e];
+}
+.leaderboard-heading h2 {
+    @apply text-[clamp(26px,_4vw,_36px)] mb-[10px];
+}
+.leaderboard-heading p {
+    @apply flex justify-center gap-[10px] text-muted text-[11px] mb-0;
+}
+.podium-board ol.winner-podium {
+    @apply relative flex items-end justify-center isolate gap-[5px] pt-[26px] px-[14px] pb-0 mt-3;
+}
+.winner-podium::before {
+    @apply content-[''] absolute z-[-1] [inset:0_-14px] [background:repeating-conic-gradient(_from_-10deg_at_50%_54%,_#e5d8ba24_0deg_12deg,_transparent_12deg_25deg_)] [mask-image:radial-gradient(ellipse_at_center,_black,_transparent_70%)];
+}
+.podium-board .winner-podium > li {
+    @apply [--podium-color:#f9c72e] [--podium-top:#ffe682] [--podium-height:190px] relative flex flex-[0_1_200px] flex-col items-stretch gap-0 min-w-0 p-0 border-0 rounded-[0] bg-transparent;
+}
+.winner-podium .podium-place-1 {
+    @apply order-2 z-[1];
+}
+.podium-board .winner-podium .podium-place-2 {
+    @apply [--podium-color:#bbc9f4] [--podium-top:#e1e7ff] [--podium-height:140px] order-1;
+}
+.podium-board .winner-podium .podium-place-3 {
+    @apply [--podium-color:#f8b493] [--podium-top:#ffdac1] [--podium-height:115px] order-3;
+}
+.podium-person {
+    @apply relative flex flex-col items-center gap-[6px] min-w-0 pt-0 px-[5px] pb-[34px];
+}
+.winner-crown {
+    @apply absolute top-[-29px] left-[calc(50%_-_15px)] transform-[rotate(-9deg)];
+}
+.podium-avatar {
+    @apply flex justify-center items-center w-[66px] h-[70px] border-[1px] border-solid border-[#d3ccbe] rounded-[21px] shadow-[0_3px_0_#e6dfd2] bg-[#fffdf7] text-[38px];
+}
+.podium-place-1 .podium-avatar {
+    @apply border-[#c8a94e] bg-[#fff5c9];
+}
+.podium-name {
+    @apply max-w-full pt-[6px] text-[13px] text-center [overflow-wrap:anywhere];
+}
+.podium-you {
+    @apply py-[3px] px-[6px] rounded-[4px] text-muted text-[8px] font-bold tracking-[1px];
+}
+.podium-you.is-you {
+    @apply bg-lilac-light text-[#68448c];
+}
+.podium-person .podium-score {
+    @apply text-[17px] font-bold whitespace-nowrap;
+}
+.podium-score small {
+    @apply text-[10px] font-normal;
+}
+.podium-step {
+    @apply relative flex flex-col items-center h-[var(--podium-height)] pt-[15px] text-[#fffdf7] [background:linear-gradient(_to_bottom,_var(--podium-color)_35%,_transparent_100%_)];
+}
+.podium-step::before {
+    @apply content-[''] absolute bottom-[calc(100%_+_2px)] left-0 w-full h-6 [background:linear-gradient(var(--podium-top),_var(--podium-color))] [clip-path:polygon(9%_0,_91%_0,_100%_100%,_0_100%)];
+}
+.podium-stars {
+    @apply text-[10px] tracking-[3px];
+}
+.podium-step strong {
+    @apply text-[54px] leading-[1] font-[family-name:Georgia,_serif];
+}
+.podium-laurel {
+    @apply mt-[-7px];
+}
+.leaderboard-final-note {
+    @apply flex items-center justify-center gap-[7px] mt-0 mx-0 mb-6 text-muted text-[10px] text-center;
+}
+.leaderboard-final-note svg {
+    @apply shrink-0;
+}
+.leaderboard-list-heading {
+    @apply flex items-center justify-between gap-[10px] py-0 px-[18px];
+}
+.leaderboard-list-heading h3 {
+    @apply m-0 text-[12px];
+}
+.leaderboard-list-heading > span {
+    @apply text-muted text-[8px] tracking-[1px];
+}
+.podium-board ol.ranked-players {
+    @apply flex flex-col gap-[9px] mt-3;
+}
+.podium-board .ranked-players > li {
+    @apply flex items-center gap-[14px] py-3 px-[18px] border-[1px] border-solid border-[#e6e0d5] rounded-[14px] bg-paper;
+}
+.podium-board .ranked-players > li.me {
+    @apply border-[#c4aedf] bg-[#f0e8fa];
+}
+.list-rank {
+    @apply min-w-[18px] text-muted text-[13px] text-center;
+}
+.list-avatar {
+    @apply flex shrink-0 items-center justify-center w-11 h-11 border-[1px] border-solid border-line rounded-[12px] bg-[#f5f0e6] text-[27px];
+}
+.list-player-name {
+    @apply flex flex-1 flex-col min-w-0 gap-[5px];
+}
+.list-player-name strong {
+    @apply text-[13px] [overflow-wrap:anywhere];
+}
+.list-player-name small {
+    @apply text-[10px] leading-[1.4];
+}
+.list-you {
+    @apply py-1 px-[6px] rounded-[5px] bg-[#e0d0f1] text-[#68448c] text-[8px] font-bold;
+}
+.podium-board .ranked-players .list-score {
+    @apply flex flex-col items-end gap-[3px] text-[16px] font-bold;
+}
+.list-score small {
+    @apply text-[9px];
+}
+.leaderboard-empty {
+    @apply py-10 px-0 text-center text-[13px] text-muted;
+}
+.podium-results .replay-actions {
+    @apply border-t-[1px] border-solid border-t-line pt-[22px] mt-7;
+}
+@media (min-width: 1001px) {
+    .results-page.podium-results {
+        @apply max-w-none pt-6;
+    }
+    .podium-results > .page-heading {
+        @apply grid grid-cols-[minmax(0,_1fr)_auto] items-center gap-[5px_28px] text-left mb-5;
+    }
+    .podium-results .results-intro {
+        @apply col-[1];
+    }
+    .podium-results .results-intro .eyebrow {
+        @apply justify-start mb-2 text-[9px];
+    }
+    .podium-results .results-intro h1 {
+        @apply text-[28px] m-0;
+    }
+    .podium-results .results-score {
+        @apply col-[2] row-[1_/_3] pl-7 border-l-[1px] border-solid border-l-line text-right;
+    }
+    .podium-results .results-score > p {
+        @apply text-[10px] mt-0 mx-0 mb-[5px];
+    }
+    .podium-results .big-score {
+        @apply text-[34px] m-0;
+    }
+    .podium-results > .page-heading > .results-caption {
+        @apply col-[1] m-0;
+    }
+    .podium-results .podium-board {
+        @apply max-w-none;
+    }
+    .podium-results .podium-board.has-standings {
+        @apply grid grid-cols-[minmax(0,_1.08fr)_minmax(0,_1fr)] items-stretch gap-6;
+    }
+    .podium-results .leaderboard-stage,
+    .podium-results .leaderboard-standings {
+        @apply min-w-0 p-5 border-[1px] border-solid border-line rounded-[20px];
+    }
+    .podium-results .leaderboard-stage {
+        @apply flex flex-col justify-center [background:radial-gradient(_ellipse_at_50%_55%,_#fff4d5_0%,_var(--color-paper)_70%_)];
+    }
+    .podium-results .leaderboard-standings {
+        @apply bg-[#f2ede4];
+    }
+    .podium-results .leaderboard-heading h2 {
+        @apply text-[clamp(24px,_2.3vw,_30px)] mb-2;
+    }
+    .podium-results .leaderboard-heading .eyebrow {
+        @apply mb-[10px];
+    }
+    .podium-results .podium-board ol.winner-podium {
+        @apply flex-1 pt-[26px] px-0 pb-0 mt-2;
+    }
+    .podium-results .winner-podium > li {
+        @apply [--podium-height:150px];
+    }
+    .podium-results .winner-podium .podium-place-2 {
+        @apply [--podium-height:112px];
+    }
+    .podium-results .winner-podium .podium-place-3 {
+        @apply [--podium-height:90px];
+    }
+    .podium-results .leaderboard-final-note {
+        @apply mb-0;
+    }
+    .podium-results .standings-eyebrow {
+        @apply flex text-[9px] text-[#77618e] mb-[10px];
+    }
+    .podium-results .leaderboard-list-heading {
+        @apply p-0 gap-3;
+    }
+    .podium-results .leaderboard-list-heading h3 {
+        @apply text-[20px] tracking-[-0.6px];
+    }
+    .podium-results .podium-board ol.ranked-players {
+        @apply gap-[7px] mt-[18px] max-h-[max(240px,_calc(100dvh_-_335px))] overflow-y-auto overscroll-contain [scrollbar-gutter:stable];
+    }
+    .podium-results .ranked-players:focus-visible {
+        @apply outline-[2px] outline-solid outline-[#7450b4] outline-offset-[4px] rounded-[12px];
+    }
+    .podium-results .ranked-players > li {
+        @apply shrink-0 py-2 px-3 gap-[10px] rounded-[12px];
+    }
+    .podium-results .list-avatar {
+        @apply w-9 h-9 rounded-[10px];
+    }
+    .podium-results .list-player-name {
+        @apply gap-[3px];
+    }
+    .podium-results .list-player-name strong {
+        @apply text-[12px];
+    }
+    .podium-results .list-player-name small {
+        @apply text-[9px];
+    }
+    .podium-results .replay-actions {
+        @apply flex items-center justify-end flex-wrap gap-3 pt-[18px] px-0 pb-0 mt-[18px] mx-0 mb-0 text-left;
+    }
+    .podium-results .replay-actions > p {
+        @apply flex-1 m-0;
+    }
+    .podium-results .replay-actions > button {
+        @apply m-0;
+    }
+    .podium-results .replay-actions .waiting {
+        @apply p-0;
+    }
+}
+@media (max-width: 740px) {
+    .podium-results > .page-heading {
+        @apply mb-6;
+    }
+    .podium-board ol.winner-podium {
+        @apply pr-0 pl-0 gap-[3px];
+    }
+    .podium-board .winner-podium > li {
+        @apply [--podium-height:155px];
+    }
+    .podium-board .winner-podium .podium-place-2 {
+        @apply [--podium-height:117px];
+    }
+    .podium-board .winner-podium .podium-place-3 {
+        @apply [--podium-height:95px];
+    }
+    .podium-avatar {
+        @apply w-13 h-14 rounded-[16px] text-[30px];
+    }
+    .podium-name {
+        @apply text-[11px];
+    }
+    .podium-person .podium-score {
+        @apply text-[15px];
+    }
+    .podium-step strong {
+        @apply text-[44px];
+    }
+    .podium-board .ranked-players > li {
+        @apply gap-[9px] p-[11px];
+    }
+    .list-player-name strong {
+        @apply text-[12px];
+    }
+    .list-player-name small {
+        @apply text-[9px];
+    }
+    .list-avatar {
+        @apply w-9 h-10 text-[24px];
+    }
+    .list-you {
+        @apply hidden;
+    }
+}

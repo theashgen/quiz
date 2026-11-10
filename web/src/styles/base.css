@@ -1,0 +1,90 @@
+:root {
+    @apply font-sans text-ink bg-canvas bg-dot-grid bg-size-[var(--grid-spacing)_var(--grid-spacing)] bg-position-[12px_12px] [font-synthesis:none];
+}
+
+/* Side-specific borders need zero widths on the other edges without Preflight. */
+*,
+::before,
+::after {
+    @apply box-border border-0 border-solid;
+}
+
+html {
+    @apply scroll-smooth;
+}
+
+body {
+    @apply m-0 min-w-80;
+}
+
+button,
+input,
+textarea,
+select {
+    @apply [font:inherit];
+}
+
+button {
+    @apply cursor-pointer text-inherit border-0 [background:none];
+}
+
+button:disabled {
+    @apply cursor-default opacity-50;
+}
+
+button,
+a,
+input,
+textarea {
+    @apply outline-offset-[4px] [-webkit-tap-highlight-color:transparent];
+}
+
+button:focus-visible,
+a:focus-visible {
+    @apply outline-[3px] outline-solid outline-[#7450b4];
+}
+
+input:focus,
+textarea:focus {
+    @apply outline-[2px] outline-solid outline-[#7450b4];
+}
+
+a {
+    @apply text-inherit;
+}
+
+h1,
+h2,
+h3,
+p {
+    @apply mt-0;
+}
+
+h1,
+h2 {
+    @apply font-display font-black tracking-[-0.055em];
+}
+
+h1 {
+    @apply text-[clamp(2.2rem,_4.4vw,_3.6rem)] leading-[1.12] mb-5;
+}
+
+h2 {
+    @apply text-[1.8rem] leading-[1.15] mb-3;
+}
+
+h3 {
+    @apply text-[1rem];
+}
+
+p {
+    @apply leading-[1.7];
+}
+
+main {
+    @apply min-h-[calc(100dvh_-_210px)] max-w-320 m-auto py-0 px-12;
+}
+
+footer {
+    @apply max-w-320 mt-[45px] mx-auto mb-0 pt-[26px] px-12 pb-8 flex items-center justify-between gap-[25px] text-[10px] text-muted;
+}

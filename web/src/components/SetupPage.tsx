@@ -3,7 +3,6 @@ import type { Catalog, Setup, Question } from "../types";
 import { base, blank } from "../setup";
 import { createId } from "../id";
 import { ErrorMessage, Identity } from "./Common";
-import "../custom-setup.css";
 
 type Saved = { id: string; name: string; questions: Question[] };
 
@@ -314,7 +313,7 @@ export function SetupPage({
                                         </label>
                                         <button
                                             type="button"
-                                            className="outline"
+                                            className="button-outline"
                                             onClick={() => {
                                                 if (!saveName.trim()) {
                                                     setError(
@@ -651,7 +650,7 @@ export function SetupPage({
                                     </div>
                                 ))}
                                 <button
-                                    className="outline full add-question"
+                                    className="button-outline w-full add-question"
                                     type="button"
                                     onClick={() => {
                                         focusNewQuestion.current = true;
@@ -725,7 +724,7 @@ export function SetupPage({
                         )}
                         {error && <ErrorMessage>{error}</ErrorMessage>}
                         <button
-                            className="primary full"
+                            className="primary w-full"
                             disabled={
                                 busy ||
                                 (setup.source === "preset" &&

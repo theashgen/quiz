@@ -1,0 +1,37 @@
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);
+
+/* Explicit base utilities preserve the existing form/dialog defaults without Preflight.
+   Component recipes use @apply; the utilities layer supports overrides in JSX. */
+@import "./styles/base.css" layer(base);
+@import "./styles/home.css" layer(components);
+@import "./styles/avatars.css" layer(components);
+@import "./styles/custom-setup.css" layer(components);
+@import "./styles/join.css" layer(components);
+@import "./styles/leaderboard.css" layer(components);
+@import "./styles/auth.css" layer(components);
+@import "./styles/shared.css" layer(components);
+@import "./styles/motion.css" layer(components);
+
+@theme {
+    --font-sans: Arial, Helvetica, ui-sans-serif, sans-serif;
+    --font-display: "Arial Black", Arial, Helvetica, sans-serif;
+    --color-ink: #1c1c1a;
+    --color-muted: #625f59;
+    --color-line: #d9d5cc;
+    --color-yellow: #ffdc58;
+    --color-lilac: #c5acf3;
+    --color-lilac-light: #eee5fa;
+    --color-mint: #bce6cf;
+    --color-pink: #ff8eb5;
+    --color-paper: #fffdf7;
+    --color-canvas: #faf7ef;
+    --background-image-dot-grid: radial-gradient(
+        circle,
+        var(--grid-dot) 1.2px,
+        transparent 1.2px
+    );
+    --grid-dot: rgb(101 83 121 / 29%);
+    --grid-spacing: 24px;
+}

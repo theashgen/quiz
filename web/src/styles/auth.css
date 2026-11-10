@@ -1,0 +1,206 @@
+.auth-page {
+    @apply pt-8 px-0 pb-6;
+}
+.auth-layout {
+    @apply grid grid-cols-[minmax(0,_1fr)_minmax(0,_1fr)] gap-[clamp(40px,_7vw,_100px)] items-center;
+}
+.auth-welcome {
+    @apply py-6 px-0;
+}
+.auth-welcome > .eyebrow,
+.auth-form-column > .eyebrow {
+    @apply text-[#77618e] text-[9px];
+}
+.auth-welcome h1 {
+    @apply text-[clamp(42px,_5.4vw,_72px)] leading-[1.05];
+}
+.auth-welcome h1 span {
+    @apply bg-lilac-light pt-0 px-[10px] pb-[3px];
+}
+.auth-welcome > p {
+    @apply text-muted text-[15px];
+}
+.auth-people {
+    @apply flex relative items-center gap-4 pt-[34px] px-0 pb-10 max-w-90;
+}
+.auth-person {
+    @apply w-23 h-[102px] p-[5px] border-[1px] border-solid border-[#d5cabb] rounded-[25px] bg-[#f9e0d0] transform-[rotate(-9deg)] shadow-[0_4px_0_#e6dfd2];
+}
+.auth-person:nth-child(2) {
+    @apply w-[110px] h-30 bg-[#fff0bc] transform-[rotate(5deg)];
+}
+.auth-person:nth-child(3) {
+    @apply bg-[#e5eafa] transform-[rotate(-5deg)];
+}
+.auth-people-spark {
+    @apply absolute top-0 right-0 text-[#9e7dc0] text-[35px];
+}
+.auth-guest-note {
+    @apply border-t-[1px] border-solid border-t-line pt-5 max-w-90 flex flex-col items-start gap-2 text-[12px];
+}
+.auth-guest-note > span {
+    @apply text-muted text-[11px];
+}
+.auth-guest-note button {
+    @apply text-[#68448c];
+}
+.auth-form-column {
+    @apply max-w-[470px] w-full py-[18px] px-0;
+}
+.auth-form-column h2 {
+    @apply text-[clamp(28px,_3vw,_38px)];
+}
+.auth-description {
+    @apply text-[12px] text-muted mb-6;
+}
+.auth-roles {
+    @apply grid grid-cols-[repeat(2,_minmax(0,_1fr))] gap-3 mt-0 mx-0 mb-5;
+}
+.auth-roles legend {
+    @apply text-[11px];
+}
+.auth-role {
+    @apply relative flex flex-col gap-2 m-0 py-[17px] px-[14px] border-[1px] border-solid border-line rounded-[12px] bg-paper cursor-pointer;
+}
+.auth-role.selected {
+    @apply bg-lilac-light border-[#8867af];
+}
+.auth-role input {
+    @apply absolute opacity-0 w-[1px] h-[1px];
+}
+.auth-role:has(input:focus-visible) {
+    @apply outline-[3px] outline-solid outline-[#7450b4] outline-offset-[3px];
+}
+.auth-role strong {
+    @apply text-[13px] pr-[15px];
+}
+.auth-role small {
+    @apply text-[10px] font-normal leading-[1.5] text-muted;
+}
+.auth-role-check {
+    @apply absolute right-[13px] top-[15px] text-[#7450b4];
+}
+.auth-form-column input {
+    @apply min-h-12 text-[14px];
+}
+.auth-password {
+    @apply relative mt-[-8px];
+}
+.auth-password input {
+    @apply pr-16;
+}
+.auth-password button {
+    @apply absolute top-0 right-0 h-12 py-0 px-[14px] text-[11px] text-[#68448c] font-semibold;
+}
+.auth-field-hint {
+    @apply text-muted text-[10px] leading-[1.6] mt-[10px] mx-0 mb-0;
+}
+.auth-submit {
+    @apply mt-6 min-h-[50px];
+}
+.auth-switch {
+    @apply text-[12px] text-center mt-5 mx-0 mb-0 text-muted;
+}
+.auth-switch button {
+    @apply text-[#68448c] font-bold ml-[5px];
+}
+.account-navigation {
+    @apply absolute top-[18px] right-[clamp(18px,_3.5vw,_60px)] z-[10] flex items-center gap-5;
+}
+.account-navigation .account-signup {
+    @apply min-h-9 py-2 px-[13px] text-[10px] border-line [box-shadow:none];
+}
+.account-link {
+    @apply flex items-center gap-[9px] max-w-65 [overflow-wrap:anywhere];
+}
+.account-dot {
+    @apply shrink-0 w-[7px] h-[7px] bg-[#8c69b2] rounded-[50%];
+}
+.account-role-label {
+    @apply text-[#77618e] text-[9px] capitalize;
+}
+.account-page {
+    @apply max-w-[850px] m-auto pt-10 px-0 pb-6;
+}
+.account-page > .eyebrow {
+    @apply text-[#77618e];
+}
+.account-heading {
+    @apply flex items-center gap-6 justify-between;
+}
+.account-heading h1 {
+    @apply mb-[10px];
+}
+.account-role-badge {
+    @apply shrink-0 py-[9px] px-[14px] border-[1px] border-solid border-[#d3c0e9] rounded-[20px] bg-lilac-light text-[#68448c] text-[11px];
+}
+.account-actions {
+    @apply flex gap-4 items-center flex-wrap mt-7 mx-0 mb-10;
+}
+.account-details {
+    @apply border-t-[1px] border-solid border-t-line mb-6;
+}
+.account-details > div {
+    @apply grid grid-cols-[140px_minmax(0,_1fr)] items-baseline gap-5 py-5 px-0 border-b-[1px] border-solid border-b-line;
+}
+.account-details dt {
+    @apply text-muted text-[12px];
+}
+.account-details dd {
+    @apply m-0 text-[13px] [overflow-wrap:anywhere];
+}
+@media (max-width: 740px) {
+    .auth-page {
+        @apply pt-6;
+    }
+    .auth-layout {
+        @apply grid-cols-[minmax(0,_1fr)] gap-[14px];
+    }
+    .auth-welcome {
+        @apply p-0;
+    }
+    .auth-welcome h1 {
+        @apply text-[38px] mb-3;
+    }
+    .auth-welcome h1 br {
+        @apply hidden;
+    }
+    .auth-welcome > p,
+    .auth-people,
+    .auth-guest-note {
+        @apply hidden;
+    }
+    .auth-form-column {
+        @apply max-w-none;
+    }
+    .auth-form-column h2 {
+        @apply text-[30px];
+    }
+    .auth-form-column input {
+        @apply text-[16px];
+    }
+    .auth-role {
+        @apply py-[15px] px-3;
+    }
+    .account-navigation {
+        @apply gap-3 top-[14px];
+    }
+    .account-navigation .account-signup {
+        @apply hidden;
+    }
+    .account-link {
+        @apply max-w-40;
+    }
+    .account-page {
+        @apply pt-[30px];
+    }
+    .account-heading {
+        @apply items-start flex-col gap-1;
+    }
+    .account-heading h1 {
+        @apply text-[36px];
+    }
+    .account-details > div {
+        @apply grid-cols-[100px_minmax(0,_1fr)] gap-3;
+    }
+}

@@ -1,6 +1,5 @@
 import type { Snapshot } from "../types";
 import { Avatar } from "./Avatar";
-import "../leaderboard.css";
 
 export function Leaderboard({
     entries,

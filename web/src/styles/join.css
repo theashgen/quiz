@@ -1,0 +1,180 @@
+.join-main {
+    @apply max-w-none min-h-0 py-0 px-[clamp(24px,_3.5vw,_80px)];
+}
+footer.join-footer {
+    @apply max-w-none m-0 pt-6 px-[clamp(24px,_3.5vw,_80px)] pb-7;
+}
+.join-page {
+    @apply pt-6 px-0 pb-0;
+}
+.join-page > .back {
+    @apply mb-[22px];
+}
+.join-layout {
+    @apply flex min-h-[max(560px,_calc(100dvh_-_188px))] overflow-hidden border-[1px] border-solid border-line rounded-[26px] bg-paper;
+}
+.join-welcome {
+    @apply flex flex-col justify-center flex-[1.08] min-w-0 py-10 px-[clamp(24px,_3vw,_64px)] bg-[#eee5f5] bg-dot-grid bg-size-[var(--grid-spacing)_var(--grid-spacing)] border-r-[1px] border-solid border-r-line;
+}
+.join-welcome > .eyebrow {
+    @apply justify-center mb-[18px] text-[#76568f] text-[9px];
+}
+.join-welcome .avatar-carousel {
+    @apply flex flex-col m-0 min-w-0;
+}
+.avatar-carousel legend {
+    @apply flex w-full py-0 px-[6px] text-[#655471] text-[11px];
+}
+.avatar-carousel .avatar-browse {
+    @apply ml-auto float-none;
+}
+.avatar-carousel-stage {
+    @apply relative flex items-center justify-center gap-[clamp(10px,_1.2vw,_24px)] min-h-[326px] h-[clamp(326px,_calc(100dvh_-_440px),_560px)] isolate;
+}
+.avatar-carousel-face {
+    @apply touch-pan-y touch-pinch-zoom select-none w-[clamp(170px,_23vw,_400px)] aspect-square p-[10px] shrink-0 rounded-[50%] bg-[#ffcea0];
+}
+.avatar-carousel-swipe-hint {
+    @apply hidden;
+}
+@media (hover: none) and (pointer: coarse) {
+    .avatar-carousel-swipe-hint {
+        @apply block mt-[14px] mx-0 mb-0 text-center text-[#776284] text-[10px];
+    }
+}
+.avatar-carousel-arrow {
+    @apply flex items-center justify-center shrink-0 w-[clamp(36px,_3vw,_52px)] h-[clamp(36px,_3vw,_52px)] border-[1px] border-solid border-[#cbbbd9] rounded-[50%] bg-[#fffdf78c] [transition:background_150ms,_transform_150ms];
+}
+.avatar-carousel-arrow:hover:not(:disabled) {
+    @apply bg-paper transform-[translateY(-2px)];
+}
+.avatar-carousel-orbit {
+    @apply absolute w-[90%] h-[65%] border-[1px] border-dashed border-[#bba6ce] rounded-[50%] transform-[rotate(-22deg)] z-[-1];
+}
+.avatar-carousel-friend {
+    @apply absolute z-[-1] w-[clamp(54px,_4.6vw,_88px)] h-[clamp(60px,_5vw,_96px)] p-[5px] border-[1px] border-solid border-[#d6c6bd] rounded-[18px] shadow-[0_4px_0_#1c1c1a08];
+}
+.avatar-carousel-friend-left {
+    @apply left-1 top-[3px] bg-[#f9ddcd] transform-[rotate(-13deg)];
+}
+.avatar-carousel-friend-right {
+    @apply right-[3px] bottom-3 bg-[#dce9da] transform-[rotate(12deg)];
+}
+.avatar-carousel-spark {
+    @apply absolute top-0 right-[15px] text-[#8b65b0] text-[32px];
+}
+.avatar-carousel-sticker {
+    @apply absolute bottom-[14px] left-[14px] py-[9px] px-3 border-[1px] border-solid border-[#d9bd57] rounded-[6px] bg-[#ffdf75] text-[11px] font-bold transform-[rotate(-8deg)];
+}
+.avatar-carousel-count {
+    @apply absolute bottom-0 left-[50%] transform-[translateX(-50%)] text-[#776284] text-[10px] whitespace-nowrap;
+}
+.join-name {
+    @apply w-full max-w-110 mt-[26px] mx-auto mb-0;
+}
+.join-name input {
+    @apply min-h-14 bg-[#fffdf7bd] border-[#c2afcf];
+}
+.join-identity-note {
+    @apply mt-3 mx-0 mb-0 text-center text-[10px] text-[#776284];
+}
+.join-form-panel {
+    @apply flex-1 min-w-0 self-center py-12 px-[clamp(32px,_5vw,_110px)];
+}
+.join-form-panel > .eyebrow {
+    @apply text-[#74548f] text-[9px] mb-5;
+}
+.join-form-panel h1 {
+    @apply text-[clamp(32px,_3.4vw,_64px)] max-w-140 mb-[14px] leading-[1.08];
+}
+.join-form-panel > p {
+    @apply text-[clamp(13px,_1vw,_16px)] mb-8;
+}
+.join-form-panel .code-input {
+    @apply min-h-[70px] bg-[#faf7ef] text-[28px] tracking-[0.22em];
+}
+.join-field-hint {
+    @apply block mt-[10px] text-[11px] font-normal text-muted leading-[1.5];
+}
+.join-code-form > label {
+    @apply mt-0 mx-0 mb-8;
+}
+.join-code-form .primary {
+    @apply min-h-[58px];
+}
+.join-form-note {
+    @apply mt-4 mx-0 mb-0 text-center text-[10px] text-muted;
+}
+.join-entry-note {
+    @apply flex items-center gap-[13px] mt-[34px] pt-[22px] border-t-[1px] border-solid border-t-line;
+}
+.join-entry-note > span {
+    @apply flex items-center justify-center w-[34px] h-[34px] shrink-0 rounded-[50%] bg-[#eee5f5] text-[20px];
+}
+.join-entry-note div {
+    @apply flex flex-col gap-[6px] text-[10px];
+}
+.join-entry-note div > span {
+    @apply text-muted leading-[1.5];
+}
+@media (max-width: 1100px) {
+    .join-welcome {
+        @apply py-[30px] px-[22px];
+    }
+    .join-form-panel {
+        @apply p-8;
+    }
+    .avatar-carousel-stage {
+        @apply gap-2;
+    }
+    .avatar-carousel-arrow {
+        @apply w-9 h-[42px];
+    }
+}
+@media (max-width: 740px) {
+    .join-main {
+        @apply py-0 px-[18px];
+    }
+    footer.join-footer {
+        @apply py-6 px-[18px];
+    }
+    .join-page {
+        @apply pt-5;
+    }
+    .join-layout {
+        @apply flex-col rounded-[20px] min-h-0;
+    }
+    .join-welcome {
+        @apply py-6 px-[18px] border-r-0 border-b-[1px] border-solid border-b-line;
+    }
+    .avatar-carousel-stage {
+        @apply min-h-[250px] h-[250px] gap-[10px];
+    }
+    .avatar-carousel-face {
+        @apply w-[clamp(150px,_45vw,_210px)];
+    }
+    .avatar-carousel-friend {
+        @apply w-11 h-[49px] rounded-[13px];
+    }
+    .avatar-carousel-sticker {
+        @apply left-0 bottom-3 text-[9px] p-[7px];
+    }
+    .avatar-carousel-spark {
+        @apply text-[25px];
+    }
+    .join-name {
+        @apply mt-[22px];
+    }
+    .join-form-panel {
+        @apply self-stretch py-[30px] px-[22px];
+    }
+    .join-form-panel h1 {
+        @apply text-[32px];
+    }
+    .join-form-panel > p {
+        @apply mb-[25px];
+    }
+    .join-entry-note {
+        @apply mt-[26px];
+    }
+}

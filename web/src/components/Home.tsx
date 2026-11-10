@@ -1,6 +1,5 @@
 import { useState, type FormEvent } from "react";
 import { normalizeRoomCode } from "../setup";
-import "../home.css";
 
 export function Home({ go }: { go: (path: string) => void }) {
     const [code, setCode] = useState("");
