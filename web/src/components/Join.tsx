@@ -8,17 +8,23 @@ export function Join({
     catalog,
     go,
     defaultName,
+    initialCode = "",
 }: {
     catalog: Catalog;
     go: (p: string) => void;
     defaultName?: string;
+    initialCode?: string;
 }) {
-    const initialCode = normalizeRoomCode(
-        new URLSearchParams(location.search).get("code") ?? "",
+    const validCode = /^[A-Z0-9]{6}$/i.test(initialCode);
+    const [code, setCode] = useState(
+        validCode ? initialCode.toUpperCase() : "",
     );
-    const [code, setCode] = useState(initialCode);
     const [setup, setSetup] = useState({ ...base(), name: defaultName ?? "" });
-    const [error, setError] = useState("");
+    const [error, setError] = useState(
+        initialCode && !validCode
+            ? "This invite has an invalid room code. Ask your host for a new link."
+            : "",
+    );
     const [busy, setBusy] = useState(false);
 
     async function submit(e: FormEvent) {
@@ -63,7 +69,7 @@ export function Join({
                             }
                             placeholder="What should we call you?"
                             autoComplete="nickname"
-                            autoFocus={initialCode.length === 6}
+                            autoFocus={validCode}
                         />
                     </label>
                     <p className="join-identity-note">

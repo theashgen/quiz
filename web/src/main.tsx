@@ -7,21 +7,23 @@ import { Join } from "./components/Join";
 import { Room } from "./components/Room";
 import { ErrorMessage } from "./components/Common";
 import { AuthPage, AccountPage, AccountMenu } from "./components/Auth";
+import { normalizeRoomCode } from "./setup";
 import "./tailwind.css";
 
 function App() {
-    const [path, setPath] = useState(location.pathname);
+    const [route, setRoute] = useState(location.pathname + location.search);
+    const path = route.split("?")[0];
     const [user, setUser] = useState<Account | null>(null);
     const [catalog, setCatalog] = useState<Catalog>();
     const [error, setError] = useState("");
     useEffect(() => {
-        const update = () => setPath(location.pathname);
+        const update = () => setRoute(location.pathname + location.search);
         addEventListener("popstate", update);
         return () => removeEventListener("popstate", update);
     }, []);
     function go(path: string) {
         history.pushState(null, "", path);
-        setPath(location.pathname);
+        setRoute(location.pathname + location.search);
         window.scrollTo(0, 0);
     }
     useEffect(() => {
@@ -84,9 +86,12 @@ function App() {
         }
     }, [catalog, path]);
     const room = /^\/room\/([A-Z0-9]{6})$/i.exec(path);
+    const invite = /^\/join\/([^/]*)\/?$/i.exec(path);
+    const isJoin = path === "/join" || !!invite;
     const isAuth = ["/signup", "/login", "/account"].includes(path);
     const isHome =
         !room &&
+        !isJoin &&
         ![
             "/create",
             "/solo",
@@ -104,7 +109,7 @@ function App() {
                         ? "home-main"
                         : path === "/create"
                           ? "create-main"
-                          : path === "/join"
+                          : isJoin
                             ? "join-main"
                             : undefined
                 }
@@ -187,16 +192,27 @@ function App() {
                             go("/room/" + r.code);
                         }}
                     />
-                ) : path === "/join" ? (
-                    <Join catalog={catalog} go={go} defaultName={user?.name} />
+                ) : isJoin ? (
+                    <Join
+                        key={route}
+                        catalog={catalog}
+                        go={go}
+                        defaultName={user?.name}
+                        initialCode={
+                            invite?.[1] ??
+                            normalizeRoomCode(
+                                new URLSearchParams(location.search).get(
+                                    "code",
+                                ) ?? "",
+                            )
+                        }
+                    />
                 ) : (
                     <Home go={go} />
                 )}
             </main>
             {!isHome && (
-                <footer
-                    className={path === "/join" ? "join-footer" : undefined}
-                >
+                <footer className={isJoin ? "join-footer" : undefined}>
                     <span className="footer-brand">
                         quiz. <span>A little friendly competition.</span>
                     </span>

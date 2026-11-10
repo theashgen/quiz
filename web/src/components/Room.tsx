@@ -20,6 +20,9 @@ export function Room({
     const [now, setNow] = useState(Date.now());
     const [selected, setSelected] = useState<number | null>(null);
     const [copied, setCopied] = useState(false);
+    const [linkCopied, setLinkCopied] = useState(false);
+    const [linkCopyError, setLinkCopyError] = useState(false);
+    const inviteURL = new URL("/join/" + code, location.origin).href;
     useEffect(() => {
         const t = setInterval(() => setNow(Date.now()), 100);
         return () => clearInterval(t);
@@ -123,6 +126,52 @@ export function Room({
                         {code}
                         <small>{copied ? "Copied!" : "Copy code ⧉"}</small>
                     </button>
+                    {s.isHost && !s.solo && (
+                        <div className="mx-auto mt-4 flex w-full max-w-sm flex-col gap-2 text-left">
+                            <label
+                                htmlFor="room-invite-link"
+                                className="text-xs"
+                            >
+                                Invite players with a link
+                            </label>
+                            <input
+                                id="room-invite-link"
+                                type="text"
+                                inputMode="url"
+                                value={inviteURL}
+                                readOnly
+                                onFocus={(event) =>
+                                    event.currentTarget.select()
+                                }
+                            />
+                            <button
+                                className="button-outline"
+                                onClick={async () => {
+                                    setLinkCopied(false);
+                                    setLinkCopyError(false);
+                                    try {
+                                        await navigator.clipboard.writeText(
+                                            inviteURL,
+                                        );
+                                        setLinkCopied(true);
+                                    } catch {
+                                        setLinkCopyError(true);
+                                    }
+                                }}
+                            >
+                                Copy invite link ⧉
+                            </button>
+                            {linkCopied && (
+                                <p role="status">Invite link copied.</p>
+                            )}
+                            {linkCopyError && (
+                                <ErrorMessage>
+                                    Copy unavailable. Select and copy the invite
+                                    link above.
+                                </ErrorMessage>
+                            )}
+                        </div>
+                    )}
                     <p className="fine-print">
                         Start within {formatTime(s.expiresAt - serverNow)} ·
                         joining won’t extend this deadline
