@@ -1,6 +1,7 @@
 {
-  "code": "D75JLU",
+  "code": "JPCPKS",
   "players": 12,
   "questions": 3,
-  "origin": "http://localhost:8443"
+  "origin": "http://localhost:8443",
+  "ui": "Peach Playground"
 }

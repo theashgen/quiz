@@ -1,6 +1,6 @@
 {
-  "capturedAt": "2026-11-10T11:44:37.191Z",
-  "room": "D75JLU",
+  "capturedAt": "2026-11-11T13:42:07.207Z",
+  "room": "JPCPKS",
   "automatedPlayers": 11,
   "note": "11 automated guests plus one browser-driven guest. Real HTTP sessions and WebSockets; no mocked responses.",
   "clients": [
@@ -16,17 +16,22 @@
           "rank": 1
         },
         {
-          "name": "Zara",
-          "score": 300,
-          "rank": 1
-        },
-        {
           "name": "Kenton",
           "score": 300,
           "rank": 1
         },
         {
-          "name": "Priya",
+          "name": "Zara",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Claire",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Noah",
           "score": 200,
           "rank": 4
         },
@@ -36,12 +41,12 @@
           "rank": 4
         },
         {
-          "name": "Sam",
+          "name": "Priya",
           "score": 200,
           "rank": 4
         },
         {
-          "name": "Sofia",
+          "name": "Sam",
           "score": 200,
           "rank": 4
         },
@@ -51,12 +56,7 @@
           "rank": 4
         },
         {
-          "name": "Claire",
-          "score": 200,
-          "rank": 4
-        },
-        {
-          "name": "Noah",
+          "name": "Sofia",
           "score": 200,
           "rank": 4
         },
@@ -84,17 +84,22 @@
           "rank": 1
         },
         {
-          "name": "Zara",
-          "score": 300,
-          "rank": 1
-        },
-        {
           "name": "Kenton",
           "score": 300,
           "rank": 1
         },
         {
-          "name": "Priya",
+          "name": "Zara",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Claire",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Noah",
           "score": 200,
           "rank": 4
         },
@@ -104,12 +109,12 @@
           "rank": 4
         },
         {
-          "name": "Sam",
+          "name": "Priya",
           "score": 200,
           "rank": 4
         },
         {
-          "name": "Sofia",
+          "name": "Sam",
           "score": 200,
           "rank": 4
         },
@@ -119,12 +124,7 @@
           "rank": 4
         },
         {
-          "name": "Claire",
-          "score": 200,
-          "rank": 4
-        },
-        {
-          "name": "Noah",
+          "name": "Sofia",
           "score": 200,
           "rank": 4
         },
@@ -152,17 +152,22 @@
           "rank": 1
         },
         {
-          "name": "Zara",
-          "score": 300,
-          "rank": 1
-        },
-        {
           "name": "Kenton",
           "score": 300,
           "rank": 1
         },
         {
-          "name": "Priya",
+          "name": "Zara",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Claire",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Noah",
           "score": 200,
           "rank": 4
         },
@@ -172,12 +177,12 @@
           "rank": 4
         },
         {
-          "name": "Sam",
+          "name": "Priya",
           "score": 200,
           "rank": 4
         },
         {
-          "name": "Sofia",
+          "name": "Sam",
           "score": 200,
           "rank": 4
         },
@@ -187,12 +192,7 @@
           "rank": 4
         },
         {
-          "name": "Claire",
-          "score": 200,
-          "rank": 4
-        },
-        {
-          "name": "Noah",
+          "name": "Sofia",
           "score": 200,
           "rank": 4
         },
@@ -220,17 +220,22 @@
           "rank": 1
         },
         {
-          "name": "Zara",
-          "score": 300,
-          "rank": 1
-        },
-        {
           "name": "Kenton",
           "score": 300,
           "rank": 1
         },
         {
-          "name": "Priya",
+          "name": "Zara",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Claire",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Noah",
           "score": 200,
           "rank": 4
         },
@@ -240,12 +245,12 @@
           "rank": 4
         },
         {
-          "name": "Sam",
+          "name": "Priya",
           "score": 200,
           "rank": 4
         },
         {
-          "name": "Sofia",
+          "name": "Sam",
           "score": 200,
           "rank": 4
         },
@@ -255,12 +260,7 @@
           "rank": 4
         },
         {
-          "name": "Claire",
-          "score": 200,
-          "rank": 4
-        },
-        {
-          "name": "Noah",
+          "name": "Sofia",
           "score": 200,
           "rank": 4
         },
@@ -288,17 +288,22 @@
           "rank": 1
         },
         {
-          "name": "Zara",
-          "score": 300,
-          "rank": 1
-        },
-        {
           "name": "Kenton",
           "score": 300,
           "rank": 1
         },
         {
-          "name": "Priya",
+          "name": "Zara",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Claire",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Noah",
           "score": 200,
           "rank": 4
         },
@@ -308,12 +313,12 @@
           "rank": 4
         },
         {
-          "name": "Sam",
+          "name": "Priya",
           "score": 200,
           "rank": 4
         },
         {
-          "name": "Sofia",
+          "name": "Sam",
           "score": 200,
           "rank": 4
         },
@@ -323,12 +328,7 @@
           "rank": 4
         },
         {
-          "name": "Claire",
-          "score": 200,
-          "rank": 4
-        },
-        {
-          "name": "Noah",
+          "name": "Sofia",
           "score": 200,
           "rank": 4
         },
@@ -356,17 +356,22 @@
           "rank": 1
         },
         {
-          "name": "Zara",
-          "score": 300,
-          "rank": 1
-        },
-        {
           "name": "Kenton",
           "score": 300,
           "rank": 1
         },
         {
-          "name": "Priya",
+          "name": "Zara",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Claire",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Noah",
           "score": 200,
           "rank": 4
         },
@@ -376,12 +381,12 @@
           "rank": 4
         },
         {
-          "name": "Sam",
+          "name": "Priya",
           "score": 200,
           "rank": 4
         },
         {
-          "name": "Sofia",
+          "name": "Sam",
           "score": 200,
           "rank": 4
         },
@@ -391,12 +396,7 @@
           "rank": 4
         },
         {
-          "name": "Claire",
-          "score": 200,
-          "rank": 4
-        },
-        {
-          "name": "Noah",
+          "name": "Sofia",
           "score": 200,
           "rank": 4
         },
@@ -424,17 +424,22 @@
           "rank": 1
         },
         {
-          "name": "Zara",
-          "score": 300,
-          "rank": 1
-        },
-        {
           "name": "Kenton",
           "score": 300,
           "rank": 1
         },
         {
-          "name": "Priya",
+          "name": "Zara",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Claire",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Noah",
           "score": 200,
           "rank": 4
         },
@@ -444,12 +449,12 @@
           "rank": 4
         },
         {
-          "name": "Sam",
+          "name": "Priya",
           "score": 200,
           "rank": 4
         },
         {
-          "name": "Sofia",
+          "name": "Sam",
           "score": 200,
           "rank": 4
         },
@@ -459,12 +464,7 @@
           "rank": 4
         },
         {
-          "name": "Claire",
-          "score": 200,
-          "rank": 4
-        },
-        {
-          "name": "Noah",
+          "name": "Sofia",
           "score": 200,
           "rank": 4
         },
@@ -492,17 +492,22 @@
           "rank": 1
         },
         {
-          "name": "Zara",
-          "score": 300,
-          "rank": 1
-        },
-        {
           "name": "Kenton",
           "score": 300,
           "rank": 1
         },
         {
-          "name": "Priya",
+          "name": "Zara",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Claire",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Noah",
           "score": 200,
           "rank": 4
         },
@@ -512,12 +517,12 @@
           "rank": 4
         },
         {
-          "name": "Sam",
+          "name": "Priya",
           "score": 200,
           "rank": 4
         },
         {
-          "name": "Sofia",
+          "name": "Sam",
           "score": 200,
           "rank": 4
         },
@@ -527,12 +532,7 @@
           "rank": 4
         },
         {
-          "name": "Claire",
-          "score": 200,
-          "rank": 4
-        },
-        {
-          "name": "Noah",
+          "name": "Sofia",
           "score": 200,
           "rank": 4
         },
@@ -560,17 +560,22 @@
           "rank": 1
         },
         {
-          "name": "Zara",
-          "score": 300,
-          "rank": 1
-        },
-        {
           "name": "Kenton",
           "score": 300,
           "rank": 1
         },
         {
-          "name": "Priya",
+          "name": "Zara",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Claire",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Noah",
           "score": 200,
           "rank": 4
         },
@@ -580,12 +585,12 @@
           "rank": 4
         },
         {
-          "name": "Sam",
+          "name": "Priya",
           "score": 200,
           "rank": 4
         },
         {
-          "name": "Sofia",
+          "name": "Sam",
           "score": 200,
           "rank": 4
         },
@@ -595,12 +600,7 @@
           "rank": 4
         },
         {
-          "name": "Claire",
-          "score": 200,
-          "rank": 4
-        },
-        {
-          "name": "Noah",
+          "name": "Sofia",
           "score": 200,
           "rank": 4
         },
@@ -628,17 +628,22 @@
           "rank": 1
         },
         {
-          "name": "Zara",
-          "score": 300,
-          "rank": 1
-        },
-        {
           "name": "Kenton",
           "score": 300,
           "rank": 1
         },
         {
-          "name": "Priya",
+          "name": "Zara",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Claire",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Noah",
           "score": 200,
           "rank": 4
         },
@@ -648,12 +653,12 @@
           "rank": 4
         },
         {
-          "name": "Sam",
+          "name": "Priya",
           "score": 200,
           "rank": 4
         },
         {
-          "name": "Sofia",
+          "name": "Sam",
           "score": 200,
           "rank": 4
         },
@@ -663,12 +668,7 @@
           "rank": 4
         },
         {
-          "name": "Claire",
-          "score": 200,
-          "rank": 4
-        },
-        {
-          "name": "Noah",
+          "name": "Sofia",
           "score": 200,
           "rank": 4
         },
@@ -696,17 +696,22 @@
           "rank": 1
         },
         {
-          "name": "Zara",
-          "score": 300,
-          "rank": 1
-        },
-        {
           "name": "Kenton",
           "score": 300,
           "rank": 1
         },
         {
-          "name": "Priya",
+          "name": "Zara",
+          "score": 300,
+          "rank": 1
+        },
+        {
+          "name": "Claire",
+          "score": 200,
+          "rank": 4
+        },
+        {
+          "name": "Noah",
           "score": 200,
           "rank": 4
         },
@@ -716,12 +721,12 @@
           "rank": 4
         },
         {
-          "name": "Sam",
+          "name": "Priya",
           "score": 200,
           "rank": 4
         },
         {
-          "name": "Sofia",
+          "name": "Sam",
           "score": 200,
           "rank": 4
         },
@@ -731,12 +736,7 @@
           "rank": 4
         },
         {
-          "name": "Claire",
-          "score": 200,
-          "rank": 4
-        },
-        {
-          "name": "Noah",
+          "name": "Sofia",
           "score": 200,
           "rank": 4
         },

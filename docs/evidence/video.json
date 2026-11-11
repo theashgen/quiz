@@ -1,25 +1,29 @@
 {
+  "capturedAt": "2026-11-11T13:48:08.160899+00:00",
+  "applicationRevision": "6f5e1b85c61fb58dd0b0a40064a8c37837dc55a9",
+  "ui": "Peach Playground",
   "width": 1440,
   "height": 1000,
   "fps": 30,
   "codec": "H.264",
-  "durationSeconds": 81.8,
+  "sizeBytes": 3818025,
+  "durationSeconds": 84.56,
   "audio": "silent",
   "chapters": [
     {
       "title": "Teacher: sign up, create and save a custom quiz",
       "start": 0.0,
-      "duration": 16.28
+      "duration": 16.24
     },
     {
       "title": "Guest: join 12 players, answer, view results and replay",
-      "start": 16.28,
-      "duration": 43.76
+      "start": 16.24,
+      "duration": 43.36
     },
     {
       "title": "Solo: play a complete five-question round",
-      "start": 60.04,
-      "duration": 21.76
+      "start": 59.6,
+      "duration": 24.96
     }
   ]
 }

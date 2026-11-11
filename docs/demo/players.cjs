@@ -5,7 +5,7 @@ const {
 } = require("../../web/node_modules/playwright-core/lib/utilsBundle.js");
 const { randomUUID } = require("node:crypto");
 const { writeFileSync } = require("node:fs");
-const origin = process.env.APP_URL || "http://localhost:5173";
+const origin = process.env.APP_URL || "http://localhost:8443";
 const code = process.argv[2];
 if (!/^[A-Z0-9]{6}$/.test(code || ""))
   throw Error("Supply a six-character room code");
