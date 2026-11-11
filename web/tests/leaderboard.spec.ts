@@ -165,11 +165,12 @@ test("laptop results use two columns with score and replay actions in view", asy
             ),
         ).toBeTruthy();
         await expect(page.locator(".leaderboard li")).toHaveCount(10);
-        if (viewport.height >= 768) {
-            await expect(
-                page.locator(".ranked-players li").last(),
-            ).toBeInViewport({ ratio: 1 });
-        }
+        const lastPlayer = page.locator(".ranked-players li").last();
+        await lastPlayer.scrollIntoViewIfNeeded();
+        await expect(lastPlayer).toBeInViewport({ ratio: 1 });
+        await expect(
+            page.getByRole("button", { name: "Set up the next quiz" }),
+        ).toBeInViewport({ ratio: 1 });
     }
 });
 

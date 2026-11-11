@@ -27,7 +27,11 @@ test("single-sided dividers stay thin across join and custom setup screens", asy
             ".join-welcome",
             width > 740 ? [0, 1, 0, 0] : [0, 0, 1, 0],
         );
-        await borders(".join-entry-note", [1, 0, 0, 0]);
+        if (width > 740) {
+            await borders(".join-entry-note", [1, 0, 0, 0]);
+        } else {
+            await expect(page.locator(".join-entry-note")).toBeHidden();
+        }
 
         await page.goto("/create");
         await page.getByRole("button", { name: "Your own questions" }).click();
@@ -41,7 +45,7 @@ test("single-sided dividers stay thin across join and custom setup screens", asy
     }
 });
 
-test("shared dotted canvas stays consistent across pages and screen sizes", async ({
+test("shared cream canvas stays consistent across pages and screen sizes", async ({
     page,
 }) => {
     for (const width of [390, 1440]) {
@@ -52,12 +56,12 @@ test("shared dotted canvas stays consistent across pages and screen sizes", asyn
                 page.locator("main h1, main h2").first(),
             ).toBeVisible();
             await expect(page.locator("html")).toHaveCSS(
-                "background-image",
-                /radial-gradient/,
+                "background-color",
+                "rgb(250, 247, 240)",
             );
             await expect(page.locator("html")).toHaveCSS(
-                "background-size",
-                "24px 24px",
+                "background-image",
+                "none",
             );
             expect(
                 await page.evaluate(
@@ -67,7 +71,7 @@ test("shared dotted canvas stays consistent across pages and screen sizes", asyn
             if (path === "/join") {
                 await expect(page.locator(".join-welcome")).toHaveCSS(
                     "background-image",
-                    /radial-gradient/,
+                    "none",
                 );
                 await expect(page.locator(".join-layout")).toHaveCSS(
                     "background-image",

@@ -2,6 +2,7 @@ import { useState, type FormEvent } from "react";
 import { normalizeRoomCode } from "../setup";
 import { Avatar } from "./Avatar";
 import { Button } from "./Button";
+import { PlaygroundTrophy, PlayIcon } from "./PeachArt";
 
 export function Home({ go }: { go: (path: string) => void }) {
     const [code, setCode] = useState("");
@@ -12,91 +13,95 @@ export function Home({ go }: { go: (path: string) => void }) {
     }
 
     return (
-        <div className="home">
-            <section className="landing-hero" aria-labelledby="hero-title">
-                <div className="hero-kicker">
-                    <span className="live-dot" /> A LITTLE FRIENDLY COMPETITION
-                </div>
-                <h1 id="hero-title">
-                    <span className="hero-line hero-line-first">
-                        Big brains.
-                    </span>
-                    <br />
-                    <span className="hero-line hero-line-second">
-                        Bigger vibes.
-                    </span>
-                </h1>
-                <p className="hero-description">
-                    Good questions bring people together. Make a quiz, gather
-                    your favorite minds, and see where curiosity takes you.
-                </p>
-                <div className="home-community">
-                    <div className="community-faces" aria-hidden="true">
-                        {["memoji-21", "memoji-42", "memoji-58"].map(
-                            (avatar) => (
-                                <span key={avatar}>
-                                    <Avatar value={avatar} decorative />
-                                </span>
-                            ),
-                        )}
+        <div className="home peach-home">
+            <section className="playground-hero" aria-labelledby="hero-title">
+                <div className="playground-intro">
+                    <div className="playground-kicker">
+                        <span /> A LITTLE FRIENDLY COMPETITION
                     </div>
-                    <div>
-                        <strong>Better with your people.</strong>
-                        <span>
-                            Classmates, coworkers, or your favorite
-                            know-it-alls.
-                        </span>
+                    <h1 id="hero-title">
+                        Play together.
+                        <br />
+                        <span>Grow curious.</span>
+                    </h1>
+                    <p>
+                        Good questions. Great company. Turn what you know into
+                        your next good time.
+                    </p>
+                    <div className="playground-community">
+                        <div className="playground-faces" aria-hidden="true">
+                            {["memoji-21", "memoji-42", "memoji-58"].map(
+                                (value) => (
+                                    <span key={value}>
+                                        <Avatar value={value} decorative />
+                                    </span>
+                                ),
+                            )}
+                        </div>
+                        <div>
+                            <strong>Better with your people.</strong>
+                            <span>No sign-up needed to join.</span>
+                        </div>
                     </div>
                 </div>
-                <div className="hero-perks">
-                    <span>
-                        <Check /> Free to play
-                    </span>
-                    <span>
-                        <Check /> No sign-up to join
-                    </span>
-                    <span>
-                        <Check /> Just good times
-                    </span>
-                </div>
-                <div className="hero-margin-note" aria-hidden="true">
-                    <span>✳</span> A good time. A great guess.
+                <div className="playground-bento" aria-hidden="true">
+                    <div className="playground-tile tile-blue">
+                        <strong>
+                            PLAY.
+                            <br />
+                            LEARN.
+                            <br />
+                            REPEAT.
+                        </strong>
+                        <Avatar value="memoji-21" decorative />
+                    </div>
+                    <div className="playground-tile tile-violet">
+                        <strong>
+                            Better
+                            <br />
+                            together.
+                        </strong>
+                        <Avatar value="memoji-42" decorative />
+                        <span className="bento-question">?</span>
+                    </div>
+                    <div className="playground-tile tile-gold">
+                        <strong>
+                            Your next
+                            <br />
+                            big win.
+                        </strong>
+                        <PlaygroundTrophy />
+                    </div>
                 </div>
             </section>
-
-            <section className="play-actions" aria-label="Start playing">
-                <div className="start-card-heading">
-                    <div className="start-card-icon" aria-hidden="true">
-                        <Spark />
-                    </div>
-                    <span className="eyebrow">
-                        YOUR NEXT GREAT GUESS STARTS HERE
+            <section className="playground-modes" aria-label="Start playing">
+                <div className="playground-mode mode-host">
+                    <span className="playground-mode-icon">
+                        <PlayIcon kind="group" />
                     </span>
-                    <h2>
-                        Let’s make
-                        <br />a little <em>quizstory.</em>
-                    </h2>
-                    <p>One room. Your people. Plenty to talk about.</p>
+                    <h2>Bring your people.</h2>
+                    <p>Host ready-made trivia or create your own quiz.</p>
+                    <Button
+                        className="host-action"
+                        fullWidth
+                        onClick={() => go("/create")}
+                    >
+                        Create a room <PlayIcon kind="arrow" />
+                    </Button>
                 </div>
-                <Button
-                    className="host-action home-entry"
-                    fullWidth
-                    onClick={() => go("/create")}
-                >
-                    Create a room <Arrow />
-                </Button>
-                <p className="host-action-note">
-                    Pick ready-made trivia or write your own.
-                </p>
                 <form
-                    className="join-flow home-entry"
+                    className="playground-mode join-flow"
                     aria-label="Join your friends"
                     onSubmit={joinRoom}
                 >
-                    <label className="join-label" htmlFor="home-room-code">
-                        Already have an invite?
+                    <span className="playground-mode-icon">
+                        <PlayIcon kind="play" />
+                    </span>
+                    <h2>Got an invite?</h2>
+                    <label htmlFor="home-room-code">
+                        Enter your six-character room code to join.
                     </label>
-                    <div className="join-controls">
+                    <div className="playground-join-controls">
                         <input
                             id="home-room-code"
                             className="home-code-input"
@@ -115,64 +120,37 @@ export function Home({ go }: { go: (path: string) => void }) {
                             enterKeyHint="go"
                         />
                         <Button
-                            className="join-action"
+                            className="playground-join"
                             type="submit"
                             aria-label="Join a room"
                             disabled={code.length !== 6}
                         >
-                            Join <Arrow />
+                            <span>Join</span>
+                            <PlayIcon kind="arrow" />
                         </Button>
                     </div>
                 </form>
-                <div className="solo-action-row home-entry">
-                    <span>Just you and your curiosity?</span>
+                <div className="playground-mode solo-action-row">
+                    <span className="playground-mode-icon">
+                        <PlayIcon />
+                    </span>
+                    <h2>Go solo.</h2>
+                    <p>A little challenge. All for yourself.</p>
                     <Button
-                        intent="ghost"
-                        className="solo-action"
+                        intent="secondary"
+                        fullWidth
                         onClick={() => go("/solo")}
                     >
-                        Play solo <span aria-hidden="true">↗</span>
+                        Play solo <PlayIcon kind="arrow" />
                     </Button>
                 </div>
-                <div className="start-card-footer">
-                    <span aria-hidden="true">◎</span> No downloads. Just show up
-                    and play.
-                </div>
             </section>
+            <div className="playground-footnote">
+                <span>Free to play. No downloads. Just curiosity.</span>
+                <span>
+                    Made for good company <span aria-hidden="true">↗</span>
+                </span>
+            </div>
         </div>
-    );
-}
-
-function Arrow() {
-    return (
-        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M5 12h14m-6-6 6 6-6 6" />
-        </svg>
-    );
-}
-
-function Check() {
-    return (
-        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
-            <path
-                d="m3.5 8 3 3 6-6"
-                stroke="currentColor"
-                strokeWidth="1.7"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-            />
-        </svg>
-    );
-}
-
-function Spark() {
-    return (
-        <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
-            <path
-                d="M24 2v44M2 24h44M8.4 8.4l31.2 31.2m0-31.2L8.4 39.6"
-                stroke="currentColor"
-                strokeWidth="5"
-            />
-        </svg>
     );
 }

@@ -15,23 +15,24 @@
 @import "./styles/motion.css" layer(components);
 @import "./styles/redesign.css" layer(components);
 @import "./styles/viewport.css" layer(components);
+@import "./styles/peach.css" layer(components);
 
 @theme {
     --font-sans: "DM Sans", Arial, sans-serif;
     --font-display: "DM Sans", Arial, sans-serif;
     --font-editorial: "Instrument Serif", Georgia, serif;
-    --color-ink: #292d26;
-    --color-muted: #6d7368;
-    --color-line: #dfe2d8;
-    --color-yellow: #f1ce78;
-    --color-lilac: #e8b99e;
-    --color-lilac-light: #f8eee5;
-    --color-mint: #e5ecdf;
-    --color-pink: #eea18b;
-    --color-paper: #fffefa;
-    --color-canvas: #f6f7f2;
-    --color-brand: #d95839;
-    --color-brand-dark: #b94228;
+    --color-ink: #24221f;
+    --color-muted: #6e6960;
+    --color-line: #e5dfd5;
+    --color-yellow: #ffcf62;
+    --color-lilac: #b994f1;
+    --color-lilac-light: #ffebd9;
+    --color-mint: #ffebd9;
+    --color-pink: #f4a78a;
+    --color-paper: #ffffff;
+    --color-canvas: #faf7f0;
+    --color-brand: #f58038;
+    --color-brand-dark: #8c3c0d;
     --background-image-dot-grid: radial-gradient(
         circle,
         var(--grid-dot) 1.2px,

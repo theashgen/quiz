@@ -191,7 +191,7 @@ test("account details have aligned rows with thin horizontal dividers", async ({
         await expect(details).toHaveCSS("border-top-width", "1px");
         await expect(details).toHaveCSS(
             "border-top-color",
-            "rgb(223, 226, 216)",
+            "rgb(229, 223, 213)",
         );
         for (const side of ["left", "right", "bottom"]) {
             await expect(details).toHaveCSS(`border-${side}-width`, "0px");
@@ -202,7 +202,7 @@ test("account details have aligned rows with thin horizontal dividers", async ({
             await expect(row).toHaveCSS("border-bottom-width", "1px");
             await expect(row).toHaveCSS(
                 "border-bottom-color",
-                "rgb(223, 226, 216)",
+                "rgb(229, 223, 213)",
             );
             for (const side of ["left", "right", "top"]) {
                 await expect(row).toHaveCSS(`border-${side}-width`, "0px");

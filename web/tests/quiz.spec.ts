@@ -4,7 +4,7 @@ import type { Page } from "@playwright/test";
 async function home(page: Page) {
     await page.goto("/");
     await expect(
-        page.getByRole("heading", { name: "Big brains. Bigger vibes." }),
+        page.getByRole("heading", { name: "Play together. Grow curious." }),
     ).toBeVisible();
 }
 

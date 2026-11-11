@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { api, type Account, type Catalog } from "./types";
 import { Home } from "./components/Home";
+import { PlayIcon } from "./components/PeachArt";
 import { SetupPage } from "./components/SetupPage";
 import { Join } from "./components/Join";
 import { Room } from "./components/Room";
@@ -12,7 +13,8 @@ import "@fontsource/dm-sans/latin-400.css";
 import "@fontsource/dm-sans/latin-500.css";
 import "@fontsource/dm-sans/latin-600.css";
 import "@fontsource/dm-sans/latin-700.css";
-import "@fontsource/instrument-serif/latin-400-italic.css";
+import "@fontsource/dm-sans/latin-800.css";
+import "@fontsource/dm-sans/latin-900.css";
 import "./tailwind.css";
 
 function App() {
@@ -114,7 +116,10 @@ function App() {
                         onClick={() => go("/")}
                         aria-label="Quiz home"
                     >
-                        <span aria-hidden="true">✳</span> quiz.
+                        <span aria-hidden="true">
+                            <PlayIcon />
+                        </span>{" "}
+                        quiz<span className="brand-period">.</span>
                     </button>
                     <nav aria-label="Primary navigation">
                         <button onClick={() => go("/solo")}>
