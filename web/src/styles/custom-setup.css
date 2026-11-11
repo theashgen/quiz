@@ -31,7 +31,7 @@
 }
 
 .saved-quizzes summary:focus-visible {
-    @apply outline-[3px] outline-solid outline-[#7450b4] outline-offset-[4px];
+    @apply outline-[3px] outline-solid outline-brand outline-offset-[4px];
 }
 
 .saved-quizzes summary > span {
@@ -72,7 +72,7 @@
 }
 
 .question-number {
-    @apply flex items-center justify-center w-[30px] h-[30px] border-[1px] border-solid border-[#c7b4e3] rounded-[8px] bg-lilac-light text-[11px] font-bold;
+    @apply flex items-center justify-center w-[30px] h-[30px] border-[1px] border-solid border-[#d6c9b6] rounded-[8px] bg-lilac-light text-[11px] font-bold;
 }
 
 .question-state {
@@ -88,7 +88,7 @@
 }
 
 .custom-setup .editor-actions button:hover:not(:disabled) {
-    @apply bg-lilac-light border-[#a88acb];
+    @apply bg-lilac-light border-[#d5baa3];
 }
 
 .custom-setup .editor-question > label {
@@ -140,7 +140,7 @@
 }
 
 .answer-selector input:focus-visible + span {
-    @apply outline-[3px] outline-solid outline-[#7450b4] outline-offset-[2px];
+    @apply outline-[3px] outline-solid outline-brand outline-offset-[2px];
 }
 
 .custom-setup .editor-option input:not([type="radio"]) {

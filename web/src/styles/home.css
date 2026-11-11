@@ -1,235 +1,220 @@
 .home-main {
     @apply min-h-0 isolate;
 }
-
 .home {
-    @apply min-h-[100dvh] flex flex-col items-center justify-center py-8 px-0;
+    @apply min-h-[calc(100dvh_-_88px)] grid grid-cols-[minmax(0,_1fr)_420px] items-center gap-[clamp(48px,_6vw,_100px)] py-12;
 }
-
 .landing-hero {
-    @apply relative isolate text-center w-full pt-5 px-0 pb-7 shrink-0;
+    @apply relative min-w-0 py-6;
 }
-
 .hero-kicker {
-    @apply inline-flex items-center gap-[9px] text-[10px] tracking-[1.6px] font-[750];
+    @apply inline-flex items-center gap-[10px] text-[10px] font-semibold tracking-[1.8px] text-muted;
 }
-
 .live-dot {
-    @apply w-[7px] h-[7px] bg-ink rounded-[50%];
+    @apply size-[7px] rounded-full bg-brand;
 }
-
 .landing-hero h1 {
-    @apply relative z-[1] font-display text-[clamp(64px,_min(7.5vw,_10dvh),_104px)] font-black leading-[1.03] tracking-[-0.075em] mt-[23px] mx-0 mb-[26px];
+    @apply my-6 text-[clamp(66px,_6.6vw,_96px)] leading-[0.98] tracking-[-0.075em] font-bold;
 }
-
-.hero-highlight {
-    @apply inline-block relative;
+.hero-line-second {
+    @apply font-editorial font-normal italic tracking-[-0.045em] text-brand;
 }
-
-.hero-line-first {
-    @apply relative;
+.hero-description {
+    @apply max-w-[430px] text-[15px] leading-[1.85] text-muted mb-8;
 }
-
-.hero-highlight::before {
-    @apply content-[''] absolute [inset:6px_-16px_-3px] z-[-1] bg-lilac border-[1.5px] border-solid border-ink rounded-[12px] transform-[rotate(-2deg)];
+.home-community {
+    @apply flex items-center gap-[14px] my-8;
 }
-
+.community-faces {
+    @apply flex shrink-0 pl-[7px];
+}
+.community-faces > span {
+    @apply block size-11 -ml-[7px] rounded-full border-[3px] border-solid border-canvas bg-[#e5eacf] overflow-hidden p-[3px];
+}
+.community-faces > span:nth-child(2) {
+    @apply bg-[#f1d7c8];
+}
+.community-faces > span:nth-child(3) {
+    @apply bg-[#e1dfe9];
+}
+.home-community strong {
+    @apply block text-[12px] font-semibold;
+}
+.home-community > div:last-child > span {
+    @apply block text-[10px] text-muted mt-1 leading-[1.5];
+}
 .hero-perks {
-    @apply flex justify-center flex-wrap gap-[22px] text-[11px] font-semibold;
+    @apply flex flex-wrap gap-x-5 gap-y-2 text-[10px] font-medium text-muted;
 }
-
 .hero-perks > span {
-    @apply inline-flex items-center gap-[7px];
+    @apply inline-flex items-center gap-[5px];
 }
-
 .hero-perks svg {
-    @apply w-3 h-3;
+    @apply size-[14px] text-[#557149];
 }
-
-.hero-mascot {
-    @apply hidden absolute pointer-events-none tracking-normal;
+.hero-margin-note {
+    @apply flex items-center gap-3 mt-14 text-[11px] text-muted;
 }
-
-.hero-mascot > svg {
-    @apply w-full block;
+.hero-margin-note > span {
+    @apply text-[26px] text-brand;
 }
-
-.hero-mascot > span {
-    @apply block font-[family-name:cursive] font-normal leading-[1.4];
-}
-
-.hero-sticker {
-    @apply hidden flex-col absolute pointer-events-none font-[750] leading-[1.7] tracking-[-0.2px];
-}
-
-.hero-sticker strong {
-    @apply text-[17px] font-black;
-}
-
-.hero-sticker svg {
-    @apply h-9 w-25 stroke-current [stroke-width:2] [stroke-linecap:round] self-center;
-}
-
-.hero-spark {
-    @apply absolute w-[34px] h-[34px] top-[14%] right-[125px] transform-[rotate(14deg)];
-}
-
 .play-actions {
-    @apply relative flex flex-col items-center w-[min(100%,_380px)] shrink-0;
+    @apply relative w-full rounded-[24px] border border-solid border-line bg-paper p-8 shadow-[0_16px_60px_-28px_#3e513a24];
 }
-
-.host-action {
-    @apply w-[min(100%,_300px)] flex items-center justify-between gap-[18px] min-h-15 pt-[9px] pr-3 pb-[9px] pl-[26px] bg-yellow border-[1.5px] border-solid border-ink rounded-[999px] shadow-[0_4px_0_var(--color-ink)] text-[16px] font-[750] [transition:transform_180ms,_box-shadow_180ms,_background_180ms];
+.start-card-heading {
+    @apply mb-7;
 }
-
-.host-action:hover {
-    @apply transform-[translateY(-2px)] shadow-[0_6px_0_var(--color-ink)] bg-[#ffe477];
+.start-card-icon {
+    @apply flex size-12 items-center justify-center rounded-[14px] bg-mint text-[#58754d] mb-6;
 }
-
-.host-action:active {
-    @apply transform-[translateY(2px)] shadow-[0_2px_0_var(--color-ink)];
+.start-card-icon svg {
+    @apply size-[27px];
 }
-
-.host-action-arrow {
-    @apply grid place-items-center w-9 h-9 rounded-[50%] bg-ink text-paper;
+.start-card-heading .eyebrow {
+    @apply text-[8px] tracking-[1.5px] text-muted mb-[14px];
 }
-
-.play-actions svg {
-    @apply w-5 h-5 stroke-current [stroke-width:2] [stroke-linecap:round] [stroke-linejoin:round];
+.start-card-heading h2 {
+    @apply text-[36px] tracking-[-1.6px] leading-[1.12] mb-3 font-semibold;
 }
-
+.start-card-heading em {
+    @apply font-editorial font-normal text-[42px] text-[#657c53];
+}
+.start-card-heading > p {
+    @apply text-[11px] text-muted mb-0;
+}
+.play-actions .host-action {
+    @apply w-full min-h-[50px] flex items-center justify-between gap-4 rounded-[10px] px-[18px] py-[14px] text-[13px] font-semibold bg-brand text-white border border-solid border-brand shadow-none [transition:background_150ms,_transform_150ms];
+}
+.play-actions .host-action:hover:not(:disabled) {
+    @apply bg-brand-dark border-brand-dark transform-[translateY(-2px)] shadow-none;
+}
+.play-actions .host-action:active {
+    @apply transform-[translateY(0px)];
+}
+.host-action svg,
+.join-action svg {
+    @apply size-[18px] stroke-current [stroke-width:1.7] [stroke-linecap:round] [stroke-linejoin:round];
+}
+.host-action-note {
+    @apply mt-[10px] mb-6 text-[10px] text-center text-muted;
+}
 .join-flow {
-    @apply flex flex-col items-center gap-[10px] w-[min(100%,_340px)] mt-[26px];
+    @apply w-full border-t border-solid border-line pt-5;
 }
-
 .join-label {
-    @apply m-0 text-[12px] font-medium text-muted;
+    @apply mt-0 mb-[10px] text-[11px] text-muted font-medium;
 }
-
 .join-controls {
-    @apply flex items-center gap-2 w-full p-[5px] border-[1.5px] border-solid border-ink rounded-[999px] bg-paper;
+    @apply flex gap-2 items-center w-full rounded-[10px] border border-solid border-line bg-canvas p-[5px];
 }
-
 .join-controls:focus-within {
-    @apply outline-[2px] outline-solid outline-[#7450b4] outline-offset-[4px];
+    @apply outline-2 outline-solid outline-brand outline-offset-2;
 }
-
 .home .join-controls .home-code-input {
-    @apply min-w-0 w-full flex-1 min-h-11 pt-[9px] pr-[10px] pb-[9px] pl-4 m-0 border-0 rounded-[999px] bg-transparent outline-none text-ink font-[family-name:ui-monospace,_monospace] text-[16px] font-semibold tracking-[2px] uppercase;
+    @apply min-w-0 w-full flex-1 min-h-10 m-0 py-2 px-3 border-0 rounded-[6px] bg-transparent outline-none text-ink font-sans text-[16px] font-medium tracking-[3px] uppercase;
 }
-
 .home-code-input::placeholder {
-    @apply text-[#8a847b] font-normal;
+    @apply text-[#9b9f94] font-normal;
 }
-
-.join-action {
-    @apply flex items-center justify-center gap-[9px] shrink-0 min-h-11 py-[10px] px-[18px] border-[1px] border-solid border-ink rounded-[999px] bg-ink text-paper text-[12px] font-bold [transition:background_150ms,_color_150ms];
+.play-actions .join-action {
+    @apply flex items-center justify-center gap-2 shrink-0 min-h-10 py-2 px-[14px] rounded-[7px] border-0 bg-ink text-paper text-[11px] font-semibold shadow-none;
 }
-
-.join-action:hover:not(:disabled) {
-    @apply bg-lilac text-ink;
+.play-actions .join-action:hover:not(:disabled) {
+    @apply bg-[#414c39] transform-none shadow-none;
 }
-
-.join-action:disabled {
-    @apply opacity-40;
+.play-actions .join-action:disabled {
+    @apply opacity-35;
 }
-
 .solo-action-row {
-    @apply flex items-center justify-center flex-wrap gap-[7px] mt-[18px] text-[11px] text-muted;
+    @apply flex flex-wrap items-center justify-center gap-[6px] mt-5 text-[10px] text-muted;
 }
-
-.solo-action {
-    @apply inline-flex items-center justify-center gap-[6px] min-h-11 py-[9px] px-[2px] text-[12px] font-bold text-ink underline underline-offset-[4px] [transition:color_150ms];
+.solo-action-row .solo-action {
+    @apply inline-flex items-center gap-[5px] min-h-9 py-1 px-0 text-[11px] font-semibold text-ink underline underline-offset-4;
 }
-
 .solo-action:hover {
-    @apply text-[#7450b4];
+    @apply text-brand;
 }
-
-@media (min-width: 901px) and (max-height: 740px) {
+.start-card-footer {
+    @apply flex justify-center items-center gap-[6px] -mx-8 -mb-8 mt-5 py-[14px] px-4 rounded-b-[24px] border-t border-solid border-line bg-[#f1f4eb] text-[9px] text-muted;
+}
+.start-card-footer > span {
+    @apply text-[15px] text-[#657c53];
+}
+@media (min-width: 1001px) and (max-height: 760px) {
     .home {
-        @apply py-4 px-0;
+        @apply py-6;
     }
-    .landing-hero {
-        @apply pt-3 px-0 pb-6;
-    }
-    .landing-hero h1 {
-        @apply text-[clamp(44px,_8.8dvh,_64px)] mt-[14px] mx-0 mb-5;
-    }
-}
-
-@media (max-width: 900px) {
-    .hero-spark {
-        @apply w-6 right-5;
-    }
-}
-
-@media (max-width: 600px) {
-    .home {
-        @apply py-6 px-0;
-    }
-    .landing-hero {
-        @apply pt-4 px-0 pb-7;
-    }
-    .hero-kicker {
-        @apply text-[8px] tracking-[1px] gap-[7px];
-    }
-    .landing-hero h1 {
-        @apply text-[clamp(36px,_10.1vw,_61px)] tracking-[-0.07em] leading-[1.1] my-[23px] mx-0;
-    }
-    .hero-highlight::before {
-        @apply [inset:0_-8px_-2px] rounded-[7px];
-    }
-    .hero-perks {
-        @apply text-[9px] gap-[15px];
-    }
-    .hero-perks svg {
-        @apply w-[10px] h-[10px];
-    }
-    .hero-spark {
-        @apply w-[18px] h-[18px] top-[-8px] right-[15px];
-    }
-    .host-action {
-        @apply min-h-14 text-[15px];
-    }
-}
-
-@media (min-width: 1001px) {
-    .home {
-        @apply grid grid-cols-[minmax(0,_1fr)_340px] gap-x-[clamp(48px,_6vw,_88px)] justify-normal;
-    }
-    .landing-hero {
-        @apply min-w-0 text-left;
-    }
-    .landing-hero h1 {
-        @apply text-[clamp(52px,_min(6.1vw,_10dvh),_88px)];
-    }
-    .hero-perks {
-        @apply justify-start;
+    .hero-margin-note {
+        @apply mt-7;
     }
     .play-actions {
-        @apply w-full justify-self-end;
+        @apply p-6;
     }
-    .host-action,
-    .join-flow {
-        @apply w-full;
+    .start-card-heading {
+        @apply mb-4;
     }
-    .hero-mascot {
-        @apply block w-[0.8em] left-[calc(100%_+_16px)] top-[50%] transform-[translateY(-50%)_rotate(-10deg)];
+    .start-card-icon {
+        @apply mb-4 size-10;
     }
-    .hero-mascot > span {
-        @apply absolute right-[-12px] bottom-[calc(100%_+_34px)] w-40 text-[10px] text-right whitespace-nowrap;
+    .start-card-footer {
+        @apply -mx-6 -mb-6;
     }
-    .hero-sticker {
-        @apply flex right-3 top-[-112px] text-[11px] transform-[rotate(5deg)];
+}
+@media (max-width: 1000px) {
+    .home {
+        @apply grid-cols-[minmax(0,_1fr)_360px] gap-8;
     }
-    .hero-sticker strong {
-        @apply text-[15px];
+    .landing-hero h1 {
+        @apply text-[64px];
     }
-    .hero-sticker svg {
-        @apply w-25 h-12;
+    .home-community {
+        @apply flex-col items-start gap-[10px];
     }
-    .hero-spark {
-        @apply w-7 h-7 top-[-12px] right-[34px];
+    .play-actions {
+        @apply p-6;
+    }
+    .start-card-footer {
+        @apply -mx-6 -mb-6;
+    }
+}
+@media (max-width: 740px) {
+    .home {
+        @apply min-h-0 grid-cols-[minmax(0,_1fr)] gap-7 pt-9 pb-8;
+    }
+    .landing-hero {
+        @apply p-0;
+    }
+    .landing-hero h1 {
+        @apply text-[clamp(53px,_12.5vw,_76px)] my-5;
+    }
+    .hero-kicker {
+        @apply text-[8px] tracking-[1.4px];
+    }
+    .hero-description {
+        @apply text-[13px] leading-[1.8] mb-5;
+    }
+    .home-community {
+        @apply flex-row items-center my-5;
+    }
+    .home-community strong {
+        @apply text-[11px];
+    }
+    .home-community > div:last-child > span {
+        @apply text-[9px];
+    }
+    .hero-margin-note {
+        @apply hidden;
+    }
+    .hero-perks {
+        @apply gap-x-3 text-[9px];
+    }
+    .play-actions {
+        @apply max-w-[480px] mx-auto;
+    }
+    .start-card-heading h2 {
+        @apply text-[32px];
+    }
+    .start-card-heading em {
+        @apply text-[38px];
     }
 }

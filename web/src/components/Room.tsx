@@ -1,3 +1,4 @@
+import { Button } from "./Button";
 import { useEffect, useState } from "react";
 import type { Catalog } from "../types";
 import { useRoom } from "../useRoom";
@@ -37,9 +38,9 @@ export function Room({
                 <span className="status-symbol">↗</span>
                 <h1>This session is active in another tab.</h1>
                 <p>Your progress is safe. Continue in the newer tab.</p>
-                <button className="button-outline" onClick={() => go("/")}>
+                <Button intent="secondary" onClick={() => go("/")}>
                     Back to home
-                </button>
+                </Button>
             </div>
         );
     if (!s || connection === "failed")
@@ -52,9 +53,9 @@ export function Room({
                 </h1>
                 {error && <ErrorMessage>{error}</ErrorMessage>}
                 {connection === "failed" && (
-                    <button className="primary" onClick={() => go("/join")}>
+                    <Button onClick={() => go("/join")}>
                         Enter a room code
-                    </button>
+                    </Button>
                 )}
             </div>
         );
@@ -96,19 +97,19 @@ export function Room({
                     The quiz wasn’t started within 10 minutes. Create a fresh
                     room to play.
                 </p>
-                <button className="primary" onClick={() => go("/create")}>
-                    Create a room
-                </button>
+                <Button onClick={() => go("/create")}>Create a room</Button>
             </div>
         );
     if (s.status === "lobby")
         return (
             <section className="room-page">
                 {banner}
-                <div className="page-heading centered">
-                    <div className="eyebrow">THE GANG’S GETTING TOGETHER</div>
-                    <h1>A good time is on its way.</h1>
-                    <p>Share this code. Bring your people.</p>
+                <div className="page-heading centered lobby-sharing">
+                    <div className="lobby-intro">
+                        <div className="eyebrow">THE GANG’S GETTING TOGETHER</div>
+                        <h1>A good time is on its way.</h1>
+                        <p>Share this code. Bring your people.</p>
+                    </div>
                     <button
                         className="room-code"
                         aria-label={`Copy room code ${code}`}
@@ -127,25 +128,11 @@ export function Room({
                         <small>{copied ? "Copied!" : "Copy code ⧉"}</small>
                     </button>
                     {s.isHost && !s.solo && (
-                        <div className="mx-auto mt-4 flex w-full max-w-sm flex-col gap-2 text-left">
-                            <label
-                                htmlFor="room-invite-link"
-                                className="text-xs"
-                            >
-                                Invite players with a link
-                            </label>
-                            <input
-                                id="room-invite-link"
-                                type="text"
-                                inputMode="url"
-                                value={inviteURL}
-                                readOnly
-                                onFocus={(event) =>
-                                    event.currentTarget.select()
-                                }
-                            />
-                            <button
-                                className="button-outline"
+                        <div className="lobby-invite">
+                            <Button
+                                intent="secondary"
+                                className="invite-copy-button"
+                                data-copied={linkCopied}
                                 onClick={async () => {
                                     setLinkCopied(false);
                                     setLinkCopyError(false);
@@ -159,15 +146,28 @@ export function Room({
                                     }
                                 }}
                             >
-                                Copy invite link ⧉
-                            </button>
-                            {linkCopied && (
-                                <p role="status">Invite link copied.</p>
-                            )}
+                                <span aria-live="polite" aria-atomic="true">
+                                    {linkCopied
+                                        ? "Invite link copied"
+                                        : "Copy invite link"}
+                                </span>
+                                {linkCopied ? (
+                                    <svg
+                                        className="invite-copy-check"
+                                        viewBox="0 0 20 20"
+                                        fill="none"
+                                        aria-hidden="true"
+                                    >
+                                        <path d="m4 10 4 4 8-8" />
+                                    </svg>
+                                ) : (
+                                    <span className="invite-copy-icon" aria-hidden="true">⧉</span>
+                                )}
+                            </Button>
                             {linkCopyError && (
                                 <ErrorMessage>
-                                    Copy unavailable. Select and copy the invite
-                                    link above.
+                                    Copy unavailable. Try again or share the room
+                                    code instead.
                                 </ErrorMessage>
                             )}
                         </div>
@@ -178,7 +178,7 @@ export function Room({
                     </p>
                 </div>
                 <div className="lobby-grid">
-                    <div className="panel">
+                    <div className="panel lobby-players">
                         <div className="section-row">
                             <h2>Your people</h2>
                             <span className="pill">
@@ -230,8 +230,8 @@ export function Room({
                             order. Play at your own pace.
                         </p>
                         {s.isHost ? (
-                            <button
-                                className="primary w-full"
+                            <Button
+                                fullWidth
                                 disabled={
                                     disabled ||
                                     !s.members.some((m) => m.playing)
@@ -239,19 +239,19 @@ export function Room({
                                 onClick={() => send("start")}
                             >
                                 Start the quiz →
-                            </button>
+                            </Button>
                         ) : s.enrolled ? (
                             <div className="waiting">
                                 <span /> Waiting for the host to start
                             </div>
                         ) : (
-                            <button
-                                className="primary w-full"
+                            <Button
+                                fullWidth
                                 disabled={disabled}
                                 onClick={() => send("replay")}
                             >
                                 Join this next quiz →
-                            </button>
+                            </Button>
                         )}
                     </aside>
                 </div>
@@ -354,8 +354,7 @@ export function Room({
                                       ? "Submitting your answer…"
                                       : "One answer. Make it count."}
                             </span>
-                            <button
-                                className="primary"
+                            <Button
                                 disabled={
                                     disabled ||
                                     selected === null ||
@@ -369,7 +368,7 @@ export function Room({
                                 }
                             >
                                 Submit answer →
-                            </button>
+                            </Button>
                         </div>
                     )}
                 </div>
@@ -433,9 +432,9 @@ export function Room({
             {s.status === "results" && (
                 <div className="replay-actions">
                     {s.solo ? (
-                        <button className="primary" onClick={() => go("/solo")}>
+                        <Button onClick={() => go("/solo")}>
                             Another solo round →
-                        </button>
+                        </Button>
                     ) : (
                         <>
                             <p>
@@ -446,13 +445,13 @@ export function Room({
                                 to play again
                             </p>
                             {!s.members.find((m) => m.id === s.me)?.replay && (
-                                <button
-                                    className="button-outline"
+                                <Button
+                                    intent="secondary"
                                     disabled={disabled}
                                     onClick={() => send("replay")}
                                 >
                                     Count me in for another
-                                </button>
+                                </Button>
                             )}
                             {!s.isHost &&
                                 s.members.find((m) => m.id === s.me)?.replay &&
@@ -463,13 +462,12 @@ export function Room({
                                     </div>
                                 )}
                             {s.isHost && (
-                                <button
-                                    className="primary"
+                                <Button
                                     disabled={disabled}
                                     onClick={() => send("prepare")}
                                 >
                                     Set up the next quiz →
-                                </button>
+                                </Button>
                             )}
                         </>
                     )}

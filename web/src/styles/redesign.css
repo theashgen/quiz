@@ -1,0 +1,441 @@
+/* Shared visual system: quiet surfaces, coral actions, and warm editorial type. */
+.site-header {
+    @apply mx-auto flex h-[88px] max-w-320 items-center gap-8 border-b border-solid border-line px-12;
+}
+.site-brand {
+    @apply flex shrink-0 items-center gap-[10px] p-0 text-[30px] font-bold tracking-[-2px];
+}
+.site-brand > span {
+    @apply grid size-8 place-items-center rounded-[9px] bg-brand text-paper text-[28px] tracking-normal;
+}
+.site-header nav {
+    @apply flex items-center gap-7 ml-8;
+}
+.site-header nav button {
+    @apply text-[11px] font-medium text-muted py-3 px-0;
+}
+.site-header nav button:hover {
+    @apply text-brand;
+}
+.site-header .account-navigation {
+    @apply static ml-auto gap-4;
+}
+.site-header .account-link {
+    @apply max-w-[230px] text-[11px] no-underline;
+}
+.site-header .account-signup {
+    @apply min-h-9 rounded-[8px] border-line bg-paper text-[10px] py-2 px-3;
+}
+.account-dot {
+    @apply size-[6px] bg-brand;
+}
+.account-role-label {
+    @apply text-muted text-[8px];
+}
+.eyebrow {
+    @apply font-semibold tracking-[1.8px] text-[#738067];
+}
+.primary,
+.button-outline {
+    @apply rounded-[10px] border border-solid text-[12px] font-semibold gap-3 shadow-none;
+}
+.primary {
+    @apply border-brand bg-brand text-white;
+}
+.primary:hover:not(:disabled) {
+    @apply bg-brand-dark border-brand-dark shadow-none transform-[translateY(-2px)];
+}
+.primary:active:not(:disabled) {
+    @apply shadow-none transform-[translateY(0px)];
+}
+.button-outline {
+    @apply border-line bg-paper;
+}
+.button-outline:hover:not(:disabled) {
+    @apply bg-mint border-[#b8c4ad];
+}
+.ui-button-small {
+    @apply min-h-9 py-2 px-3 text-[11px];
+}
+.text-button {
+    @apply font-medium;
+}
+.panel {
+    @apply rounded-[16px] border border-solid border-line bg-paper shadow-[0_5px_30px_-22px_#46583b30];
+}
+.page-heading h1 {
+    @apply font-semibold tracking-[-0.055em];
+}
+.page-heading > p {
+    @apply text-[13px];
+}
+.source-tabs button {
+    @apply rounded-[12px] bg-paper border-line;
+}
+.source-tabs button.selected {
+    @apply bg-[#edf2e7] border-[#8fa47b] shadow-none;
+}
+.source-tabs strong {
+    @apply font-semibold text-[13px];
+}
+.source-tabs span {
+    @apply text-[11px];
+}
+.category {
+    @apply rounded-[10px] bg-paper [transition:background_150ms,_border-color_150ms];
+}
+.category:hover {
+    @apply border-[#a9b69e];
+}
+.selected.category {
+    @apply border-[#8fa47b] bg-[#edf2e7];
+}
+input:not([type="checkbox"]):not([type="radio"]),
+textarea {
+    @apply border-line bg-paper rounded-[9px];
+}
+input:focus,
+textarea:focus {
+    @apply outline-brand;
+}
+input[type="checkbox"],
+input[type="radio"] {
+    @apply accent-brand;
+}
+.segmented button {
+    @apply border-line bg-paper rounded-[10px];
+}
+.segmented button.selected {
+    @apply bg-mint border-[#8fa47b];
+}
+.create-main {
+    @apply min-h-[calc(100dvh_-_132px)];
+}
+.site-header:has(+ .create-main) {
+    @apply h-[72px];
+}
+.create-main + footer {
+    @apply h-15 py-[13px];
+}
+.create-page .custom-editor {
+    @apply max-h-[calc(100dvh_-_318px)];
+}
+.create-page .setup-main h2,
+.setup-aside h2 {
+    @apply font-semibold text-[25px];
+}
+.create-page .setup-aside {
+    @apply bg-[#edf2e7] border-[#d6dfcc];
+}
+.custom-setup .setup-aside {
+    @apply bg-transparent;
+}
+.notice {
+    @apply border-[#d7dfca] bg-[#edf2e7] rounded-[10px] leading-[1.7];
+}
+.auth-page {
+    @apply py-8;
+}
+.auth-layout {
+    @apply gap-[clamp(32px,_6vw,_90px)];
+}
+.auth-welcome h1 {
+    @apply font-semibold tracking-[-0.06em] text-[clamp(40px,_4.7vw,_64px)];
+}
+.auth-welcome h1 span {
+    @apply bg-transparent p-0 text-brand font-editorial italic font-normal;
+}
+.auth-welcome > .eyebrow,
+.auth-form-column > .eyebrow {
+    @apply text-[#738067];
+}
+.auth-person {
+    @apply rounded-[20px] shadow-none border-line;
+}
+.auth-guest-note button,
+.auth-password button,
+.auth-switch button {
+    @apply text-brand-dark;
+}
+.auth-form-column {
+    @apply max-w-[480px] p-8 rounded-[20px] border border-solid border-line bg-paper;
+}
+.auth-form-column h2 {
+    @apply font-semibold tracking-[-1px] text-[30px];
+}
+.auth-role {
+    @apply bg-paper rounded-[10px];
+}
+.auth-role.selected {
+    @apply bg-[#edf2e7] border-[#8fa47b];
+}
+.auth-role-check {
+    @apply text-[#597a45];
+}
+.account-page {
+    @apply max-w-[900px] pt-9 pb-6;
+}
+.account-heading {
+    @apply grid grid-cols-[minmax(0,_1fr)_auto] items-center;
+}
+.account-heading h1 {
+    @apply text-[clamp(34px,_4vw,_52px)] leading-[1.1] tracking-[-0.06em] font-semibold [overflow-wrap:anywhere];
+}
+.account-role-badge {
+    @apply rounded-full border-[#cbd7bc] bg-mint text-[#526744] font-medium text-[10px];
+}
+.account-details dt {
+    @apply text-[12px];
+}
+.account-details dd {
+    @apply font-medium text-[13px];
+}
+.join-main {
+    @apply max-w-none px-[clamp(24px,_3.5vw,_80px)];
+}
+.join-page {
+    @apply pt-5;
+}
+.join-layout {
+    @apply rounded-[20px] min-h-[max(520px,_calc(100dvh_-_270px))];
+}
+.join-welcome {
+    @apply bg-mint border-line;
+}
+.join-welcome > .eyebrow,
+.join-form-panel > .eyebrow,
+.avatar-carousel legend,
+.avatar-carousel-count,
+.join-identity-note {
+    @apply text-[#617453];
+}
+.avatar-carousel-orbit {
+    @apply border-[#a8b89a];
+}
+.avatar-carousel-face {
+    @apply bg-[#f1d0b7];
+}
+.avatar-carousel-arrow {
+    @apply border-[#c8d3bd] bg-[#fffefaad];
+}
+.avatar-carousel-spark {
+    @apply text-[#6c865b];
+}
+.avatar-carousel-sticker {
+    @apply bg-[#f5ead2] border-[#d6c69f] rounded-[8px] text-[#7c6741] shadow-none;
+}
+.join-name input {
+    @apply border-[#becdaf] bg-paper;
+}
+.join-form-panel h1 {
+    @apply font-semibold text-[clamp(32px,_3.3vw,_48px)] tracking-[-0.055em];
+}
+.join-form-panel .code-input {
+    @apply bg-canvas border-line rounded-[12px] text-[26px] tracking-[0.3em] font-medium;
+}
+.join-entry-note > span {
+    @apply bg-mint text-[#617453];
+}
+.avatar-dialog {
+    @apply rounded-[20px] border-line bg-paper shadow-[0_24px_80px_-20px_#29332145];
+}
+.avatar-dialog-heading .eyebrow,
+.avatar-browse {
+    @apply text-brand-dark;
+}
+.avatar-dialog-heading h2 {
+    @apply font-semibold;
+}
+.avatar-library button.selected,
+.identity .avatars button.selected {
+    @apply bg-mint border-[#7e976b] shadow-[inset_0_0_0_1px_#7e976b];
+}
+.room-code {
+    @apply rounded-[14px] bg-[#edf2e7] border-[#becdaf] text-[#3f5635] font-sans tracking-[7px];
+}
+.lobby-aside {
+    @apply bg-[#edf2e7];
+}
+.question-panel {
+    @apply border-line shadow-none rounded-[20px];
+}
+.answer-option {
+    @apply bg-paper border-line rounded-[12px];
+}
+.answer-option:hover:not(:disabled) {
+    @apply bg-[#f1f4ec] border-[#a1b58d];
+}
+.answer-option.chosen {
+    @apply bg-mint border-[#7e976b];
+}
+.answer-option.correct {
+    @apply bg-[#e4f1e2] border-[#75a46a];
+}
+.podium-results .leaderboard-stage {
+    @apply bg-paper [background-image:none] border-line;
+}
+.podium-results .leaderboard-standings {
+    @apply bg-[#edf2e7] border-[#d6dfcc];
+}
+.leaderboard-heading h2 {
+    @apply font-semibold tracking-[-1.5px];
+}
+.winner-podium::before {
+    @apply opacity-40;
+}
+.podium-board .ranked-players > li {
+    @apply border-line bg-paper rounded-[12px];
+}
+.podium-board .ranked-players > li.me {
+    @apply bg-[#f9eee5] border-[#dfbda2];
+}
+.podium-board .winner-podium > li.me {
+    @apply bg-transparent;
+}
+footer,
+footer.join-footer {
+    @apply max-w-320 mx-auto px-12 text-[10px];
+}
+.footer-brand {
+    @apply text-[26px] font-bold tracking-[-1.5px];
+}
+@media (min-width: 741px) and (max-height: 800px) {
+    .site-header:has(+ .create-main) {
+        @apply h-14;
+    }
+    .create-main {
+        @apply min-h-[calc(100dvh_-_100px)];
+    }
+    .create-main + footer {
+        @apply h-11 py-2;
+    }
+    .create-main + footer .footer-brand {
+        @apply text-[22px] leading-none;
+    }
+    .create-page > .page-heading {
+        @apply hidden;
+    }
+    .create-page {
+        @apply pt-2;
+    }
+    .create-page .source-tabs {
+        @apply mb-2;
+    }
+    .create-page > .back {
+        @apply py-1 mb-2;
+    }
+    .create-page .source-tabs button {
+        @apply py-2;
+    }
+    .create-page .panel {
+        @apply p-4;
+    }
+    .create-page .category {
+        @apply p-3 min-h-21;
+    }
+    .create-page .categories {
+        @apply my-3;
+    }
+    .create-page .identity,
+    .create-page .identity label,
+    .create-page .identity fieldset {
+        @apply my-2;
+    }
+    .create-page .checkbox {
+        @apply mt-2 mb-3;
+    }
+    .create-page .setup-aside > .eyebrow {
+        @apply mt-0 mb-2;
+    }
+    .create-page .setup-aside h2 {
+        @apply mb-2;
+    }
+    .create-page .custom-editor {
+        @apply max-h-[calc(100dvh_-_236px)];
+    }
+}
+@media (max-width: 1000px) {
+    .site-header {
+        @apply px-7 gap-5;
+    }
+    .site-header nav {
+        @apply ml-0 gap-5;
+    }
+    .join-main {
+        @apply px-7;
+    }
+}
+@media (max-width: 740px) {
+    .site-header {
+        @apply h-[72px] px-[18px] gap-3;
+    }
+    .site-brand {
+        @apply text-[27px] gap-2;
+    }
+    .site-brand > span {
+        @apply size-7 text-[24px];
+    }
+    .site-header nav {
+        @apply hidden;
+    }
+    .site-header .account-navigation {
+        @apply gap-3;
+    }
+    .site-header .account-signup {
+        @apply hidden;
+    }
+    .site-header .account-link {
+        @apply max-w-[170px] text-[10px] gap-[6px];
+    }
+    .site-header .account-role-label {
+        @apply hidden;
+    }
+    .auth-form-column {
+        @apply p-5 rounded-[16px];
+    }
+    .auth-layout {
+        @apply gap-5;
+    }
+    .auth-welcome h1 {
+        @apply text-[36px];
+    }
+    .account-page {
+        @apply pt-6;
+    }
+    .account-heading {
+        @apply grid-cols-[minmax(0,_1fr)] gap-3 mb-5;
+    }
+    .account-role-badge {
+        @apply justify-self-start;
+    }
+    .account-actions {
+        @apply gap-3;
+    }
+    .join-main {
+        @apply px-[18px];
+    }
+    .join-layout {
+        @apply min-h-0 rounded-[16px];
+    }
+    .join-form-panel {
+        @apply py-7 px-[22px];
+    }
+    .join-form-panel h1 {
+        @apply text-[34px];
+    }
+    .create-page .custom-editor {
+        @apply max-h-none;
+    }
+    .create-main {
+        @apply min-h-0;
+    }
+    footer,
+    footer.join-footer {
+        @apply px-[18px] py-6;
+    }
+}
+@media (prefers-reduced-motion: no-preference) {
+    :is(input, textarea):focus {
+        @apply border-[#a1b58d] shadow-[0_0_0_4px_#79936312];
+    }
+}

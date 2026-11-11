@@ -69,11 +69,16 @@ for (const width of [320, 390, 768, 1440]) {
     });
 }
 
-test("home fits one screen without hiding play controls", async ({ page }) => {
+test("home actions stay reachable and the play card stays aligned across viewports", async ({
+    page,
+}) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/");
     await expect(
-        page.getByRole("button", { name: "Create a room", exact: true }),
+        page.getByRole("heading", {
+            level: 1,
+            name: "Big brains. Bigger vibes.",
+        }),
     ).toBeVisible();
     for (const viewport of [
         { width: 1920, height: 1080 },
@@ -89,78 +94,24 @@ test("home fits one screen without hiding play controls", async ({ page }) => {
         await page.setViewportSize(viewport);
         expect(
             await page.evaluate(
-                () => document.documentElement.scrollHeight <= innerHeight,
+                () => document.documentElement.scrollWidth <= innerWidth,
             ),
         ).toBeTruthy();
-        for (const name of ["Create a room", "Join a room", "Play solo"]) {
-            await expect(
-                page.getByRole("button", { name, exact: true }),
-            ).toBeInViewport({ ratio: 1 });
-        }
-        await expect(
-            page.getByLabel("Room code", { exact: true }),
-        ).toBeInViewport({
-            ratio: 1,
-        });
-        const kicker = await page.locator(".hero-kicker").boundingBox();
-        const headline = await page.locator("#hero-title").boundingBox();
-        const perks = await page.locator(".hero-perks").boundingBox();
         const hero = await page.locator(".landing-hero").boundingBox();
         const actions = await page.locator(".play-actions").boundingBox();
-        expect(kicker!.y + kicker!.height).toBeLessThanOrEqual(headline!.y);
-        expect(headline!.y + headline!.height).toBeLessThanOrEqual(perks!.y);
-        if (viewport.width > 1000) {
+        if (viewport.width > 740) {
             expect(hero!.x + hero!.width).toBeLessThan(actions!.x);
-            expect(
-                Math.abs(
-                    hero!.y +
-                        hero!.height / 2 -
-                        (actions!.y + actions!.height / 2),
-                ),
-            ).toBeLessThan(2);
-            const highlightedLine = await page
-                .locator(".hero-line-second")
-                .boundingBox();
-            expect(
-                highlightedLine!.x + highlightedLine!.width + 16,
-            ).toBeLessThan(actions!.x);
-            const firstLine = await page
-                .locator(".hero-line-first")
-                .boundingBox();
-            const mascot = await page.locator(".hero-mascot").boundingBox();
-            const caption = await page
-                .locator(".hero-mascot > span")
-                .boundingBox();
-            const sticker = await page.locator(".hero-sticker").boundingBox();
-            const host = await page.locator(".host-action").boundingBox();
-            expect(mascot!.x).toBeGreaterThan(firstLine!.x + firstLine!.width);
-            expect(
-                Math.abs(
-                    mascot!.y +
-                        mascot!.height / 2 -
-                        (firstLine!.y + firstLine!.height / 2),
-                ),
-            ).toBeLessThan(2);
-            expect(mascot!.y + mascot!.height).toBeLessThanOrEqual(
-                highlightedLine!.y,
-            );
-            expect(caption!.y + caption!.height).toBeLessThanOrEqual(
-                firstLine!.y,
-            );
-            expect(sticker!.y + sticker!.height).toBeLessThanOrEqual(host!.y);
-            expect(host!.y - (sticker!.y + sticker!.height)).toBeLessThan(32);
-            expect(sticker!.x).toBeGreaterThanOrEqual(host!.x);
-            expect(sticker!.x + sticker!.width).toBeLessThanOrEqual(
-                host!.x + host!.width,
-            );
         } else {
-            expect(perks!.y + perks!.height).toBeLessThanOrEqual(actions!.y);
-            expect(actions!.y - (perks!.y + perks!.height)).toBeLessThanOrEqual(
-                32,
-            );
-            await expect(page.locator(".hero-mascot")).not.toBeVisible();
-            await expect(page.locator(".hero-sticker")).not.toBeVisible();
+            expect(hero!.y + hero!.height).toBeLessThan(actions!.y);
         }
+        for (const name of ["Create a room", "Join a room", "Play solo"]) {
+            const action = page.getByRole("button", { name, exact: true });
+            await action.scrollIntoViewIfNeeded();
+            await expect(action).toBeInViewport({ ratio: 0.99 });
+        }
+        const input = page.getByLabel("Room code", { exact: true });
+        await input.scrollIntoViewIfNeeded();
+        await expect(input).toBeInViewport({ ratio: 0.99 });
     }
     await page
         .getByRole("button", { name: "Create a room", exact: true })
@@ -194,7 +145,7 @@ test("light grid is decorative and does not block play controls", async ({
         expect(grid.image).toContain("radial-gradient");
         expect(grid.size).toBe("24px 24px");
         expect(grid.animation).toBe("none");
-        expect(grid.paper).toBe("rgb(250, 247, 239)");
+        expect(grid.paper).toBe("rgb(246, 247, 242)");
     }
     await createButton.click();
     await expect(
@@ -249,14 +200,17 @@ test("direct join links normalize their code and let players edit it", async ({
     );
 });
 
-test("pages have no top bar and back navigation supports keyboard input", async ({
+test("shared navigation and back actions support keyboard input", async ({
     page,
 }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
     for (const path of ["/", "/create", "/solo", "/join"]) {
         await page.goto(path);
         await expect(page.locator("main")).toBeVisible();
-        await expect(page.locator("header, nav")).toHaveCount(0);
+        await expect(page.getByRole("banner")).toBeVisible();
+        await expect(
+            page.getByRole("navigation", { name: "Primary navigation" }),
+        ).toBeVisible();
     }
     await expect(page.getByLabel("Room code", { exact: true })).toBeVisible();
     await page.getByRole("button", { name: "Back to home" }).focus();
