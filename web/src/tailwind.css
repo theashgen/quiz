@@ -13,25 +13,30 @@
 @import "./styles/auth.css" layer(components);
 @import "./styles/shared.css" layer(components);
 @import "./styles/motion.css" layer(components);
+@import "./styles/redesign.css" layer(components);
+@import "./styles/viewport.css" layer(components);
 
 @theme {
-    --font-sans: Arial, Helvetica, ui-sans-serif, sans-serif;
-    --font-display: "Arial Black", Arial, Helvetica, sans-serif;
-    --color-ink: #1c1c1a;
-    --color-muted: #625f59;
-    --color-line: #d9d5cc;
-    --color-yellow: #ffdc58;
-    --color-lilac: #c5acf3;
-    --color-lilac-light: #eee5fa;
-    --color-mint: #bce6cf;
-    --color-pink: #ff8eb5;
-    --color-paper: #fffdf7;
-    --color-canvas: #faf7ef;
+    --font-sans: "DM Sans", Arial, sans-serif;
+    --font-display: "DM Sans", Arial, sans-serif;
+    --font-editorial: "Instrument Serif", Georgia, serif;
+    --color-ink: #292d26;
+    --color-muted: #6d7368;
+    --color-line: #dfe2d8;
+    --color-yellow: #f1ce78;
+    --color-lilac: #e8b99e;
+    --color-lilac-light: #f8eee5;
+    --color-mint: #e5ecdf;
+    --color-pink: #eea18b;
+    --color-paper: #fffefa;
+    --color-canvas: #f6f7f2;
+    --color-brand: #d95839;
+    --color-brand-dark: #b94228;
     --background-image-dot-grid: radial-gradient(
         circle,
         var(--grid-dot) 1.2px,
         transparent 1.2px
     );
-    --grid-dot: rgb(101 83 121 / 29%);
+    --grid-dot: rgb(74 89 58 / 10%);
     --grid-spacing: 24px;
 }

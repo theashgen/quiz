@@ -88,16 +88,7 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
-    .home
-        :is(
-            .hero-kicker,
-            .hero-line,
-            .hero-perks,
-            .hero-mascot,
-            .hero-sticker,
-            .hero-spark,
-            .home-entry
-        ) {
+    .home :is(.hero-kicker, .hero-line, .hero-perks, .home-entry) {
         @apply [animation:blur-reveal_var(--enter-duration,_800ms)_cubic-bezier(0.16,_1,_0.3,_1)_var(--enter-delay,_0ms)_backwards];
     }
 
@@ -119,18 +110,6 @@
 
     .hero-perks {
         @apply [--enter-delay:400ms] [--enter-y:16px] [--enter-blur:6px] [--enter-scale:1];
-    }
-
-    .hero-mascot {
-        @apply [--enter-delay:440ms] [--enter-x:-14px] [--enter-y:20px] [--enter-scale:0.9];
-    }
-
-    .hero-sticker {
-        @apply [--enter-delay:520ms] [--enter-x:10px] [--enter-y:14px] [--enter-scale:0.95];
-    }
-
-    .hero-spark {
-        @apply [--enter-delay:580ms] [--enter-y:0px] [--enter-scale:0.65];
     }
 
     .home-entry {

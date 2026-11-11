@@ -1,3 +1,4 @@
+import { Button } from "./Button";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import type { Catalog, Setup, Question } from "../types";
 import { base, blank } from "../setup";
@@ -311,9 +312,9 @@ export function SetupPage({
                                                 placeholder="Give your quiz a name"
                                             />
                                         </label>
-                                        <button
+                                        <Button
                                             type="button"
-                                            className="button-outline"
+                                            intent="secondary"
                                             onClick={() => {
                                                 if (!saveName.trim()) {
                                                     setError(
@@ -335,7 +336,7 @@ export function SetupPage({
                                             }}
                                         >
                                             Save a copy
-                                        </button>
+                                        </Button>
                                     </div>
                                     <p className="fine-print">
                                         A work in progress? Save a draft before
@@ -649,8 +650,10 @@ export function SetupPage({
                                         </fieldset>
                                     </div>
                                 ))}
-                                <button
-                                    className="button-outline w-full add-question"
+                                <Button
+                                    intent="secondary"
+                                    fullWidth
+                                    className="add-question"
                                     type="button"
                                     onClick={() => {
                                         focusNewQuestion.current = true;
@@ -664,7 +667,7 @@ export function SetupPage({
                                     }}
                                 >
                                     + Add a question
-                                </button>
+                                </Button>
                             </>
                         )}
                     </div>
@@ -723,8 +726,8 @@ export function SetupPage({
                             </>
                         )}
                         {error && <ErrorMessage>{error}</ErrorMessage>}
-                        <button
-                            className="primary w-full"
+                        <Button
+                            fullWidth
                             disabled={
                                 busy ||
                                 (setup.source === "preset" &&
@@ -738,7 +741,7 @@ export function SetupPage({
                                   : rematch
                                     ? "Open next lobby →"
                                     : "Create my room →"}
-                        </button>
+                        </Button>
                         <p className="fine-print">
                             {solo
                                 ? "No waiting room. Your quiz starts immediately."

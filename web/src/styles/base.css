@@ -41,12 +41,12 @@ textarea {
 
 button:focus-visible,
 a:focus-visible {
-    @apply outline-[3px] outline-solid outline-[#7450b4];
+    @apply outline-[3px] outline-solid outline-brand;
 }
 
 input:focus,
 textarea:focus {
-    @apply outline-[2px] outline-solid outline-[#7450b4];
+    @apply outline-[2px] outline-solid outline-brand;
 }
 
 a {

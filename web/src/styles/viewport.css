@@ -1,0 +1,483 @@
+/* The application owns the viewport; dense content scrolls inside its workspace.
+   min-height: 0 lets flex/grid children shrink instead of stretching the page. */
+html,
+body {
+    @apply h-full overflow-hidden;
+}
+#root {
+    @apply flex h-dvh min-h-0 flex-col overflow-hidden;
+}
+#root > .site-header {
+    @apply h-16 w-full shrink-0;
+}
+#root > main {
+    @apply flex w-full min-h-0 flex-1 flex-col overflow-hidden py-4;
+}
+#root > main > * {
+    @apply min-h-0 min-w-0 max-h-full shrink overflow-y-auto overscroll-contain;
+}
+#root > main > :is(.narrow, .account-page, .play-page, .results-page) {
+    @apply w-full my-auto;
+}
+#root > footer {
+    @apply flex h-11 min-h-0 w-full shrink-0 items-center my-0 py-2;
+}
+#root > footer .footer-brand {
+    @apply text-[22px] leading-none;
+}
+/* Landing: keep the three ways to play together on small screens. */
+#root > main > .home {
+    @apply h-full min-h-0 py-0;
+}
+.landing-hero h1 {
+    @apply text-[clamp(52px,_6vw,_88px)];
+}
+.hero-margin-note {
+    @apply mt-6;
+}
+/* Setup: independently browse questions and options with the launch control
+   in the adjacent settings panel. Applies to host, solo, and rematch. */
+#root > main > .setup-page {
+    @apply flex h-full flex-col overflow-hidden pt-0 pb-0;
+}
+.setup-page > :is(.back, .page-heading) {
+    @apply shrink-0;
+}
+.setup-page > .back {
+    @apply mb-2 py-1;
+}
+.setup-page > .page-heading {
+    @apply mb-3;
+}
+.setup-page > .page-heading h1 {
+    @apply text-[clamp(25px,_3vw,_38px)] mb-2;
+}
+.setup-page > .page-heading :is(.eyebrow, p) {
+    @apply mb-2;
+}
+.setup-page > form {
+    @apply flex min-h-0 flex-1 flex-col;
+}
+.setup-page .source-tabs {
+    @apply shrink-0 mb-3;
+}
+.setup-page .source-tabs button {
+    @apply py-2 px-3;
+}
+.setup-grid {
+    @apply min-h-0 flex-1 items-stretch;
+}
+.setup-grid > .panel,
+.create-page .custom-editor {
+    @apply min-h-0 max-h-full overflow-y-auto overscroll-contain p-5;
+}
+/* Join: remove the minimum height that used to overflow laptop screens. */
+#root > main > .join-page {
+    @apply flex h-full flex-col pt-0;
+}
+.join-page > .back {
+    @apply mb-2 py-1 shrink-0;
+}
+.join-layout {
+    @apply min-h-0 flex-1;
+}
+.join-welcome,
+.join-form-panel {
+    @apply min-h-0 max-h-full overflow-y-auto overscroll-contain py-5;
+}
+.avatar-carousel-stage {
+    @apply min-h-0 h-[clamp(150px,_30dvh,_320px)];
+}
+.avatar-carousel-face {
+    @apply w-[clamp(130px,_22dvh,_260px)];
+}
+.join-name {
+    @apply mt-4;
+}
+.join-form-panel > p,
+.join-code-form > label {
+    @apply mb-4;
+}
+.join-entry-note {
+    @apply mt-4 pt-3;
+}
+/* Account and auth stay in the same frame; long forms retain native scrolling. */
+.auth-page {
+    @apply py-0;
+}
+.auth-layout {
+    @apply min-h-0 items-start;
+}
+.auth-welcome {
+    @apply py-4;
+}
+.auth-form-column {
+    @apply p-5;
+}
+.auth-form-column > :is(.eyebrow, h2, p) {
+    @apply mb-3;
+}
+.auth-form-column label {
+    @apply my-3;
+}
+.account-page {
+    @apply py-2;
+}
+.account-actions {
+    @apply mt-4 mb-5;
+}
+.account-details > div {
+    @apply py-3;
+}
+/* Lobby: compact sharing header above the player workspace and start controls. */
+#root > main > .room-page {
+    @apply grid h-full grid-cols-[minmax(0,_1fr)] grid-rows-[auto_minmax(0,_1fr)] gap-5 overflow-hidden pt-0;
+}
+#root > main > .room-page:has(> .notice) {
+    @apply grid-rows-[auto_auto_minmax(0,_1fr)];
+}
+.room-page > .notice {
+    @apply col-span-full my-0;
+}
+.lobby-sharing {
+    @apply grid min-h-0 grid-cols-[minmax(0,_1fr)_220px_190px] items-center gap-x-6 gap-y-3 rounded-[16px] border border-line bg-paper p-5 mb-0 text-left;
+}
+.lobby-sharing .eyebrow {
+    @apply text-[9px] mb-2 justify-start;
+}
+.lobby-sharing h1 {
+    @apply text-[clamp(25px,_2.5vw,_34px)] mb-2;
+}
+.lobby-intro > p {
+    @apply text-[13px] mb-0;
+}
+.lobby-sharing .room-code {
+    @apply w-full min-w-0 py-3 px-3 text-[30px] tracking-[0.16em];
+}
+.lobby-sharing .room-code small {
+    @apply text-[10px] tracking-normal mt-2;
+}
+.lobby-invite {
+    @apply flex w-full min-w-0 flex-col gap-2;
+}
+.lobby-invite :is(p, .error) {
+    @apply m-0 text-[11px];
+}
+.lobby-sharing > .fine-print {
+    @apply col-span-full m-0 border-t border-line pt-3 text-[10px] text-muted;
+}
+.lobby-grid {
+    @apply grid min-h-0 grid-cols-[minmax(0,_1fr)_280px] items-start gap-4 my-0;
+}
+.lobby-players {
+    @apply flex h-full min-h-0 flex-1 flex-col p-5;
+}
+.lobby-players > .section-row {
+    @apply shrink-0 mb-4;
+}
+.lobby-players h2 {
+    @apply text-[25px];
+}
+.lobby-players .player-grid {
+    @apply min-h-0 max-h-none overflow-y-auto overscroll-contain content-start mt-0;
+}
+.lobby-players .player {
+    @apply p-3;
+}
+.lobby-aside {
+    @apply min-h-0 max-h-full overflow-y-auto shrink-0 p-5;
+}
+.lobby-aside .eyebrow {
+    @apply mb-2;
+}
+.lobby-aside h2 {
+    @apply text-[24px] mb-2;
+}
+.lobby-aside p {
+    @apply text-[12px] leading-[1.6] mb-3;
+}
+/* Questions and result boards use the available space without giant top gaps. */
+.play-page {
+    @apply py-0;
+}
+.progress-track {
+    @apply mt-3 mb-4;
+}
+.question-panel {
+    @apply p-5;
+}
+.question-panel h1 {
+    @apply my-5;
+}
+.question-bottom {
+    @apply mt-4;
+}
+.results-page {
+    @apply pt-0 pb-2;
+}
+@media (min-width: 741px) and (max-width: 1000px) {
+    .lobby-sharing {
+        @apply grid-cols-[minmax(0,_1fr)_200px];
+    }
+    .lobby-intro {
+        @apply row-span-2;
+    }
+    .lobby-sharing > .fine-print {
+        @apply col-span-full;
+    }
+    .lobby-grid {
+        @apply grid-cols-[minmax(0,_1fr)_240px];
+    }
+}
+@media (max-width: 740px) {
+    #root > .site-header {
+        @apply h-14;
+    }
+    #root > main {
+        @apply px-4 py-3;
+    }
+    #root > footer {
+        @apply h-8 px-4 text-[9px];
+    }
+    #root > footer .footer-brand {
+        @apply text-[18px];
+    }
+    #root > footer > span:last-child,
+    .footer-brand > span {
+        @apply hidden;
+    }
+    .home {
+        @apply gap-4 content-center;
+    }
+    .landing-hero h1 {
+        @apply text-[42px] my-2;
+    }
+    .hero-description {
+        @apply text-[12px] leading-normal mb-0;
+    }
+    .home-community,
+    .hero-perks,
+    .hero-margin-note {
+        @apply hidden;
+    }
+    .play-actions {
+        @apply p-5;
+    }
+    .start-card-heading {
+        @apply mb-4;
+    }
+    .start-card-heading h2 {
+        @apply text-[30px] mb-2;
+    }
+    .start-card-heading h2 br,
+    .start-card-icon,
+    .start-card-heading > .eyebrow,
+    .start-card-footer {
+        @apply hidden;
+    }
+    .join-flow {
+        @apply mt-4 pt-4;
+    }
+    .solo-action-row {
+        @apply mt-3 pt-3;
+    }
+    .setup-grid {
+        @apply flex flex-col overflow-y-auto overscroll-contain;
+    }
+    .setup-grid > .panel,
+    .create-page .custom-editor {
+        @apply shrink-0 max-h-none overflow-visible p-4;
+    }
+    .setup-page > .page-heading {
+        @apply mb-2;
+    }
+    .setup-page > .page-heading > :is(.eyebrow, p) {
+        @apply hidden;
+    }
+    .source-tabs span {
+        @apply hidden;
+    }
+    .join-layout {
+        @apply overflow-y-auto overscroll-contain;
+    }
+    .join-welcome,
+    .join-form-panel {
+        @apply flex-none overflow-visible p-4;
+    }
+    .join-welcome > .eyebrow,
+    .join-identity-note,
+    .join-entry-note {
+        @apply hidden;
+    }
+    .avatar-carousel-stage {
+        @apply h-30;
+    }
+    .avatar-carousel-face {
+        @apply w-26;
+    }
+    .avatar-carousel-friend,
+    .avatar-carousel-sticker,
+    .avatar-carousel-spark,
+    .avatar-carousel-swipe-hint {
+        @apply hidden;
+    }
+    .join-name {
+        @apply mt-3;
+    }
+    .join-name input {
+        @apply min-h-11;
+    }
+    .join-form-panel > .eyebrow {
+        @apply mb-2;
+    }
+    .join-form-panel h1 {
+        @apply text-[28px] mb-2;
+    }
+    .join-form-panel .code-input {
+        @apply min-h-12;
+    }
+    .auth-welcome {
+        @apply py-0;
+    }
+    .auth-welcome > .eyebrow {
+        @apply hidden;
+    }
+    .auth-welcome h1 {
+        @apply text-[28px] mb-2;
+    }
+    .auth-layout {
+        @apply gap-2;
+    }
+    .auth-form-column {
+        @apply p-4;
+    }
+    .auth-role {
+        @apply py-3;
+    }
+    #root > main > .room-page {
+        @apply flex flex-col gap-3;
+    }
+    .lobby-sharing {
+        @apply shrink-0 grid-cols-[minmax(0,_1fr)_minmax(0,_1fr)] gap-3 p-3;
+    }
+    .lobby-intro {
+        @apply col-span-full;
+    }
+    .lobby-intro h1 {
+        @apply text-[22px] mb-0;
+    }
+    .lobby-intro > :is(.eyebrow, p) {
+        @apply hidden;
+    }
+    .lobby-sharing .room-code {
+        @apply py-2 text-[30px];
+    }
+    .lobby-sharing .room-code small {
+        @apply mt-0;
+    }
+    .lobby-invite .button-outline {
+        @apply px-3 text-[10px] gap-1;
+    }
+    .lobby-grid {
+        @apply flex flex-col flex-1 items-stretch gap-3;
+    }
+    .lobby-players {
+        @apply h-auto p-3;
+    }
+    .lobby-players > .section-row {
+        @apply mb-2;
+    }
+    .lobby-players h2 {
+        @apply text-[21px];
+    }
+    .lobby-aside {
+        @apply p-3;
+    }
+    .lobby-aside > :is(.eyebrow, h2),
+    .lobby-aside p + p {
+        @apply hidden;
+    }
+    .lobby-aside p {
+        @apply text-[11px] mb-2;
+    }
+    .question-panel {
+        @apply p-4;
+    }
+    .question-panel h1 {
+        @apply text-[23px] my-4;
+    }
+    .answer-option {
+        @apply min-h-14 p-3;
+    }
+}
+/* At zoom levels or very short landscape heights, each workspace stays
+   scrollable so no controls are clipped by the viewport frame. */
+@media (max-height: 540px) {
+    #root > main > .room-page,
+    #root > main > .setup-page {
+        @apply overflow-y-auto;
+    }
+    .room-page > .lobby-sharing,
+    .room-page > .lobby-grid,
+    .setup-page > form {
+        @apply shrink-0;
+    }
+    .room-page > .lobby-grid {
+        @apply min-h-65;
+    }
+    .setup-page > form {
+        @apply flex-none;
+    }
+    .setup-page .setup-grid {
+        @apply flex-none overflow-visible;
+    }
+    .setup-page .setup-grid > .panel {
+        @apply max-h-none overflow-visible;
+    }
+    .home {
+        @apply content-start;
+    }
+}
+
+/* Inline clipboard feedback keeps the sharing card at a stable height. */
+.lobby-invite .invite-copy-button {
+    @apply gap-2 [transition:background-color_180ms,border-color_180ms,color_180ms,transform_120ms];
+}
+.lobby-invite .invite-copy-button:active:not(:disabled) {
+    @apply scale-[0.97];
+}
+.lobby-invite .invite-copy-button[data-copied="true"] {
+    @apply bg-mint border-[#a1b58d] text-[#3f5635];
+}
+.invite-copy-icon,
+.invite-copy-check {
+    @apply size-4 shrink-0;
+}
+.invite-copy-check path {
+    @apply stroke-current [stroke-width:2] [stroke-linecap:round] [stroke-linejoin:round];
+}
+@media (prefers-reduced-motion: no-preference) {
+    .invite-copy-button[data-copied="true"] .invite-copy-check {
+        animation: invite-copy-pop 240ms ease-out both;
+    }
+    .invite-copy-check path {
+        stroke-dasharray: 24;
+        animation: invite-copy-draw 280ms ease-out both;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .lobby-invite .invite-copy-button {
+        @apply transition-none;
+    }
+    .lobby-invite .invite-copy-button:active:not(:disabled) {
+        @apply scale-100;
+    }
+}
+@keyframes invite-copy-pop {
+    from { opacity: 0; transform: scale(0.6); }
+    to { opacity: 1; transform: scale(1); }
+}
+@keyframes invite-copy-draw {
+    from { stroke-dashoffset: 24; }
+    to { stroke-dashoffset: 0; }
+}

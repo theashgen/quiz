@@ -1,3 +1,4 @@
+import { Button } from "./Button";
 import { useState, type FormEvent } from "react";
 import { api, type Account } from "../types";
 import { Avatar } from "./Avatar";
@@ -223,8 +224,9 @@ export function AuthPage({
                             </p>
                         )}
                         {error && <ErrorMessage>{error}</ErrorMessage>}
-                        <button
-                            className="primary w-full auth-submit"
+                        <Button
+                            fullWidth
+                            className="auth-submit"
                             disabled={busy}
                         >
                             {busy
@@ -232,7 +234,7 @@ export function AuthPage({
                                 : signup
                                   ? `Create ${role} account →`
                                   : "Sign in →"}
-                        </button>
+                        </Button>
                     </form>
                     <p className="auth-switch">
                         {signup
@@ -285,12 +287,13 @@ export function AccountMenu({
                     >
                         Sign in
                     </button>
-                    <button
-                        className="button-outline account-signup"
+                    <Button
+                        intent="secondary"
+                        className="account-signup"
                         onClick={() => go("/signup")}
                     >
                         Create an account ↗
-                    </button>
+                    </Button>
                 </>
             )}
         </div>
@@ -349,13 +352,13 @@ export function AccountPage({
             )}
             <div className="account-actions">
                 {user.role === "teacher" && (
-                    <button className="primary" onClick={() => go("/create")}>
+                    <Button onClick={() => go("/create")}>
                         Create a quiz →
-                    </button>
+                    </Button>
                 )}
-                <button className="button-outline" onClick={() => go("/join")}>
+                <Button intent="secondary" onClick={() => go("/join")}>
                     Join a room ↗
-                </button>
+                </Button>
                 <button className="text-button" onClick={() => go("/solo")}>
                     Play solo ↗
                 </button>

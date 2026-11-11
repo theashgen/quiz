@@ -169,7 +169,7 @@ legend {
 
 input[type="checkbox"],
 input[type="radio"] {
-    @apply accent-[#7450b4];
+    @apply accent-brand;
 }
 
 .avatars {
@@ -516,7 +516,7 @@ input[type="radio"] {
 }
 
 .answer-option.chosen {
-    @apply bg-lilac-light border-[#7450b4] shadow-[inset_0_0_0_1px_#7450b4];
+    @apply bg-lilac-light border-[#7e976b] shadow-[inset_0_0_0_1px_#7e976b];
 }
 
 .answer-option.correct {
@@ -628,7 +628,7 @@ input[type="radio"] {
 }
 
 .status-symbol {
-    @apply text-[60px] block mb-[25px] text-[#7450b4];
+    @apply text-[60px] block mb-[25px] text-brand;
 }
 
 .status-panel h1 {

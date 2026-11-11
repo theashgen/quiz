@@ -1,3 +1,4 @@
+import { Button } from "./Button";
 import { useState, type FormEvent } from "react";
 import { api, type Catalog } from "../types";
 import { base, normalizeRoomCode } from "../setup";
@@ -109,9 +110,9 @@ export function Join({
                             </span>
                         </label>
                         {error && <ErrorMessage>{error}</ErrorMessage>}
-                        <button className="primary w-full" disabled={busy}>
+                        <Button fullWidth disabled={busy}>
                             {busy ? "Joining…" : "Join the room →"}
-                        </button>
+                        </Button>
                         <p className="join-form-note">
                             Your next great guess is waiting.
                         </p>

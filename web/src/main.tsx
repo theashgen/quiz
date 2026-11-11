@@ -8,6 +8,11 @@ import { Room } from "./components/Room";
 import { ErrorMessage } from "./components/Common";
 import { AuthPage, AccountPage, AccountMenu } from "./components/Auth";
 import { normalizeRoomCode } from "./setup";
+import "@fontsource/dm-sans/latin-400.css";
+import "@fontsource/dm-sans/latin-500.css";
+import "@fontsource/dm-sans/latin-600.css";
+import "@fontsource/dm-sans/latin-700.css";
+import "@fontsource/instrument-serif/latin-400-italic.css";
 import "./tailwind.css";
 
 function App() {
@@ -102,7 +107,28 @@ function App() {
         ].includes(path);
     return (
         <>
-            {catalog && !isAuth && !room && <AccountMenu user={user} go={go} />}
+            {catalog && !room && (
+                <header className="site-header">
+                    <button
+                        className="site-brand"
+                        onClick={() => go("/")}
+                        aria-label="Quiz home"
+                    >
+                        <span aria-hidden="true">✳</span> quiz.
+                    </button>
+                    <nav aria-label="Primary navigation">
+                        <button onClick={() => go("/solo")}>
+                            Play on your own
+                        </button>
+                        {user?.role !== "student" && (
+                            <button onClick={() => go("/create")}>
+                                Host a game <span aria-hidden="true">↗</span>
+                            </button>
+                        )}
+                    </nav>
+                    <AccountMenu user={user} go={go} />
+                </header>
+            )}
             <main
                 className={
                     isHome

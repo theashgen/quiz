@@ -9,7 +9,7 @@
 }
 .auth-welcome > .eyebrow,
 .auth-form-column > .eyebrow {
-    @apply text-[#77618e] text-[9px];
+    @apply text-[#738067] text-[9px];
 }
 .auth-welcome h1 {
     @apply text-[clamp(42px,_5.4vw,_72px)] leading-[1.05];
@@ -33,7 +33,7 @@
     @apply bg-[#e5eafa] transform-[rotate(-5deg)];
 }
 .auth-people-spark {
-    @apply absolute top-0 right-0 text-[#9e7dc0] text-[35px];
+    @apply absolute top-0 right-0 text-brand text-[35px];
 }
 .auth-guest-note {
     @apply border-t-[1px] border-solid border-t-line pt-5 max-w-90 flex flex-col items-start gap-2 text-[12px];
@@ -42,7 +42,7 @@
     @apply text-muted text-[11px];
 }
 .auth-guest-note button {
-    @apply text-[#68448c];
+    @apply text-brand-dark;
 }
 .auth-form-column {
     @apply max-w-[470px] w-full py-[18px] px-0;
@@ -69,7 +69,7 @@
     @apply absolute opacity-0 w-[1px] h-[1px];
 }
 .auth-role:has(input:focus-visible) {
-    @apply outline-[3px] outline-solid outline-[#7450b4] outline-offset-[3px];
+    @apply outline-[3px] outline-solid outline-brand outline-offset-[3px];
 }
 .auth-role strong {
     @apply text-[13px] pr-[15px];
@@ -78,7 +78,7 @@
     @apply text-[10px] font-normal leading-[1.5] text-muted;
 }
 .auth-role-check {
-    @apply absolute right-[13px] top-[15px] text-[#7450b4];
+    @apply absolute right-[13px] top-[15px] text-brand;
 }
 .auth-form-column input {
     @apply min-h-12 text-[14px];
@@ -90,7 +90,7 @@
     @apply pr-16;
 }
 .auth-password button {
-    @apply absolute top-0 right-0 h-12 py-0 px-[14px] text-[11px] text-[#68448c] font-semibold;
+    @apply absolute top-0 right-0 h-12 py-0 px-[14px] text-[11px] text-brand-dark font-semibold;
 }
 .auth-field-hint {
     @apply text-muted text-[10px] leading-[1.6] mt-[10px] mx-0 mb-0;
@@ -102,7 +102,7 @@
     @apply text-[12px] text-center mt-5 mx-0 mb-0 text-muted;
 }
 .auth-switch button {
-    @apply text-[#68448c] font-bold ml-[5px];
+    @apply text-brand-dark font-bold ml-[5px];
 }
 .account-navigation {
     @apply absolute top-[18px] right-[clamp(18px,_3.5vw,_60px)] z-[10] flex items-center gap-5;
@@ -117,13 +117,13 @@
     @apply shrink-0 w-[7px] h-[7px] bg-[#8c69b2] rounded-[50%];
 }
 .account-role-label {
-    @apply text-[#77618e] text-[9px] capitalize;
+    @apply text-[#738067] text-[9px] capitalize;
 }
 .account-page {
     @apply max-w-[850px] m-auto pt-10 px-0 pb-6;
 }
 .account-page > .eyebrow {
-    @apply text-[#77618e];
+    @apply text-[#738067];
 }
 .account-heading {
     @apply flex items-center gap-6 justify-between;
@@ -132,7 +132,7 @@
     @apply mb-[10px];
 }
 .account-role-badge {
-    @apply shrink-0 py-[9px] px-[14px] border-[1px] border-solid border-[#d3c0e9] rounded-[20px] bg-lilac-light text-[#68448c] text-[11px];
+    @apply shrink-0 py-[9px] px-[14px] border-[1px] border-solid border-[#d3c0e9] rounded-[20px] bg-lilac-light text-brand-dark text-[11px];
 }
 .account-actions {
     @apply flex gap-4 items-center flex-wrap mt-7 mx-0 mb-10;
