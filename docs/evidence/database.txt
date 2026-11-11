@@ -1,10 +1,10 @@
-Captured: 2026-11-11T13:43:00.346Z
-Application revision: 6f5e1b8
+Captured: 2026-11-11T14:19:14.850Z
+Application revision: d06a941
 Source: PostgreSQL, read-only query in docs/demo/verify.sql
 
   code  |             round_id             | answer_records | players | total_points | timeouts 
 --------+----------------------------------+----------------+---------+--------------+----------
- JPCPKS | b37a4f651de3947fd92858ad4278fd72 |             36 |      12 |         2600 |        1
+ 9PRM7U | bde87293feb6cadbaf147f5245194571 |             36 |      12 |         2600 |        1
 (1 row)
 
  player  | answer_records | score | timeouts 

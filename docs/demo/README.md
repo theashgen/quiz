@@ -2,7 +2,7 @@
 
 The README media uses the real application, local backend and durable database. The multiplayer round has **12 answering players**: Ada in a browser and 11 automated protocol clients. A separate teacher hosts without answering. Synthetic names and example.test accounts are demonstration data.
 
-The current assets were refreshed on **November 11, 2026**, using the approved **Peach Playground** UI at application revision `6f5e1b8`. No application or backend behavior is changed by this media refresh. Run commands from the repository root, and ensure the served frontend build matches the checkout you want to capture.
+The current assets were refreshed on **November 11, 2026**, using the approved **Peach Playground** UI with the podium proportion fix at application revision `d06a941`. The follow-up centers the desktop podium, scales the steps to the available height and keeps the ranks visible without a transparent fade. Scoring, gameplay and backend behavior are unchanged. Run commands from the repository root, and ensure the served frontend build matches the checkout you want to capture. This run used an isolated local instance at `http://localhost:8444`; the default below remains port 8443.
 
 ## Capture the workflow
 

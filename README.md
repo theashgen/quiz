@@ -14,9 +14,9 @@ Built with **React · TypeScript · Go · WebSockets · PostgreSQL · Redis**. T
 
 ## Watch someone use it
 
-**[Play the workflow video →](docs/media/video/quiz-walkthrough.mp4)** · 85 seconds · 1440 × 1000 · 30 fps · 3.8 MB
+**[Play the workflow video →](docs/media/video/quiz-walkthrough.mp4)** · 80 seconds · 1440 × 1000 · 30 fps · 3.8 MB
 
-Video chapters: **0:00** teacher signup and quiz creation · **0:16** guest joins the 12-player round · **1:00** solo play.
+Video chapters: **0:00** teacher signup and quiz creation · **0:15** guest joins the 12-player round · **0:58** solo play.
 
 The recording follows teacher signup and quiz creation, then a guest joining a **12-player room**, answering questions, receiving feedback, timing out, viewing the final standings, and opting into another round. A solo round follows. It uses the running Go service, PostgreSQL and Redis.
 
@@ -37,7 +37,7 @@ The MP4 is linked through a clickable screenshot because repository README rende
 
 ## Application walkthrough
 
-These **41 screenshots** show the approved **Peach Playground** UI, captured on **November 11, 2026** against application revision `6f5e1b8`, with browser chrome excluded. Click any image for the full-resolution file. The expanded views cover the main workflow; additional account, mobile and recovery states are grouped below. Dense editors, lobbies and standings retain the app's native scrollable workspaces; screenshots do not expand or restyle them.
+These **41 screenshots** show the approved **Peach Playground** UI with its corrected podium proportions, captured on **November 11, 2026** against application revision `d06a941`, with browser chrome excluded. Click any image for the full-resolution file. The expanded views cover the main workflow; additional account, mobile and recovery states are grouped below. Dense editors, lobbies and standings retain the app's native scrollable workspaces; screenshots do not expand or restyle them.
 
 ### 1. Arrive, register and create a quiz
 
