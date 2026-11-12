@@ -3,6 +3,7 @@
 const { execFileSync } = require("node:child_process");
 const fs = require("node:fs");
 const { chromium } = require("../../web/node_modules/playwright");
+const snap = require("./screenshot.cjs");
 const { code } = JSON.parse(fs.readFileSync("docs/evidence/room.json"));
 if (!/^[A-Z0-9]{6}$/.test(code)) throw Error("Invalid room code");
 const database =
@@ -34,6 +35,8 @@ const rows = JSON.parse(
 );
 const clients = JSON.parse(fs.readFileSync("docs/evidence/demo-clients.json"));
 if (
+  clients.room !== code ||
+  clients.automatedPlayers !== 11 ||
   rows.length !== 12 ||
   rows.reduce((s, r) => s + r.answers, 0) !== 36 ||
   rows.reduce((s, r) => s + r.timeouts, 0) !== 1
@@ -43,6 +46,12 @@ for (const client of clients.clients) {
   const row = rows.find((r) => r.name === client.name);
   if (!row || row.score !== client.score || client.answersAcknowledged !== 3)
     throw Error(`Receipt/ledger mismatch for ${client.name}`);
+  if (client.leaderboard.length !== rows.length)
+    throw Error(`Incomplete leaderboard for ${client.name}`);
+  for (const entry of client.leaderboard) {
+    if (rows.find((row) => row.name === entry.name)?.score !== entry.score)
+      throw Error(`Leaderboard/ledger mismatch for ${entry.name}`);
+  }
 }
 const escape = (s) =>
   String(s)
@@ -60,10 +69,7 @@ const html = `<!doctype html><html><meta charset="utf-8"><style>
       deviceScaleFactor: 2,
     });
     await page.setContent(html);
-    await page.screenshot({
-      path: "docs/media/screenshots/31-backend-evidence.png",
-      fullPage: true,
-    });
+    await snap(page, "31-backend-evidence");
   } finally {
     await b.close();
   }
