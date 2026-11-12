@@ -6,12 +6,10 @@ import { ErrorMessage } from "./Common";
 
 export function AuthPage({
     mode,
-    hosting = false,
     go,
     onAuthenticated,
 }: {
     mode: "signup" | "login";
-    hosting?: boolean;
     go: (path: string) => void;
     onAuthenticated: (user: Account) => void;
 }) {
@@ -24,7 +22,6 @@ export function AuthPage({
     const [busy, setBusy] = useState(false);
     const [error, setError] = useState("");
     const next =
-        hosting ||
         new URLSearchParams(location.search).get("next") === "/create"
             ? "?next=/create"
             : "";
@@ -104,11 +101,9 @@ export function AuthPage({
                         {signup ? "A little introduction." : "Welcome back."}
                     </h2>
                     <p className="auth-description">
-                        {hosting
-                            ? "Sign in with a teacher account to create and host quizzes."
-                            : signup
-                              ? "One account. A whole lot of curiosity."
-                              : "Your people and your next quiz are waiting."}
+                        {signup
+                            ? "One account. A whole lot of curiosity."
+                            : "Your people and your next quiz are waiting."}
                     </p>
                     <form onSubmit={submit}>
                         {signup && (

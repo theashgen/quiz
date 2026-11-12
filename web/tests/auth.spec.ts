@@ -1,6 +1,93 @@
 import { test, expect } from "@playwright/test";
 import { randomUUID } from "node:crypto";
 
+test("guests use the shared login page when opening create", async ({
+    page,
+}) => {
+    await page.goto("/login");
+    await expect(
+        page.getByRole("heading", { name: "Welcome back." }),
+    ).toBeVisible();
+    const loginContent = await page.locator(".auth-page").innerText();
+
+    await page.goto("/create");
+    await expect(page).toHaveURL("/login?next=/create");
+    await expect(page.locator(".auth-page")).toHaveText(loginContent, {
+        useInnerText: true,
+    });
+    await expect(page.locator("main")).not.toHaveClass("create-main");
+    await page.reload();
+    await expect(page).toHaveURL("/login?next=/create");
+    await expect(
+        page.getByRole("heading", { name: "Welcome back." }),
+    ).toBeVisible();
+});
+
+test("guest host navigation replaces create in browser history", async ({
+    page,
+}) => {
+    await page.goto("/");
+    await page
+        .getByRole("button", { name: "Host a game", exact: false })
+        .first()
+        .click();
+    await expect(page).toHaveURL("/login?next=/create");
+    await page.goBack();
+    await expect(page).toHaveURL(/\/$/);
+    await page.goForward();
+    await expect(page).toHaveURL("/login?next=/create");
+});
+
+test("create waits for the account lookup before redirecting", async ({
+    page,
+}) => {
+    let releaseAccount!: () => void;
+    const accountReady = new Promise<void>((resolve) => {
+        releaseAccount = resolve;
+    });
+    await page.route("**/api/auth/me", async (route) => {
+        await accountReady;
+        await route.continue();
+    });
+    const accountRequest = page.waitForRequest("**/api/auth/me");
+    await page.goto("/create");
+    await accountRequest;
+    try {
+        await expect(page).toHaveURL("/create");
+        await expect(
+            page.getByRole("heading", { name: "Getting things ready…" }),
+        ).toBeVisible();
+        await expect(page.locator(".auth-page")).toHaveCount(0);
+    } finally {
+        releaseAccount();
+    }
+    await expect(page).toHaveURL("/login?next=/create");
+});
+
+test("teachers return to create after signing in", async ({
+    page,
+    baseURL,
+}) => {
+    const email = `teacher-${randomUUID()}@example.test`;
+    const password = "A safe classroom passphrase 2026";
+    const response = await page.request.post("/api/auth/signup", {
+        headers: { Origin: new URL(baseURL!).origin },
+        data: { name: "Returning Teacher", email, password, role: "teacher" },
+    });
+    expect(response.status()).toBe(201);
+    await page.context().clearCookies();
+    await page.goto("/create");
+    await expect(page).toHaveURL("/login?next=/create");
+    await page.getByLabel("Email address").fill(email);
+    await page.getByLabel("Password", { exact: true }).fill(password);
+    await page
+        .getByRole("button", { name: "Sign in", exact: false })
+        .last()
+        .click();
+    await expect(page).toHaveURL((url) => url.pathname === "/create");
+    await expect(page.getByLabel("Your name")).toHaveValue("Returning Teacher");
+});
+
 test("teacher signup, persistent account, hosting, and sign out", async ({
     page,
     baseURL,
@@ -8,12 +95,14 @@ test("teacher signup, persistent account, hosting, and sign out", async ({
 }) => {
     const email = `teacher-${randomUUID()}@example.test`;
     await page.goto("/create");
+    await expect(page).toHaveURL("/login?next=/create");
     await expect(
         page.getByRole("heading", { name: "Welcome back." }),
     ).toBeVisible();
     await page
         .getByRole("button", { name: "Create an account", exact: true })
         .click();
+    await expect(page).toHaveURL("/signup?next=/create");
     await page.getByLabel("Your name").fill("Professor Ash");
     await page.getByLabel("Email address").fill(email);
     await page
