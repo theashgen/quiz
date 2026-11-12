@@ -1,5 +1,120 @@
 import { expect, test } from "./teacher-fixture";
 
+test("home uses shadcn room-entry primitives", async ({ page }) => {
+    await page.goto("/");
+    const group = page.getByRole("group", { name: "Join with a room code" });
+    await expect(group.locator("svg")).toHaveCount(0);
+    await expect(group).toHaveAttribute("data-slot", "button-group");
+    await expect(
+        group.getByRole("textbox", { name: "Room code" }),
+    ).toHaveAttribute("data-slot", "input");
+    await expect(
+        group.getByRole("button", { name: "Join a room" }),
+    ).toHaveAttribute("data-slot", "button");
+    await page
+        .getByRole("button", { name: "Create a room", exact: true })
+        .click();
+    await expect(page.getByRole("menu")).toHaveAttribute(
+        "data-slot",
+        "dropdown-menu-content",
+    );
+    await expect(page.getByRole("menuitem").first()).toHaveAttribute(
+        "data-slot",
+        "dropdown-menu-item",
+    );
+});
+
+test("room input uses the stock shadcn recipe and focus ring", async ({
+    page,
+}) => {
+    await page.goto("/");
+    const input = page.getByRole("textbox", { name: "Room code" });
+    const group = page.getByRole("group", { name: "Join with a room code" });
+    await input.click();
+    await expect(input).toBeFocused();
+    await expect(group).toHaveCSS("outline-style", "none");
+    await expect(input).toHaveCSS("outline-style", "none");
+    await expect(input).toHaveAttribute("data-variant", "default");
+    await expect(input).toHaveCSS("border-top-width", "1px");
+    await expect(input).toHaveCSS("border-top-left-radius", "8px");
+    await expect(input).not.toHaveCSS("box-shadow", "none");
+    await expect(input).toHaveCSS("border-color", "rgb(245, 128, 56)");
+    await input.fill("ABC123");
+    await page.keyboard.press("Tab");
+    await expect(
+        page.getByRole("button", { name: "Join a room" }),
+    ).toBeFocused();
+});
+
+test("create-room button has no hover or press animation", async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "no-preference" });
+    await page.goto("/");
+    const button = page.getByRole("button", {
+        name: "Create a room",
+        exact: true,
+    });
+    const background = await button.evaluate(
+        (element) => getComputedStyle(element).backgroundColor,
+    );
+    const bounds = await button.boundingBox();
+    await button.hover();
+    expect(await button.boundingBox()).toEqual(bounds);
+    await page.mouse.down();
+    await expect(button).toHaveCSS("animation-name", "none");
+    await expect(button).toHaveCSS("transition-duration", "0s");
+    await expect(button).toHaveCSS(
+        "transform",
+        /^(none|matrix\(1, 0, 0, 1, 0, 0\))$/,
+    );
+    await expect(button).toHaveCSS("scale", "none");
+    expect(await button.boundingBox()).toEqual(bounds);
+    await expect(button).toHaveCSS("background-color", background);
+    await page.mouse.up();
+});
+
+test("minimal header links teachers directly to their question bank", async ({
+    page,
+    browser,
+    baseURL,
+}) => {
+    await page.goto("/");
+    await expect(
+        page.getByRole("navigation", { name: "Primary navigation" }),
+    ).toHaveCount(0);
+    await expect(page.locator(".playground-footnote")).toHaveCount(0);
+    await expect(
+        page.getByText("Made for good company", { exact: false }),
+    ).toHaveCount(0);
+    await page
+        .getByRole("button", { name: "Question bank", exact: true })
+        .click();
+    await expect(page).toHaveURL(/\/create\?source=custom$/);
+    await expect(page.locator(".custom-editor")).toBeVisible();
+    await expect(
+        page.getByRole("button", { name: /Your own questions/ }),
+    ).toHaveAttribute("aria-pressed", "true");
+    await page.reload();
+    await expect(page.locator(".custom-editor")).toBeVisible();
+    const guestContext = await browser.newContext({ baseURL });
+    try {
+        const guest = await guestContext.newPage();
+        await guest.goto("/");
+        await expect(
+            guest.getByRole("heading", {
+                name: "Good questions. Great company.",
+            }),
+        ).toBeVisible();
+        await expect(
+            guest.getByRole("button", { name: "Question bank", exact: true }),
+        ).toHaveCount(0);
+        await expect(
+            guest.getByRole("navigation", { name: "Primary navigation" }),
+        ).toHaveCount(0);
+    } finally {
+        await guestContext.close();
+    }
+});
+
 test("home restores the dotted grid background", async ({ page }) => {
     await page.goto("/");
     await expect(page.locator("html")).toHaveCSS(
@@ -83,6 +198,34 @@ test("desktop puts heading and actions left with artwork right", async ({
     ).toBeInViewport();
 });
 
+test("home hides its scrollbar while keeping mobile content scrollable", async ({
+    page,
+}) => {
+    await page.setViewportSize({ width: 390, height: 568 });
+    await page.goto("/");
+    const home = page.locator(".peach-home");
+    await expect(home).toHaveCSS("scrollbar-width", "none");
+    await expect(home).toHaveCSS("overflow-y", "auto");
+    expect(
+        await home.evaluate(
+            (element) =>
+                getComputedStyle(element, "::-webkit-scrollbar").display,
+        ),
+    ).toBe("none");
+    expect(
+        await home.evaluate(
+            (element) => element.scrollHeight > element.clientHeight,
+        ),
+    ).toBeTruthy();
+    await home.hover();
+    await page.mouse.wheel(0, 500);
+    await expect
+        .poll(() => home.evaluate((element) => element.scrollTop))
+        .toBeGreaterThan(0);
+    await home.locator(".playground-showcase").scrollIntoViewIfNeeded();
+    await expect(home.locator(".playground-showcase")).toBeInViewport();
+});
+
 test("mobile puts actions before supporting artwork", async ({ page }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.setViewportSize({ width: 390, height: 844 });
@@ -112,7 +255,7 @@ for (const width of [320, 390, 768, 1440]) {
         ).toBeTruthy();
         await expect(page.getByLabel("Room code", { exact: true })).toHaveCSS(
             "font-size",
-            "16px",
+            width >= 768 ? "14px" : "16px",
         );
         const joinButton = page.getByRole("button", {
             name: "Join a room",
@@ -293,7 +436,7 @@ test("shared navigation and back actions support keyboard input", async ({
         await expect(page.getByRole("banner")).toBeVisible();
         await expect(
             page.getByRole("navigation", { name: "Primary navigation" }),
-        ).toBeVisible();
+        ).toHaveCount(0);
     }
     await expect(page.getByLabel("Room code", { exact: true })).toBeVisible();
     await page.getByRole("button", { name: "Back to home" }).focus();

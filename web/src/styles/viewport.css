@@ -481,3 +481,32 @@ body {
     from { stroke-dashoffset: 24; }
     to { stroke-dashoffset: 0; }
 }
+
+@media (max-width: 740px), (hover: none) and (pointer: coarse) {
+    html,
+    body {
+        overflow-x: clip;
+        overflow-y: auto;
+        overscroll-behavior-y: auto;
+    }
+    #root,
+    #root > main {
+        overflow: clip;
+    }
+    /* Clip x-axis on each scrollable workspace so flex/grid children (e.g.
+       the 3-column podium) cannot create a horizontal scrollbar. */
+    #root > main > * {
+        overflow-x: clip;
+    }
+    #root > main > *,
+    .setup-grid,
+    .setup-grid > .panel,
+    .create-page .custom-editor,
+    .join-layout,
+    .join-welcome,
+    .join-form-panel,
+    .lobby-players .player-grid,
+    .podium-results .podium-board ol.ranked-players {
+        overscroll-behavior-y: auto;
+    }
+}

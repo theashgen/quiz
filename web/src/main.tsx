@@ -1,3 +1,4 @@
+import { Button as ShadcnButton } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { api, type Account, type Catalog } from "./types";
@@ -96,6 +97,10 @@ function App() {
     const invite = /^\/join\/([^/]*)\/?$/i.exec(path);
     const isJoin = path === "/join" || !!invite;
     const isAuth = ["/signup", "/login", "/account"].includes(path);
+    const createSource =
+        new URLSearchParams(location.search).get("source") === "custom"
+            ? "custom"
+            : "preset";
     const isHome =
         !room &&
         !isJoin &&
@@ -111,7 +116,8 @@ function App() {
         <>
             {catalog && !room && (
                 <header className="site-header">
-                    <button
+                    <ShadcnButton
+                        variant="unstyled"
                         className="site-brand"
                         onClick={() => go("/")}
                         aria-label="Quiz home"
@@ -120,17 +126,7 @@ function App() {
                             <PlayIcon />
                         </span>{" "}
                         quiz<span className="brand-period">.</span>
-                    </button>
-                    <nav aria-label="Primary navigation">
-                        <button onClick={() => go("/solo")}>
-                            Play on your own
-                        </button>
-                        {user?.role !== "student" && (
-                            <button onClick={() => go("/create")}>
-                                Host a game <span aria-hidden="true">↗</span>
-                            </button>
-                        )}
-                    </nav>
+                    </ShadcnButton>
                     <AccountMenu user={user} go={go} />
                 </header>
             )}
@@ -153,9 +149,12 @@ function App() {
                         {error && (
                             <>
                                 <ErrorMessage>{error}</ErrorMessage>
-                                <button onClick={() => location.reload()}>
+                                <ShadcnButton
+                                    variant="unstyled"
+                                    onClick={() => location.reload()}
+                                >
                                     Try again
-                                </button>
+                                </ShadcnButton>
                             </>
                         )}
                     </div>
@@ -199,6 +198,8 @@ function App() {
                     )
                 ) : path === "/create" ? (
                     <SetupPage
+                        key={createSource}
+                        initialSource={createSource}
                         catalog={catalog}
                         accountName={user?.name}
                         onBack={() => go("/")}

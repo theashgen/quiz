@@ -1,3 +1,5 @@
+import { Button as ShadcnButton } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Button } from "./Button";
 import { useEffect, useState } from "react";
 import type { Catalog } from "../types";
@@ -112,7 +114,8 @@ export function Room({
                         <h1>A good time is on its way.</h1>
                         <p>Share this code. Bring your people.</p>
                     </div>
-                    <button
+                    <ShadcnButton
+                        variant="unstyled"
                         className="room-code"
                         aria-label={`Copy room code ${code}`}
                         onClick={async () => {
@@ -128,7 +131,7 @@ export function Room({
                     >
                         {code}
                         <small>{copied ? "Copied!" : "Copy code ⧉"}</small>
-                    </button>
+                    </ShadcnButton>
                     {s.isHost && !s.solo && (
                         <div className="lobby-invite">
                             <Button
@@ -182,7 +185,8 @@ export function Room({
                             </Button>
                             {linkCopyError && (
                                 <>
-                                    <input
+                                    <Input
+                                        variant="themed"
                                         aria-label="Invite players with a link"
                                         value={inviteURL}
                                         readOnly
@@ -329,7 +333,8 @@ export function Room({
                     <h1>{q.text}</h1>
                     <div className="answer-options">
                         {q.options.map((option, i) => (
-                            <button
+                            <ShadcnButton
+                                variant="unstyled"
                                 key={i}
                                 disabled={reveal || disabled || remaining <= 0}
                                 aria-pressed={selected === i}
@@ -349,7 +354,7 @@ export function Room({
                                 {reveal && p.receipt?.correct === i && (
                                     <span className="correct-mark">✓</span>
                                 )}
-                            </button>
+                            </ShadcnButton>
                         ))}
                     </div>
                     {reveal ? (
@@ -403,7 +408,7 @@ export function Room({
     }
     return (
         <section
-            className={`results-page${s.status === "results" && !s.solo ? " podium-results" : ""}`}
+            className={`results-page${s.status === "results" ? " podium-results" : ""}${s.solo ? " solo-results" : ""}`}
         >
             {banner}
             {!s.isHost && s.preparingNextQuiz && (
@@ -414,44 +419,47 @@ export function Room({
                     ready.
                 </div>
             )}
-            <div className="page-heading centered">
-                <div className="results-intro">
-                    <div className="result-star">✦</div>
-                    <div className="eyebrow">
-                        {s.status === "results"
-                            ? "THAT’S A WRAP"
-                            : "YOUR PART IS DONE"}
-                    </div>
-                    <h1>
-                        {p
-                            ? "Nicely played."
-                            : s.status === "results"
-                              ? "A round well hosted."
-                              : "Let them cook."}
-                    </h1>
-                </div>
-                {p && (
-                    <div className="results-score">
-                        <p>Your score</p>
-                        <div className="big-score">
-                            {p.score}
-                            <small> / {p.total * 100}</small>
+            {!s.solo && (
+                <div className="page-heading centered">
+                    <div className="results-intro">
+                        <div className="result-star">✦</div>
+                        <div className="eyebrow">
+                            {s.status === "results"
+                                ? "THAT’S A WRAP"
+                                : "YOUR PART IS DONE"}
                         </div>
+                        <h1>
+                            {p
+                                ? "Nicely played."
+                                : s.status === "results"
+                                  ? "A round well hosted."
+                                  : "Let them cook."}
+                        </h1>
                     </div>
-                )}
-                <p className="results-caption">
-                    {s.status === "active"
-                        ? `${s.finished} of ${s.total} players finished. Final ranks appear when everyone is done.`
-                        : s.solo
-                          ? "A little wiser. Ready for another?"
-                          : "The guesses are in. Here’s how everyone landed."}
-                </p>
-            </div>
+                    {p && (
+                        <div className="results-score">
+                            <p>Your score</p>
+                            <div className="big-score">
+                                {p.score}
+                                <small> / {p.total * 100}</small>
+                            </div>
+                        </div>
+                    )}
+                    <p className="results-caption">
+                        {s.status === "active"
+                            ? `${s.finished} of ${s.total} players finished. Final ranks appear when everyone is done.`
+                            : s.solo
+                              ? "A little wiser. Ready for another?"
+                              : "The guesses are in. Here’s how everyone landed."}
+                    </p>
+                </div>
+            )}
             {s.status === "results" && (
                 <Leaderboard
                     entries={s.leaderboard ?? []}
                     currentPlayer={s.me}
                     solo={s.solo}
+                    hideHeading={s.solo}
                     code={code}
                 />
             )}
@@ -497,9 +505,13 @@ export function Room({
                             )}
                         </>
                     )}
-                    <button className="text-button" onClick={() => go("/")}>
+                    <ShadcnButton
+                        variant="unstyled"
+                        className="text-button"
+                        onClick={() => go("/")}
+                    >
                         Back to home
-                    </button>
+                    </ShadcnButton>
                 </div>
             )}
         </section>

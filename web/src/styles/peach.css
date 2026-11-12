@@ -110,7 +110,7 @@ textarea {
 }
 input:focus-visible,
 textarea:focus-visible {
-    outline-color: var(--peach-deep);
+    outline-color: var(--color-brand);
 }
 button:focus-visible,
 a:focus-visible {
@@ -332,6 +332,10 @@ a:focus-visible {
     padding: 22px 0 12px;
     margin-block: auto;
     overflow-y: auto;
+    scrollbar-width: none;
+}
+#root > main > .peach-home::-webkit-scrollbar {
+    display: none;
 }
 .playground-hero {
     display: grid;
@@ -574,7 +578,7 @@ a:focus-visible {
     display: block;
 }
 .playground-mode > .ui-button,
-.playground-join-controls {
+.home-room-entry {
     margin-top: auto;
 }
 .playground-mode .ui-button {
@@ -587,63 +591,55 @@ a:focus-visible {
     width: 18px;
     height: 18px;
 }
-.playground-join-controls {
+.home-room-entry {
     display: flex;
-    align-items: center;
+    align-items: stretch;
     min-width: 0;
-    padding: 0;
     gap: 0;
-    background: var(--color-paper);
-    border: 1px solid var(--color-line);
-    border-radius: 100px;
 }
-.room-code-icon {
-    flex-shrink: 0;
-    width: 20px;
-    height: 20px;
-    margin-left: 12px;
-    color: var(--color-muted);
-}
-.playground-join-controls:focus-within {
-    outline: 2px solid var(--peach-deep);
-    outline-offset: 3px;
-}
-.peach-home .playground-join-controls .home-code-input {
-    min-width: 0;
-    width: 100%;
-    flex: 1;
-    font-size: 16px;
-    font-weight: 600;
-    letter-spacing: 3px;
-    background: transparent;
-    border: 0;
-    border-radius: 0;
-    padding: 7px 8px;
-    min-height: 38px;
-    outline: none;
-}
-.peach-home .home-code-input:placeholder-shown {
-    letter-spacing: normal;
-    font-weight: 400;
-}
-.peach-home .playground-join {
-    padding: 9px 14px;
-    min-height: 46px;
-    align-self: stretch;
-    border: 0;
-    border-left: 1px solid var(--color-line);
-    border-radius: 0 100px 100px 0;
+.peach-home .home-room-entry .playground-join {
+    padding: 0 14px;
+    min-height: 44px;
+    height: 44px;
+    border: 1px solid var(--color-input);
+    border-left: 0;
+    border-radius: 0 8px 8px 0;
     flex-shrink: 0;
     font-size: 12px;
 }
-.playground-footnote {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
+.peach-home .host-action,
+.peach-home .host-action:is(:hover, :active, :focus, [data-popup-open]) {
+    animation: none;
+    transition: none;
+    transform: none;
+    translate: none;
+    scale: none;
+    box-shadow: none;
+    background: var(--color-brand);
+    border-color: var(--color-brand);
+    color: var(--peach-on-orange);
+}
+.site-header:has(.question-bank-shortcut) {
+    gap: 12px;
+}
+.site-header .question-bank-shortcut {
     flex-shrink: 0;
-    padding: 24px 0 4px;
-    font-size: 10px;
-    color: var(--color-muted);
+    padding-inline: 12px;
+    font-size: 11px;
+    white-space: nowrap;
+}
+@media (max-width: 740px) {
+    .site-header .account-navigation:has(.question-bank-shortcut) {
+        min-width: 0;
+        max-width: calc(100% - 100px);
+        gap: 8px;
+    }
+    .site-header .question-bank-shortcut + .account-link {
+        min-width: 0;
+        max-width: 90px;
+        overflow: hidden;
+        white-space: nowrap;
+    }
 }
 @media (min-width: 741px) and (max-height: 780px) {
     #root > main > .peach-home {
@@ -661,9 +657,6 @@ a:focus-visible {
     .playground-mode p,
     .playground-mode > label {
         margin-bottom: 14px;
-    }
-    .playground-footnote {
-        padding-top: 16px;
     }
 }
 @media (min-width: 741px) and (max-width: 1000px) {
@@ -751,14 +744,6 @@ a:focus-visible {
     }
     .playground-mode .ui-button {
         min-height: 46px;
-    }
-    .playground-footnote {
-        font-size: 9px;
-        line-height: 1.6;
-        padding-top: 20px;
-    }
-    .playground-footnote > span:last-child {
-        display: none;
     }
     .question-panel {
         padding: 20px;

@@ -135,11 +135,13 @@
     @apply flex items-center justify-center w-7 h-7 border-[1px] border-solid border-[#d1cac0] rounded-[6px] bg-paper text-[11px];
 }
 
-.answer-selector input:checked + span {
+.answer-selector input:checked + span,
+.answer-selector[data-checked] > span {
     @apply bg-[#356345] border-[#356345] text-white;
 }
 
-.answer-selector input:focus-visible + span {
+.answer-selector input:focus-visible + span,
+.answer-selector:focus-visible > span {
     @apply outline-[3px] outline-solid outline-brand outline-offset-[2px];
 }
 

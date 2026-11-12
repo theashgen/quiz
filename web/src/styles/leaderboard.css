@@ -154,6 +154,20 @@
 .podium-results .replay-actions {
     @apply border-t-[1px] border-solid border-t-line pt-[22px] mt-7;
 }
+/* Solo: shift the leaderboard to the top and pin the action buttons to the bottom of the viewport */
+#root > main > .results-page.solo-results {
+    @apply min-h-full my-0 flex flex-col pt-0 pb-0 justify-between;
+}
+.solo-results .leaderboard.podium-board {
+    @apply max-w-175 w-full mx-auto mt-0;
+}
+.solo-results .leaderboard-stage {
+    @apply pt-7;
+}
+.solo-results .replay-actions {
+    @apply sticky bottom-0 z-10 mt-auto border-t-0 pt-3 pb-3 bg-canvas w-full max-w-175 mx-auto;
+    box-shadow: 0 -1px 0 var(--color-line);
+}
 @media (min-width: 1001px) {
     .results-page.podium-results {
         @apply max-w-none pt-6;
@@ -267,7 +281,7 @@
         @apply mb-6;
     }
     .podium-board ol.winner-podium {
-        @apply pr-0 pl-0 gap-[3px];
+        @apply pr-0 pl-0 gap-[3px] max-w-full overflow-x-clip;
     }
     .podium-board .winner-podium > li {
         @apply [--podium-height:155px];

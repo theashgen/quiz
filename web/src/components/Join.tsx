@@ -1,3 +1,6 @@
+import { Button as ShadcnButton } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import { Button } from "./Button";
 import { useState, type FormEvent } from "react";
 import { api, type Catalog } from "../types";
@@ -47,9 +50,13 @@ export function Join({
 
     return (
         <section className="join-page" aria-labelledby="join-heading">
-            <button className="back text-button" onClick={() => go("/")}>
+            <ShadcnButton
+                variant="unstyled"
+                className="back text-button"
+                onClick={() => go("/")}
+            >
                 ← Back to home
-            </button>
+            </ShadcnButton>
             <form className="join-layout" onSubmit={submit}>
                 <div className="join-welcome">
                     <div className="eyebrow">A FACE FOR THE GAME</div>
@@ -59,9 +66,10 @@ export function Join({
                         value={setup.avatar}
                         onChange={(avatar) => setSetup({ ...setup, avatar })}
                     />
-                    <label className="join-name">
+                    <Label className="join-name">
                         Your name
-                        <input
+                        <Input
+                            variant="themed"
                             required
                             maxLength={30}
                             value={setup.name}
@@ -72,7 +80,7 @@ export function Join({
                             autoComplete="nickname"
                             autoFocus={validCode}
                         />
-                    </label>
+                    </Label>
                     <p className="join-identity-note">
                         Pick a face. Add your name. Make it yours.
                     </p>
@@ -84,9 +92,10 @@ export function Join({
                         Got a code? You’re in the right place.
                     </p>
                     <div className="join-code-form">
-                        <label>
+                        <Label>
                             Room code
-                            <input
+                            <Input
+                                variant="themed"
                                 className="code-input"
                                 aria-label="Room code"
                                 value={code}
@@ -108,9 +117,9 @@ export function Join({
                             >
                                 The 6-character code shared by your host.
                             </span>
-                        </label>
+                        </Label>
                         {error && <ErrorMessage>{error}</ErrorMessage>}
-                        <Button fullWidth disabled={busy}>
+                        <Button fullWidth type="submit" disabled={busy}>
                             {busy ? "Joining…" : "Join the room →"}
                         </Button>
                         <p className="join-form-note">

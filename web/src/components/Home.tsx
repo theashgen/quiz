@@ -1,9 +1,16 @@
 import { useState, type FormEvent } from "react";
-import { Menu } from "@base-ui/react/menu";
+import {
+    DropdownMenu,
+    DropdownMenuTrigger,
+    DropdownMenuContent,
+    DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { normalizeRoomCode } from "../setup";
 import { Avatar } from "./Avatar";
-import { Button } from "./Button";
-import { ButtonGroup } from "./ButtonGroup";
+import { Button } from "@/components/ui/button";
+import { ButtonGroup } from "@/components/ui/button-group";
 import { PlaygroundTrophy, PlayIcon } from "./PeachArt";
 
 export function Home({ go }: { go: (path: string) => void }) {
@@ -31,89 +38,64 @@ export function Home({ go }: { go: (path: string) => void }) {
                         aria-label="Start playing"
                     >
                         <div className="playground-mode mode-host">
-                            <Menu.Root modal={false}>
-                                <Menu.Trigger className="ui-button primary w-full host-action">
+                            <DropdownMenu modal={false}>
+                                <DropdownMenuTrigger
+                                    render={
+                                        <Button className="w-full host-action" />
+                                    }
+                                >
                                     <PlayIcon kind="group" />
                                     Create a room{" "}
                                     <span aria-hidden="true">⌄</span>
-                                </Menu.Trigger>
-                                <Menu.Portal>
-                                    <Menu.Positioner
-                                        sideOffset={8}
-                                        align="start"
-                                        className="room-menu-positioner"
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent
+                                    sideOffset={8}
+                                    align="start"
+                                    aria-label="Choose a room type"
+                                >
+                                    <DropdownMenuItem
+                                        className="room-menu-item"
+                                        onClick={() => go("/create")}
                                     >
-                                        <Menu.Popup
-                                            className="room-menu"
-                                            aria-label="Choose a room type"
-                                        >
-                                            <Menu.Item
-                                                className="room-menu-item"
-                                                onClick={() => go("/create")}
-                                            >
-                                                <PlayIcon kind="group" />
-                                                <span>
-                                                    <strong>
-                                                        Host with friends
-                                                    </strong>
-                                                    <span>
-                                                        Create a multiplayer
-                                                        room.
-                                                    </span>
-                                                </span>
-                                            </Menu.Item>
-                                            <Menu.Item
-                                                className="room-menu-item"
-                                                onClick={() => go("/solo")}
-                                            >
-                                                <PlayIcon kind="play" />
-                                                <span>
-                                                    <strong>
-                                                        Create solo room
-                                                    </strong>
-                                                    <span>
-                                                        A little challenge. All
-                                                        for yourself.
-                                                    </span>
-                                                </span>
-                                            </Menu.Item>
-                                        </Menu.Popup>
-                                    </Menu.Positioner>
-                                </Menu.Portal>
-                            </Menu.Root>
+                                        <PlayIcon kind="group" />
+                                        <span>
+                                            <strong>Host with friends</strong>
+                                            <span>
+                                                Create a multiplayer room.
+                                            </span>
+                                        </span>
+                                    </DropdownMenuItem>
+                                    <DropdownMenuItem
+                                        className="room-menu-item"
+                                        onClick={() => go("/solo")}
+                                    >
+                                        <PlayIcon kind="play" />
+                                        <span>
+                                            <strong>Create solo room</strong>
+                                            <span>
+                                                A little challenge. All for
+                                                yourself.
+                                            </span>
+                                        </span>
+                                    </DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
                         </div>
                         <form
                             className="playground-mode join-flow"
                             aria-label="Join your friends"
                             onSubmit={joinRoom}
                         >
-                            <label className="sr-only" htmlFor="home-room-code">
+                            <Label className="sr-only" htmlFor="home-room-code">
                                 Enter your six-character room code to join.
-                            </label>
+                            </Label>
                             <ButtonGroup
-                                className="playground-join-controls"
+                                className="home-room-entry"
                                 aria-label="Join with a room code"
                             >
-                                <svg
-                                    className="room-code-icon"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="1.7"
-                                    aria-hidden="true"
-                                >
-                                    <rect
-                                        x="3"
-                                        y="5"
-                                        width="18"
-                                        height="14"
-                                        rx="2"
-                                    />
-                                    <path d="M6 9h2m3 0h2m3 0h2M6 12h2m3 0h2m3 0h2M8 15h8" />
-                                </svg>
-                                <input
+                                <Input
                                     id="home-room-code"
-                                    className="home-code-input"
+                                    className="h-11 mt-0"
                                     aria-label="Room code"
                                     value={code}
                                     onChange={(event) =>
@@ -133,7 +115,7 @@ export function Home({ go }: { go: (path: string) => void }) {
                                     enterKeyHint="go"
                                 />
                                 <Button
-                                    intent="secondary"
+                                    variant="outline"
                                     className="playground-join"
                                     type="submit"
                                     aria-label="Join a room"
@@ -192,12 +174,6 @@ export function Home({ go }: { go: (path: string) => void }) {
                     </div>
                 </div>
             </section>
-            <div className="playground-footnote">
-                <span>Free to play. No downloads. Just curiosity.</span>
-                <span>
-                    Made for good company <span aria-hidden="true">↗</span>
-                </span>
-            </div>
         </div>
     );
 }

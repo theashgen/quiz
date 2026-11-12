@@ -1,3 +1,9 @@
+import { Button as ShadcnButton } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Checkbox } from "@/components/ui/checkbox";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "./Button";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import type { Catalog, Setup, Question } from "../types";
@@ -25,6 +31,7 @@ export function SetupPage({
     onBack,
     onSubmit,
     accountName,
+    initialSource = "preset",
 }: {
     catalog: Catalog;
     solo?: boolean;
@@ -32,9 +39,11 @@ export function SetupPage({
     onBack: () => void;
     onSubmit: (s: Setup) => Promise<void>;
     accountName?: string;
+    initialSource?: Setup["source"];
 }) {
     const [setup, setSetup] = useState<Setup>(() => ({
         ...base(),
+        source: initialSource,
         ...(accountName ? { name: accountName } : {}),
     }));
     const [busy, setBusy] = useState(false);
@@ -133,9 +142,13 @@ export function SetupPage({
         <section
             className={`setup-page${!solo && !rematch ? " create-page" : ""}${setup.source === "custom" ? " custom-setup" : ""}`}
         >
-            <button className="back text-button" onClick={onBack}>
+            <ShadcnButton
+                variant="unstyled"
+                className="back text-button"
+                onClick={onBack}
+            >
                 ← {rematch ? "Back to results" : "Back to home"}
-            </button>
+            </ShadcnButton>
             <div className="page-heading">
                 <div className="eyebrow">
                     {solo
@@ -163,7 +176,8 @@ export function SetupPage({
                 {!solo && (
                     <fieldset className="source-tabs">
                         <legend className="sr-only">Question source</legend>
-                        <button
+                        <ShadcnButton
+                            variant="unstyled"
                             type="button"
                             aria-pressed={setup.source === "preset"}
                             className={
@@ -175,8 +189,9 @@ export function SetupPage({
                         >
                             <strong>✦ Ready-made trivia</strong>
                             <span>Pick topics. Get playing.</span>
-                        </button>
-                        <button
+                        </ShadcnButton>
+                        <ShadcnButton
+                            variant="unstyled"
                             type="button"
                             aria-pressed={setup.source === "custom"}
                             className={
@@ -192,7 +207,7 @@ export function SetupPage({
                         >
                             <strong>✎ Your own questions</strong>
                             <span>You create. You host.</span>
-                        </button>
+                        </ShadcnButton>
                     </fieldset>
                 )}
                 <div className="setup-grid">
@@ -213,7 +228,7 @@ export function SetupPage({
                                     {Object.entries(catalog.categories)
                                         .sort()
                                         .map(([c, count]) => (
-                                            <label
+                                            <Label
                                                 className={
                                                     setup.categories.includes(c)
                                                         ? "category selected"
@@ -221,16 +236,16 @@ export function SetupPage({
                                                 }
                                                 key={c}
                                             >
-                                                <input
-                                                    type="checkbox"
+                                                <Checkbox
                                                     checked={setup.categories.includes(
                                                         c,
                                                     )}
-                                                    onChange={(e) =>
+                                                    onCheckedChange={(
+                                                        checked,
+                                                    ) =>
                                                         setSetup({
                                                             ...setup,
-                                                            categories: e.target
-                                                                .checked
+                                                            categories: checked
                                                                 ? [
                                                                       ...setup.categories,
                                                                       c,
@@ -264,14 +279,15 @@ export function SetupPage({
                                                     {count} development
                                                     questions
                                                 </small>
-                                            </label>
+                                            </Label>
                                         ))}
                                 </div>
                                 <fieldset>
                                     <legend>How many questions?</legend>
                                     <div className="segmented">
                                         {catalog.lengths.map((n) => (
-                                            <button
+                                            <ShadcnButton
+                                                variant="unstyled"
                                                 className={
                                                     setup.count === n
                                                         ? "selected"
@@ -289,7 +305,7 @@ export function SetupPage({
                                             >
                                                 {n}
                                                 <small>questions</small>
-                                            </button>
+                                            </ShadcnButton>
                                         ))}
                                     </div>
                                 </fieldset>
@@ -301,9 +317,10 @@ export function SetupPage({
                             <>
                                 <div className="quiz-draft">
                                     <div className="save-controls">
-                                        <label>
+                                        <Label>
                                             Quiz title
-                                            <input
+                                            <Input
+                                                variant="themed"
                                                 value={saveName}
                                                 onChange={(e) =>
                                                     setSaveName(e.target.value)
@@ -311,7 +328,7 @@ export function SetupPage({
                                                 maxLength={80}
                                                 placeholder="Give your quiz a name"
                                             />
-                                        </label>
+                                        </Label>
                                         <Button
                                             type="button"
                                             intent="secondary"
@@ -378,7 +395,8 @@ export function SetupPage({
                                                         )
                                                     </small>
                                                 </span>
-                                                <button
+                                                <ShadcnButton
+                                                    variant="unstyled"
                                                     type="button"
                                                     className="text-button"
                                                     onClick={() => {
@@ -396,8 +414,9 @@ export function SetupPage({
                                                     }}
                                                 >
                                                     Open
-                                                </button>
-                                                <button
+                                                </ShadcnButton>
+                                                <ShadcnButton
+                                                    variant="unstyled"
                                                     type="button"
                                                     className="text-button"
                                                     onClick={() =>
@@ -411,7 +430,7 @@ export function SetupPage({
                                                     }
                                                 >
                                                     Delete
-                                                </button>
+                                                </ShadcnButton>
                                             </div>
                                         ))
                                     )}
@@ -443,7 +462,8 @@ export function SetupPage({
                                                 </span>
                                             </div>
                                             <div className="editor-actions">
-                                                <button
+                                                <ShadcnButton
+                                                    variant="unstyled"
                                                     type="button"
                                                     aria-label={`Move question ${i + 1} up`}
                                                     title="Move up"
@@ -451,8 +471,9 @@ export function SetupPage({
                                                     onClick={() => move(i, -1)}
                                                 >
                                                     ↑
-                                                </button>
-                                                <button
+                                                </ShadcnButton>
+                                                <ShadcnButton
+                                                    variant="unstyled"
                                                     type="button"
                                                     aria-label={`Move question ${i + 1} down`}
                                                     title="Move down"
@@ -465,8 +486,9 @@ export function SetupPage({
                                                     onClick={() => move(i, 1)}
                                                 >
                                                     ↓
-                                                </button>
-                                                <button
+                                                </ShadcnButton>
+                                                <ShadcnButton
+                                                    variant="unstyled"
                                                     type="button"
                                                     aria-label={`Duplicate question ${i + 1}`}
                                                     title="Duplicate question"
@@ -501,8 +523,9 @@ export function SetupPage({
                                                         />
                                                         <path d="M16 8V4H4v12h4" />
                                                     </svg>
-                                                </button>
-                                                <button
+                                                </ShadcnButton>
+                                                <ShadcnButton
+                                                    variant="unstyled"
                                                     type="button"
                                                     aria-label={`Delete question ${i + 1}`}
                                                     title="Delete question"
@@ -532,12 +555,12 @@ export function SetupPage({
                                                     >
                                                         <path d="M4 6h16M9 6V3h6v3M6 6l1 15h10l1-15M10 10v7M14 10v7" />
                                                     </svg>
-                                                </button>
+                                                </ShadcnButton>
                                             </div>
                                         </div>
-                                        <label>
+                                        <Label>
                                             Question text
-                                            <textarea
+                                            <Textarea
                                                 ref={(element) => {
                                                     questionFields.current[i] =
                                                         element;
@@ -553,7 +576,7 @@ export function SetupPage({
                                                 }
                                                 placeholder="What would you like to ask?"
                                             />
-                                        </label>
+                                        </Label>
                                         <fieldset>
                                             <legend>
                                                 Answer options{" "}
@@ -561,47 +584,42 @@ export function SetupPage({
                                                     · select the correct answer
                                                 </span>
                                             </legend>
-                                            <div className="editor-options">
+                                            <RadioGroup
+                                                className="editor-options"
+                                                name={`correct-${i}`}
+                                                value={String(q.correct)}
+                                                onValueChange={(value) =>
+                                                    updateQ(i, {
+                                                        ...q,
+                                                        correct: Number(value),
+                                                    })
+                                                }
+                                            >
                                                 {q.options.map((o, j) => (
                                                     <div
                                                         className={`editor-option${q.correct === j ? " correct-option" : ""}`}
                                                         key={j}
                                                     >
-                                                        <label
+                                                        <RadioGroupItem
+                                                            render={<label />}
+                                                            value={String(j)}
+                                                            aria-label={`Question ${i + 1}: option ${"ABCD"[j]} is correct`}
                                                             className="answer-selector"
                                                             title={`Mark ${"ABCD"[j]} as correct`}
                                                         >
-                                                            <input
-                                                                type="radio"
-                                                                aria-label={`Question ${i + 1}: option ${"ABCD"[j]} is correct`}
-                                                                name={
-                                                                    "correct-" +
-                                                                    i
-                                                                }
-                                                                checked={
-                                                                    q.correct ===
-                                                                    j
-                                                                }
-                                                                onChange={() =>
-                                                                    updateQ(i, {
-                                                                        ...q,
-                                                                        correct:
-                                                                            j,
-                                                                    })
-                                                                }
-                                                            />
                                                             <span aria-hidden="true">
                                                                 {"ABCD"[j]}
                                                             </span>
-                                                        </label>
-                                                        <label
+                                                        </RadioGroupItem>
+                                                        <Label
                                                             className="sr-only"
                                                             htmlFor={`option-${i}-${j}`}
                                                         >
                                                             Question {i + 1},
                                                             option {"ABCD"[j]}
-                                                        </label>
-                                                        <input
+                                                        </Label>
+                                                        <Input
+                                                            variant="themed"
                                                             id={`option-${i}-${j}`}
                                                             required
                                                             maxLength={500}
@@ -628,7 +646,7 @@ export function SetupPage({
                                                         />
                                                     </div>
                                                 ))}
-                                            </div>
+                                            </RadioGroup>
                                             <p className="answer-hint">
                                                 {new Set(
                                                     q.options
@@ -702,15 +720,13 @@ export function SetupPage({
                                     catalog={catalog}
                                 />
                                 {setup.source === "preset" && (
-                                    <label className="checkbox">
-                                        <input
-                                            type="checkbox"
+                                    <Label className="checkbox">
+                                        <Checkbox
                                             checked={setup.participate}
-                                            onChange={(e) =>
+                                            onCheckedChange={(checked) =>
                                                 setSetup({
                                                     ...setup,
-                                                    participate:
-                                                        e.target.checked,
+                                                    participate: checked,
                                                 })
                                             }
                                         />
@@ -721,13 +737,14 @@ export function SetupPage({
                                                 answering.
                                             </small>
                                         </span>
-                                    </label>
+                                    </Label>
                                 )}
                             </>
                         )}
                         {error && <ErrorMessage>{error}</ErrorMessage>}
                         <Button
                             fullWidth
+                            type="submit"
                             disabled={
                                 busy ||
                                 (setup.source === "preset" &&
