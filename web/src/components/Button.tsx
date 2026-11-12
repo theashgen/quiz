@@ -1,21 +1,12 @@
 import type { ButtonHTMLAttributes } from "react";
-import { cva, type VariantProps } from "class-variance-authority";
+import { Button as ShadcnButton } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
-const buttonStyles = cva("ui-button", {
-    variants: {
-        intent: {
-            primary: "primary",
-            secondary: "button-outline",
-            ghost: "text-button",
-        },
-        size: { default: "", small: "ui-button-small" },
-        fullWidth: { true: "w-full", false: "" },
-    },
-    defaultVariants: { intent: "primary", size: "default", fullWidth: false },
-});
-
-type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> &
-    VariantProps<typeof buttonStyles>;
+type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
+    intent?: "primary" | "secondary" | "ghost" | null;
+    size?: "default" | "small" | null;
+    fullWidth?: boolean | null;
+};
 
 export function Button({
     intent,
@@ -25,8 +16,11 @@ export function Button({
     ...props
 }: ButtonProps) {
     return (
-        <button
-            className={buttonStyles({ intent, size, fullWidth, className })}
+        <ShadcnButton
+            variant={intent === "primary" || !intent ? "default" : intent}
+            size={size === "small" ? "sm" : "default"}
+            className={cn(fullWidth && "w-full", className)}
+            type="submit"
             {...props}
         />
     );

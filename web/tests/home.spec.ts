@@ -1,5 +1,28 @@
 import { expect, test } from "./teacher-fixture";
 
+test("home uses the themed shadcn room-entry primitives", async ({ page }) => {
+    await page.goto("/");
+    const group = page.getByRole("group", { name: "Join with a room code" });
+    await expect(group).toHaveAttribute("data-slot", "button-group");
+    await expect(
+        group.getByRole("textbox", { name: "Room code" }),
+    ).toHaveAttribute("data-slot", "input");
+    await expect(
+        group.getByRole("button", { name: "Join a room" }),
+    ).toHaveAttribute("data-slot", "button");
+    await page
+        .getByRole("button", { name: "Create a room", exact: true })
+        .click();
+    await expect(page.getByRole("menu")).toHaveAttribute(
+        "data-slot",
+        "dropdown-menu-content",
+    );
+    await expect(page.getByRole("menuitem").first()).toHaveAttribute(
+        "data-slot",
+        "dropdown-menu-item",
+    );
+});
+
 test("home restores the dotted grid background", async ({ page }) => {
     await page.goto("/");
     await expect(page.locator("html")).toHaveCSS(

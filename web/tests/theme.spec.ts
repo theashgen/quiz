@@ -45,7 +45,7 @@ test("single-sided dividers stay thin across join and custom setup screens", asy
     }
 });
 
-test("shared cream canvas stays consistent across pages and screen sizes", async ({
+test("shared dotted cream canvas stays consistent across pages and screen sizes", async ({
     page,
 }) => {
     for (const width of [390, 1440]) {
@@ -61,7 +61,11 @@ test("shared cream canvas stays consistent across pages and screen sizes", async
             );
             await expect(page.locator("html")).toHaveCSS(
                 "background-image",
-                "none",
+                /radial-gradient/,
+            );
+            await expect(page.locator("html")).toHaveCSS(
+                "background-size",
+                "24px 24px",
             );
             expect(
                 await page.evaluate(
