@@ -32,6 +32,7 @@ async function showResults(
     page: Page,
     entries = players,
     participating = false,
+    solo = false,
 ) {
     const snapshot: Snapshot = {
         revision: 1,
@@ -39,7 +40,7 @@ async function showResults(
         roundId: "podium-round",
         status: "results",
         source: participating ? "preset" : "custom",
-        solo: false,
+        solo,
         serverTime: Date.now(),
         expiresAt: Date.now() + 600000,
         me: "me",
@@ -72,7 +73,10 @@ async function showResults(
     });
     await page.goto("/room/POD123");
     await expect(
-        page.getByRole("heading", { name: "The final leaderboard" }),
+        page.getByRole("heading", {
+            name: solo ? "Your result" : "The final leaderboard",
+            exact: true,
+        }),
     ).toBeVisible();
 }
 
@@ -107,6 +111,57 @@ const tenPlayers = [
         rank: 10,
     },
 ];
+
+for (const width of [320, 390, 820, 1440]) {
+    test(`solo reuses the shared podium layout at ${width}px`, async ({
+        page,
+    }) => {
+        await page.setViewportSize({ width, height: 844 });
+        await showResults(page, [{ ...players[3], rank: 1 }], true, true);
+        await expect(page.locator(".results-page")).toHaveClass(
+            /podium-results/,
+        );
+        await expect(page.locator(".result-star")).toBeHidden();
+        await expect(page.locator(".leaderboard-stage")).toHaveCSS(
+            "background-color",
+            "rgb(255, 255, 255)",
+        );
+        await expect(page.locator(".leaderboard-stage")).toHaveCSS(
+            "border-radius",
+            "28px",
+        );
+        await expect(
+            page.getByRole("list", { name: "Top players" }),
+        ).toHaveCount(1);
+        await expect(page.locator(".winner-podium > li")).toHaveCount(1);
+        await expect(page.locator(".podium-name")).toHaveText("Zackary Romijn");
+        await expect(page.locator(".podium-score")).toContainText("987");
+        await expect(page.locator(".ranked-players")).toHaveCount(0);
+        await expect(page.locator(".leaderboard-standings")).toHaveCount(0);
+        const winner = await page.locator(".winner-podium > li").boundingBox();
+        const stage = await page.locator(".leaderboard-stage").boundingBox();
+        expect(winner!.x + winner!.width / 2).toBeCloseTo(
+            stage!.x + stage!.width / 2,
+            0,
+        );
+        await page
+            .getByRole("button", { name: "Another solo round" })
+            .scrollIntoViewIfNeeded();
+        await expect(
+            page.getByRole("button", { name: "Another solo round" }),
+        ).toBeInViewport();
+        await expect(
+            page.getByRole("button", { name: "Count me in for another" }),
+        ).toHaveCount(0);
+        expect(
+            await page.evaluate(
+                () => document.documentElement.scrollWidth <= innerWidth,
+            ),
+        ).toBeTruthy();
+        await page.getByRole("button", { name: "Another solo round" }).click();
+        await expect(page).toHaveURL(/\/solo$/);
+    });
+}
 
 test("result separators use only their intended edges on desktop and mobile", async ({
     page,
