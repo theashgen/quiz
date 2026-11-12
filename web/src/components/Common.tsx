@@ -1,3 +1,5 @@
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import type { ReactNode } from "react";
 import type { Setup, Catalog } from "../types";
 import { AvatarPicker } from "./AvatarPicker";
@@ -26,9 +28,10 @@ export function Identity({
 }) {
     return (
         <div className="identity">
-            <label>
+            <Label>
                 Your name
-                <input
+                <Input
+                    variant="themed"
                     required
                     maxLength={30}
                     value={setup.name}
@@ -39,7 +42,7 @@ export function Identity({
                     autoComplete="nickname"
                     autoFocus={autoFocusName}
                 />
-            </label>
+            </Label>
             <AvatarPicker
                 avatars={catalog.avatars}
                 value={setup.avatar}

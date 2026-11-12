@@ -1,3 +1,7 @@
+import { Button as ShadcnButton } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "./Button";
 import { useState, type FormEvent } from "react";
 import { api, type Account } from "../types";
@@ -49,9 +53,13 @@ export function AuthPage({
 
     return (
         <section className="auth-page" aria-labelledby="auth-heading">
-            <button className="back text-button" onClick={() => go("/")}>
+            <ShadcnButton
+                variant="unstyled"
+                className="back text-button"
+                onClick={() => go("/")}
+            >
                 ← Back to home
-            </button>
+            </ShadcnButton>
             <div className="auth-layout">
                 <div className="auth-welcome">
                     <div className="eyebrow">
@@ -83,12 +91,13 @@ export function AuthPage({
                         <span>
                             You can still join as a guest. No account needed.
                         </span>
-                        <button
+                        <ShadcnButton
+                            variant="unstyled"
                             className="text-button"
                             onClick={() => go("/join")}
                         >
                             Join a room instead ↗
-                        </button>
+                        </ShadcnButton>
                     </div>
                 </div>
                 <div className="auth-form-column">
@@ -107,22 +116,25 @@ export function AuthPage({
                     </p>
                     <form onSubmit={submit}>
                         {signup && (
-                            <fieldset className="auth-roles">
+                            <RadioGroup
+                                render={<fieldset />}
+                                className="auth-roles"
+                                name="account-role"
+                                value={role}
+                                onValueChange={(value) =>
+                                    setRole(value as "teacher" | "student")
+                                }
+                            >
                                 <legend>I’m joining as a</legend>
                                 {(["teacher", "student"] as const).map(
                                     (choice) => (
-                                        <label
+                                        <RadioGroupItem
+                                            render={<label />}
                                             key={choice}
+                                            value={choice}
+                                            disabled={busy}
                                             className={`auth-role${role === choice ? " selected" : ""}`}
                                         >
-                                            <input
-                                                type="radio"
-                                                name="account-role"
-                                                value={choice}
-                                                checked={role === choice}
-                                                onChange={() => setRole(choice)}
-                                                disabled={busy}
-                                            />
                                             <span
                                                 className="auth-role-check"
                                                 aria-hidden="true"
@@ -139,15 +151,16 @@ export function AuthPage({
                                                     ? "Create quizzes. Bring your class."
                                                     : "Join quizzes. Follow your curiosity."}
                                             </small>
-                                        </label>
+                                        </RadioGroupItem>
                                     ),
                                 )}
-                            </fieldset>
+                            </RadioGroup>
                         )}
                         {signup && (
-                            <label>
+                            <Label>
                                 Your name
-                                <input
+                                <Input
+                                    variant="themed"
                                     autoComplete="name"
                                     value={name}
                                     onChange={(event) =>
@@ -158,11 +171,12 @@ export function AuthPage({
                                     placeholder="What should we call you?"
                                     disabled={busy}
                                 />
-                            </label>
+                            </Label>
                         )}
-                        <label>
+                        <Label>
                             Email address
-                            <input
+                            <Input
+                                variant="themed"
                                 type="email"
                                 autoComplete="email"
                                 value={email}
@@ -176,10 +190,11 @@ export function AuthPage({
                                 spellCheck={false}
                                 disabled={busy}
                             />
-                        </label>
-                        <label htmlFor="account-password">Password</label>
+                        </Label>
+                        <Label htmlFor="account-password">Password</Label>
                         <div className="auth-password">
-                            <input
+                            <Input
+                                variant="themed"
                                 id="account-password"
                                 type={visible ? "text" : "password"}
                                 autoComplete={
@@ -202,7 +217,8 @@ export function AuthPage({
                                 }
                                 disabled={busy}
                             />
-                            <button
+                            <ShadcnButton
+                                variant="unstyled"
                                 type="button"
                                 aria-label={
                                     visible ? "Hide password" : "Show password"
@@ -211,7 +227,7 @@ export function AuthPage({
                                 onClick={() => setVisible(!visible)}
                             >
                                 {visible ? "Hide" : "Show"}
-                            </button>
+                            </ShadcnButton>
                         </div>
                         {signup && (
                             <p id="password-hint" className="auth-field-hint">
@@ -221,6 +237,7 @@ export function AuthPage({
                         {error && <ErrorMessage>{error}</ErrorMessage>}
                         <Button
                             fullWidth
+                            type="submit"
                             className="auth-submit"
                             disabled={busy}
                         >
@@ -235,14 +252,15 @@ export function AuthPage({
                         {signup
                             ? "Already part of the fun?"
                             : "New around here?"}{" "}
-                        <button
+                        <ShadcnButton
+                            variant="unstyled"
                             className="text-button"
                             onClick={() =>
                                 go(`${signup ? "/login" : "/signup"}${next}`)
                             }
                         >
                             {signup ? "Sign in" : "Create an account"}
-                        </button>
+                        </ShadcnButton>
                     </p>
                     {signup && (
                         <p className="auth-field-hint">
@@ -265,23 +283,35 @@ export function AccountMenu({
 }) {
     return (
         <div className="account-navigation">
+            {user?.role === "teacher" && (
+                <Button
+                    intent="secondary"
+                    size="small"
+                    className="question-bank-shortcut"
+                    onClick={() => go("/create?source=custom")}
+                >
+                    Question bank
+                </Button>
+            )}
             {user ? (
-                <button
+                <ShadcnButton
+                    variant="unstyled"
                     className="text-button account-link"
                     onClick={() => go("/account")}
                 >
                     <span className="account-dot" />
                     {user.name}
                     <span className="account-role-label">{user.role}</span>
-                </button>
+                </ShadcnButton>
             ) : (
                 <>
-                    <button
+                    <ShadcnButton
+                        variant="unstyled"
                         className="text-button"
                         onClick={() => go("/login")}
                     >
                         Sign in
-                    </button>
+                    </ShadcnButton>
                     <Button
                         intent="secondary"
                         className="account-signup"
@@ -322,9 +352,13 @@ export function AccountPage({
     }
     return (
         <section className="account-page">
-            <button className="back text-button" onClick={() => go("/")}>
+            <ShadcnButton
+                variant="unstyled"
+                className="back text-button"
+                onClick={() => go("/")}
+            >
                 ← Back to home
-            </button>
+            </ShadcnButton>
             <div className="eyebrow">YOUR LITTLE CORNER</div>
             <div className="account-heading">
                 <div>
@@ -354,9 +388,13 @@ export function AccountPage({
                 <Button intent="secondary" onClick={() => go("/join")}>
                     Join a room ↗
                 </Button>
-                <button className="text-button" onClick={() => go("/solo")}>
+                <ShadcnButton
+                    variant="unstyled"
+                    className="text-button"
+                    onClick={() => go("/solo")}
+                >
                     Play solo ↗
-                </button>
+                </ShadcnButton>
             </div>
             <dl className="account-details">
                 <div>
@@ -377,9 +415,14 @@ export function AccountPage({
                 </div>
             </dl>
             {error && <ErrorMessage>{error}</ErrorMessage>}
-            <button className="text-button" disabled={busy} onClick={logout}>
+            <ShadcnButton
+                variant="unstyled"
+                className="text-button"
+                disabled={busy}
+                onClick={logout}
+            >
                 {busy ? "Signing out…" : "Sign out of your account →"}
-            </button>
+            </ShadcnButton>
             <p className="auth-field-hint">
                 Guest joining stays available after you sign out.
             </p>

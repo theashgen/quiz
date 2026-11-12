@@ -166,7 +166,9 @@ test("create setup fits laptop screens without clipping controls", async ({
         }
         await expect(submit).toBeInViewport({ ratio: 1 });
         await expect(page.getByLabel("Your name")).toBeInViewport({ ratio: 1 });
-        await expect(page.getByLabel("I’m playing too")).toBeInViewport({
+        await expect(
+            page.getByRole("checkbox", { name: /I’m playing too/ }),
+        ).toBeInViewport({
             ratio: 1,
         });
     }

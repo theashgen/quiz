@@ -11,7 +11,7 @@ test("local HTTP keeps a guest session without weakening origin checks", async (
     );
     await page.goto("/");
     await expect(
-        page.getByRole("heading", { name: "Play together. Grow curious." }),
+        page.getByRole("region", { name: "Start playing" }),
     ).toBeVisible();
     const guest = (await context.cookies()).find(
         (cookie) => cookie.name === "quiz_guest_local",
@@ -24,7 +24,7 @@ test("local HTTP keeps a guest session without weakening origin checks", async (
     });
     await page.reload();
     await expect(
-        page.getByRole("heading", { name: "Play together. Grow curious." }),
+        page.getByRole("region", { name: "Start playing" }),
     ).toBeVisible();
     const restoredGuest = (await context.cookies()).find(
         (cookie) => cookie.name === "quiz_guest_local",

@@ -5,11 +5,13 @@ export function Leaderboard({
     entries,
     currentPlayer,
     solo,
+    hideHeading = false,
     code,
 }: {
     entries: NonNullable<Snapshot["leaderboard"]>;
     currentPlayer: string;
     solo: boolean;
+    hideHeading?: boolean;
     code: string;
 }) {
     const winners = entries.slice(0, 3);
@@ -20,17 +22,21 @@ export function Leaderboard({
             className={`leaderboard podium-board${remaining.length > 0 ? " has-standings" : ""}`}
         >
             <div className="leaderboard-stage">
-                <div className="leaderboard-heading">
-                    <div className="eyebrow">
-                        {solo ? "A LITTLE WISER" : "THE WINNER’S CIRCLE"}
+                {!hideHeading && (
+                    <div className="leaderboard-heading">
+                        <div className="eyebrow">
+                            {solo ? "A LITTLE WISER" : "THE WINNER'S CIRCLE"}
+                        </div>
+                        <h2>
+                            {solo ? "Your result" : "The final leaderboard"}
+                        </h2>
+                        <p>
+                            Room {code} <span aria-hidden="true">·</span>{" "}
+                            {entries.length}{" "}
+                            {entries.length === 1 ? "player" : "players"}
+                        </p>
                     </div>
-                    <h2>{solo ? "Your result" : "The final leaderboard"}</h2>
-                    <p>
-                        Room {code} <span aria-hidden="true">·</span>{" "}
-                        {entries.length}{" "}
-                        {entries.length === 1 ? "player" : "players"}
-                    </p>
-                </div>
+                )}
                 {winners.length > 0 ? (
                     <ol className="winner-podium" aria-label="Top players">
                         {winners.map((entry, index) => (

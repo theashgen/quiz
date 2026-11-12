@@ -1,5 +1,6 @@
-import { useId, useRef, type TouchEvent } from "react";
-import { createPortal } from "react-dom";
+import { Button as ShadcnButton } from "@/components/ui/button";
+import { useId, useRef, useState, type TouchEvent } from "react";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { avatarNumber } from "../avatars";
 import { Avatar } from "./Avatar";
 
@@ -14,7 +15,7 @@ export function AvatarPicker({
     onChange: (value: string) => void;
     carousel?: boolean;
 }) {
-    const dialog = useRef<HTMLDialogElement>(null);
+    const [dialogOpen, setDialogOpen] = useState(false);
     const headingId = useId();
     const swipeStart = useRef<{
         identifier: number;
@@ -73,13 +74,14 @@ export function AvatarPicker({
         >
             <legend>
                 Pick your avatar{" "}
-                <button
+                <ShadcnButton
+                    variant="unstyled"
                     className="avatar-browse"
                     type="button"
-                    onClick={() => dialog.current?.showModal()}
+                    onClick={() => setDialogOpen(true)}
                 >
                     Browse all <span aria-hidden="true">↗</span>
-                </button>
+                </ShadcnButton>
             </legend>
             {carousel ? (
                 <div className="avatar-carousel-stage">
@@ -93,7 +95,8 @@ export function AvatarPicker({
                     >
                         <Avatar value="memoji-21" decorative />
                     </div>
-                    <button
+                    <ShadcnButton
+                        variant="unstyled"
                         type="button"
                         className="avatar-carousel-arrow"
                         aria-label="Previous avatar"
@@ -111,7 +114,7 @@ export function AvatarPicker({
                         >
                             <path d="m15 5-7 7 7 7" />
                         </svg>
-                    </button>
+                    </ShadcnButton>
                     <div
                         className="avatar-carousel-face"
                         onTouchStart={startSwipe}
@@ -122,7 +125,8 @@ export function AvatarPicker({
                     >
                         <Avatar key={value} value={value} decorative />
                     </div>
-                    <button
+                    <ShadcnButton
+                        variant="unstyled"
                         type="button"
                         className="avatar-carousel-arrow"
                         aria-label="Next avatar"
@@ -140,7 +144,7 @@ export function AvatarPicker({
                         >
                             <path d="m9 5 7 7-7 7" />
                         </svg>
-                    </button>
+                    </ShadcnButton>
                     <div
                         className="avatar-carousel-friend avatar-carousel-friend-right"
                         aria-hidden="true"
@@ -164,7 +168,8 @@ export function AvatarPicker({
             ) : (
                 <div className="avatars">
                     {quickChoices.map((avatar) => (
-                        <button
+                        <ShadcnButton
+                            variant="unstyled"
                             key={avatar}
                             type="button"
                             aria-label={`Avatar ${avatarNumber(avatar)}`}
@@ -179,7 +184,7 @@ export function AvatarPicker({
                             onClick={() => onChange(avatar)}
                         >
                             <Avatar value={avatar} decorative />
-                        </button>
+                        </ShadcnButton>
                     ))}
                 </div>
             )}
@@ -188,9 +193,9 @@ export function AvatarPicker({
                     Swipe left or right to find your face
                 </p>
             )}
-            {createPortal(
-                <dialog
-                    ref={dialog}
+            <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+                <DialogContent
+                    showCloseButton={false}
                     className="avatar-dialog"
                     aria-labelledby={headingId}
                 >
@@ -199,11 +204,12 @@ export function AvatarPicker({
                             <div className="eyebrow">A FACE FOR THE GAME</div>
                             <h2 id={headingId}>Find your quiz face.</h2>
                         </div>
-                        <button
+                        <ShadcnButton
+                            variant="unstyled"
                             type="button"
                             className="avatar-dialog-close"
                             aria-label="Close avatar picker"
-                            onClick={() => dialog.current?.close()}
+                            onClick={() => setDialogOpen(false)}
                         >
                             <svg
                                 width="18"
@@ -216,7 +222,7 @@ export function AvatarPicker({
                             >
                                 <path d="m6 6 12 12M18 6 6 18" />
                             </svg>
-                        </button>
+                        </ShadcnButton>
                     </div>
                     <p className="avatar-dialog-description">
                         {avatars.length} faces. Pick the one that feels like
@@ -228,7 +234,8 @@ export function AvatarPicker({
                         aria-label="Available Memoji avatars"
                     >
                         {avatars.map((avatar) => (
-                            <button
+                            <ShadcnButton
+                                variant="unstyled"
                                 key={avatar}
                                 type="button"
                                 aria-label={`Avatar ${avatarNumber(avatar)}`}
@@ -242,7 +249,7 @@ export function AvatarPicker({
                                 }
                                 onClick={() => {
                                     onChange(avatar);
-                                    dialog.current?.close();
+                                    setDialogOpen(false);
                                 }}
                             >
                                 <Avatar value={avatar} decorative />
@@ -252,16 +259,15 @@ export function AvatarPicker({
                                         "0",
                                     )}
                                 </span>
-                            </button>
+                            </ShadcnButton>
                         ))}
                     </div>
                     <p className="avatar-dialog-credit">
                         Memojis by Tapback. Your choice stays with you for this
                         room.
                     </p>
-                </dialog>,
-                document.body,
-            )}
+                </DialogContent>
+            </Dialog>
         </fieldset>
     );
 }
