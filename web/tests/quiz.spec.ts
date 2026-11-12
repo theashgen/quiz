@@ -190,11 +190,11 @@ test("solo presets finish without a lobby and keep a personal score", async ({
         await page.getByRole("button", { name: "Submit answer" }).click();
         await expect(page.locator(".answer-option.correct")).toHaveCount(1);
     }
-    await expect(
-        page.getByRole("heading", { name: "Your result", exact: true }),
-    ).toBeVisible();
-    await expect(page.locator(".big-score")).toContainText("/ 500");
     await expect(page.locator(".results-page")).toHaveClass(/podium-results/);
+    await expect(page.locator(".results-page")).toHaveClass(/solo-results/);
+    await expect(page.locator(".page-heading")).toHaveCount(0);
+    await expect(page.locator(".leaderboard-heading")).toHaveCount(0);
+    await expect(page.locator(".podium-score")).toContainText("pts");
     await expect(page.locator(".leaderboard-stage")).toHaveCSS(
         "background-color",
         "rgb(255, 255, 255)",

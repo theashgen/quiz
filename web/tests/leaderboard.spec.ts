@@ -72,12 +72,16 @@ async function showResults(
         socket.send(JSON.stringify({ type: "snapshot", snapshot }));
     });
     await page.goto("/room/POD123");
-    await expect(
-        page.getByRole("heading", {
-            name: solo ? "Your result" : "The final leaderboard",
-            exact: true,
-        }),
-    ).toBeVisible();
+    if (solo) {
+        await expect(page.locator(".winner-podium")).toBeVisible();
+    } else {
+        await expect(
+            page.getByRole("heading", {
+                name: "The final leaderboard",
+                exact: true,
+            }),
+        ).toBeVisible();
+    }
 }
 
 const tenPlayers = [
@@ -121,6 +125,9 @@ for (const width of [320, 390, 820, 1440]) {
         await expect(page.locator(".results-page")).toHaveClass(
             /podium-results/,
         );
+        await expect(page.locator(".results-page")).toHaveClass(/solo-results/);
+        await expect(page.locator(".page-heading")).toHaveCount(0);
+        await expect(page.locator(".leaderboard-heading")).toHaveCount(0);
         await expect(page.locator(".result-star")).toBeHidden();
         await expect(page.locator(".leaderboard-stage")).toHaveCSS(
             "background-color",
