@@ -3,6 +3,7 @@ Run after capture.cjs, from the repository root: python3 docs/demo/render-video.
 Requires ffmpeg and ffprobe on PATH. No Python packages are needed.
 """
 import json
+import datetime
 import pathlib
 import subprocess
 
@@ -33,7 +34,11 @@ subprocess.run(['ffmpeg', '-y', '-loglevel', 'error', '-f', 'concat', '-safe', '
                 '-map_metadata', '1', '-c', 'copy', '-movflags', '+faststart',
                 'docs/media/video/quiz-walkthrough.mp4'], check=True)
 pathlib.Path('docs/evidence/video.json').write_text(json.dumps({
+    'capturedAt': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+    'applicationRevision': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+    'ui': 'Peach Playground',
     'width': 1440, 'height': 1000, 'fps': 30, 'codec': 'H.264',
+    'sizeBytes': pathlib.Path('docs/media/video/quiz-walkthrough.mp4').stat().st_size,
     'durationSeconds': round(position, 3), 'audio': 'silent', 'chapters': chapters
 }, indent=2) + '\n')
 print(f'Published {position:.1f}s at 1440 × 1000, 30 fps.')

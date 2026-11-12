@@ -2,15 +2,8 @@
 const { chromium } = require("../../web/node_modules/playwright");
 const { randomUUID } = require("node:crypto");
 const { execFileSync } = require("node:child_process");
+const snap = require("./screenshot.cjs");
 const origin = process.env.APP_URL || "http://localhost:8443";
-const snap = async (p, n) => {
-  await p.screenshot({
-    path: `docs/media/screenshots/${n}.png`,
-    fullPage: true,
-    animations: "disabled",
-  });
-  console.log("Screenshot", n);
-};
 (async () => {
   const browser = await chromium.launch();
   try {
@@ -127,6 +120,23 @@ const snap = async (p, n) => {
     await phone.goto("/join");
     await phone.getByLabel("Your name").waitFor();
     await snap(phone, "30-mobile-join");
+    await phone.goto("/solo");
+    await phone.getByRole("button", { name: "Let’s play" }).click();
+    for (let question = 1; question <= 5; question++) {
+      await phone
+        .getByText(`Question ${question} of 5`, { exact: true })
+        .waitFor();
+      await phone.getByRole("button", { name: "Submit answer" }).waitFor();
+      if (question === 1) await snap(phone, "39-mobile-question");
+      await phone.locator(".answer-option").first().click();
+      await phone.getByRole("button", { name: "Submit answer" }).click();
+      await phone.locator(".reveal-footer").waitFor();
+      if (question === 1) await snap(phone, "40-mobile-reveal");
+    }
+    await phone
+      .getByRole("heading", { name: "Your result", exact: true })
+      .waitFor();
+    await snap(phone, "41-mobile-solo-results");
     const loading = await browser.newContext(opts);
     await loading.route("**/api/catalog", async (route) => {
       await new Promise((r) => setTimeout(r, 2000));

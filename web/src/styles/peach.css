@@ -302,6 +302,17 @@ a:focus-visible {
     font-family: var(--font-sans);
     font-weight: 900;
 }
+.podium-step {
+    background: linear-gradient(
+        to bottom,
+        var(--podium-color),
+        color-mix(in srgb, var(--podium-color) 88%, #665241)
+    );
+    border-radius: 0 0 10px 10px;
+}
+.podium-player:not(.podium-place-1) .podium-laurel {
+    display: none;
+}
 .podium-board .ranked-players > li {
     border-radius: 100px;
 }
@@ -772,8 +783,13 @@ a:focus-visible {
     border-color: #e8bd97;
 }
 @media (min-width: 1001px) {
+    .podium-results .podium-board ol.winner-podium {
+        flex: 0 0 auto;
+        margin-block: auto;
+        padding-block: 40px 20px;
+    }
     .podium-results .podium-board ol.ranked-players {
-        max-height: max(160px, calc(100dvh - 450px));
+        max-height: max(160px, calc(100dvh - 400px));
     }
     .podium-results .podium-person {
         padding-bottom: 34px;
@@ -787,13 +803,37 @@ a:focus-visible {
         font-size: 15px;
     }
     .podium-results .winner-podium > li {
+        --podium-height: clamp(112px, 17vh, 170px);
+    }
+    .podium-results .winner-podium .podium-place-2 {
+        --podium-height: clamp(88px, 13vh, 130px);
+    }
+    .podium-results .winner-podium .podium-place-3 {
+        --podium-height: clamp(76px, 10vh, 100px);
+    }
+    .podium-results .podium-player:not(.podium-place-1) .podium-step strong {
+        font-size: 44px;
+    }
+}
+
+@media (min-width: 1001px) and (max-height: 800px) {
+    .podium-results .podium-board ol.winner-podium {
+        padding-block: 28px 8px;
+    }
+    .podium-results .winner-podium > li {
         --podium-height: 104px;
     }
     .podium-results .winner-podium .podium-place-2 {
-        --podium-height: 74px;
+        --podium-height: 82px;
     }
     .podium-results .winner-podium .podium-place-3 {
-        --podium-height: 56px;
+        --podium-height: 72px;
+    }
+    .podium-results .podium-player:not(.podium-place-1) .podium-step strong {
+        font-size: 40px;
+    }
+    .podium-results .podium-place-1 .podium-step strong {
+        font-size: 48px;
     }
 }
 
