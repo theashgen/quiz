@@ -23,6 +23,14 @@ function App() {
     const [user, setUser] = useState<Account | null>(null);
     const [catalog, setCatalog] = useState<Catalog>();
     const [error, setError] = useState("");
+    const redirectToLogin = !!catalog && path === "/create" && !user;
+    useEffect(() => {
+        if (redirectToLogin) {
+            history.replaceState(null, "", "/login?next=/create");
+            setRoute(location.pathname + location.search);
+            window.scrollTo(0, 0);
+        }
+    }, [redirectToLogin]);
     useEffect(() => {
         const update = () => setRoute(location.pathname + location.search);
         addEventListener("popstate", update);
@@ -145,7 +153,7 @@ function App() {
                             : undefined
                 }
             >
-                {!catalog ? (
+                {!catalog || redirectToLogin ? (
                     <div className="panel narrow">
                         <h1>
                             {error ? "Reconnecting…" : "Getting things ready…"}
@@ -181,22 +189,13 @@ function App() {
                             onAuthenticated={authenticated}
                         />
                     )
-                ) : path === "/create" && user?.role !== "teacher" ? (
-                    user ? (
-                        <AccountPage
-                            user={user}
-                            go={go}
-                            onSignedOut={signedOut}
-                            hostingDenied
-                        />
-                    ) : (
-                        <AuthPage
-                            mode="login"
-                            hosting
-                            go={go}
-                            onAuthenticated={authenticated}
-                        />
-                    )
+                ) : path === "/create" && user && user.role !== "teacher" ? (
+                    <AccountPage
+                        user={user}
+                        go={go}
+                        onSignedOut={signedOut}
+                        hostingDenied
+                    />
                 ) : path === "/create" ? (
                     <SetupPage
                         catalog={catalog}
