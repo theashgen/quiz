@@ -4,8 +4,8 @@ const { chromium, expect } = require("../../web/node_modules/@playwright/test");
 const { randomUUID } = require("node:crypto");
 const { spawn } = require("node:child_process");
 const fs = require("node:fs");
+const snap = require("./screenshot.cjs");
 const origin = process.env.APP_URL || "http://localhost:8443";
-const output = "docs/media/screenshots";
 const questions = [
   [
     "Which database stores the durable quiz results?",
@@ -18,15 +18,6 @@ const questions = [
   ["Which language powers this quiz server?", ["Go", "Ruby", "Java", "PHP"]],
 ];
 const wait = (ms) => new Promise((r) => setTimeout(r, ms));
-async function snap(page, name) {
-  await page.evaluate(() => document.fonts.ready);
-  await page.screenshot({
-    path: `${output}/${name}.png`,
-    fullPage: true,
-    animations: "disabled",
-  });
-  console.log("Screenshot", name);
-}
 async function click(page, name) {
   await page.getByRole("button", { name, exact: false }).click();
 }
@@ -96,8 +87,11 @@ async function click(page, name) {
     const code = (await host.locator(".room-code").innerText()).slice(0, 6);
     fs.writeFileSync(
       "docs/evidence/room.json",
-      JSON.stringify({ code, players: 12, questions: 3, origin }, null, 2) +
-        "\n",
+      JSON.stringify(
+        { code, players: 12, questions: 3, origin, ui: "Peach Playground" },
+        null,
+        2,
+      ) + "\n",
     );
     bots = spawn(process.execPath, ["docs/demo/players.cjs", code], {
       env: { ...process.env, APP_URL: origin },
@@ -150,6 +144,9 @@ async function click(page, name) {
     await expect(player.getByText("12 playing", { exact: true })).toBeVisible();
     await snap(player, "08-player-lobby");
     await snap(host, "09-host-lobby");
+    await host.setViewportSize({ width: 390, height: 844 });
+    await snap(host, "36-mobile-lobby");
+    await host.setViewportSize(options.viewport);
     await wait(2500);
     await click(host, "Start the quiz");
     for (let q = 1; q <= 3; q++) {
@@ -183,6 +180,11 @@ async function click(page, name) {
       .waitFor();
     await snap(player, "13-leaderboard");
     await snap(host, "14-host-results");
+    await host.setViewportSize({ width: 390, height: 844 });
+    await snap(host, "37-mobile-leaderboard");
+    await host.locator(".leaderboard-standings").scrollIntoViewIfNeeded();
+    await snap(host, "38-mobile-standings");
+    await host.setViewportSize(options.viewport);
     await wait(2500);
     await player
       .getByRole("button", { name: "Count me in for another" })

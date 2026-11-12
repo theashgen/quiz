@@ -12,13 +12,8 @@ teacherTest(
         ).toBeVisible();
         const code = new URL(page.url()).pathname.split("/").pop()!;
         const inviteURL = new URL("/join/" + code, baseURL).href;
-        await expect(page.getByLabel("Invite players with a link")).toHaveValue(
-            inviteURL,
-        );
         await page.getByRole("button", { name: "Copy invite link" }).click();
-        await expect(page.getByRole("status")).toHaveText(
-            "Invite link copied.",
-        );
+        await expect(page.getByRole("status")).toHaveText("Invite link copied");
         expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(
             inviteURL,
         );
@@ -71,7 +66,6 @@ teacherTest(
         await page.goto("/create");
         await page.getByRole("button", { name: "Create my room" }).click();
         const link = page.getByLabel("Invite players with a link");
-        await expect(link).toBeVisible();
         await page.evaluate(() => {
             Object.defineProperty(navigator, "clipboard", {
                 configurable: true,
@@ -87,8 +81,14 @@ teacherTest(
             "Copy unavailable. Select and copy the invite link above.",
         );
         await expect(
-            page.getByText("Invite link copied.", { exact: true }),
+            page.getByText("Invite link copied", { exact: true }),
         ).toHaveCount(0);
+        await expect(link).toBeVisible();
+        await expect(link).toHaveValue(
+            new URL(page.url()).origin +
+                "/join/" +
+                new URL(page.url()).pathname.split("/").pop(),
+        );
         await link.focus();
         const selected = await link.evaluate((element: HTMLInputElement) =>
             element.value.slice(

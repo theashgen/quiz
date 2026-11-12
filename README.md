@@ -14,9 +14,9 @@ Built with **React · TypeScript · Go · WebSockets · PostgreSQL · Redis**. T
 
 ## Watch someone use it
 
-**[Play the workflow video →](docs/media/video/quiz-walkthrough.mp4)** · 82 seconds · 1440 × 1000 · 30 fps · 9.5 MB
+**[Play the workflow video →](docs/media/video/quiz-walkthrough.mp4)** · 80 seconds · 1440 × 1000 · 30 fps · 3.8 MB
 
-Video chapters: **0:00** teacher signup and quiz creation · **0:16** guest joins the 12-player round · **1:00** solo play.
+Video chapters: **0:00** teacher signup and quiz creation · **0:15** guest joins the 12-player round · **0:58** solo play.
 
 The recording follows teacher signup and quiz creation, then a guest joining a **12-player room**, answering questions, receiving feedback, timing out, viewing the final standings, and opting into another round. A solo round follows. It uses the running Go service, PostgreSQL and Redis.
 
@@ -37,7 +37,7 @@ The MP4 is linked through a clickable screenshot because repository README rende
 
 ## Application walkthrough
 
-These are captures of the actual application, with browser chrome excluded. Click any image for the full-resolution file. The expanded views cover the main workflow; additional account, mobile and recovery states are grouped below.
+These **41 screenshots** show the approved **Peach Playground** UI with its corrected podium proportions, captured on **November 11, 2026** against application revision `d06a941`, with browser chrome excluded. Click any image for the full-resolution file. The expanded views cover the main workflow; additional account, mobile and recovery states are grouped below. Dense editors, lobbies and standings retain the app's native scrollable workspaces; screenshots do not expand or restyle them.
 
 ### 1. Arrive, register and create a quiz
 
@@ -71,21 +71,27 @@ Each player receives the same questions in a different order. The server reveals
 
 ### 4. Play again or go solo
 
-| Opt into the next round                                                                                  | Personal solo result                                                               |
-| -------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| ![Player opts into another quiz while waiting for the host](docs/media/screenshots/15-replay-opt-in.png) | ![Solo score and another-round action](docs/media/screenshots/24-solo-results.png) |
+| Opt into the next round                                                                                  | Personal solo result                                                          |
+| -------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| ![Player opts into another quiz while waiting for the host](docs/media/screenshots/15-replay-opt-in.png) | ![Solo score and personal podium](docs/media/screenshots/24-solo-results.png) |
 
 <details>
 <summary><strong>Account, identity and mobile screens</strong></summary>
 
-| State               | Screenshot                                                                                                   |
-| ------------------- | ------------------------------------------------------------------------------------------------------------ |
-| Teacher account     | ![Teacher account details and actions](docs/media/screenshots/03-account.png)                                |
-| Sign in             | ![Sign-in form](docs/media/screenshots/22-login.png)                                                         |
-| Avatar gallery      | ![Full avatar selection dialog](docs/media/screenshots/06-avatar-picker.png)                                 |
-| Solo setup          | ![Solo category and length selection](docs/media/screenshots/23-solo-setup.png)                              |
-| Mobile home (390px) | <img src="docs/media/screenshots/29-mobile-home.png" width="300" alt="Home page at a mobile viewport">       |
-| Mobile join (390px) | <img src="docs/media/screenshots/30-mobile-join.png" width="300" alt="Guest join page at a mobile viewport"> |
+| State                | Screenshot                                                                                                                                       |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Teacher account      | ![Teacher account details and actions](docs/media/screenshots/03-account.png)                                                                    |
+| Sign in              | ![Sign-in form](docs/media/screenshots/22-login.png)                                                                                             |
+| Avatar gallery       | ![Full avatar selection dialog](docs/media/screenshots/06-avatar-picker.png)                                                                     |
+| Solo setup           | ![Solo category and length selection](docs/media/screenshots/23-solo-setup.png)                                                                  |
+| Mobile home (390px)  | <img src="docs/media/screenshots/29-mobile-home.png" width="300" alt="Home page at a mobile viewport">                                           |
+| Mobile join (390px)  | <img src="docs/media/screenshots/30-mobile-join.png" width="300" alt="Guest join page at a mobile viewport">                                     |
+| Mobile host lobby    | <img src="docs/media/screenshots/36-mobile-lobby.png" width="300" alt="Host view of the twelve-player lobby on mobile">                          |
+| Mobile podium        | <img src="docs/media/screenshots/37-mobile-leaderboard.png" width="300" alt="Mobile podium from the recorded twelve-player round">               |
+| Mobile standings     | <img src="docs/media/screenshots/38-mobile-standings.png" width="300" alt="The same mobile results workspace scrolled to the remaining players"> |
+| Mobile question      | <img src="docs/media/screenshots/39-mobile-question.png" width="300" alt="Live solo question and answer choices on mobile">                      |
+| Mobile answer reveal | <img src="docs/media/screenshots/40-mobile-reveal.png" width="300" alt="Server-confirmed answer feedback on mobile">                             |
+| Mobile solo result   | <img src="docs/media/screenshots/41-mobile-solo-results.png" width="300" alt="Completed five-question solo round on mobile">                     |
 
 </details>
 
@@ -119,12 +125,13 @@ The recovery images use isolated fixtures; see [capture notes](docs/demo/README.
 
 The UI runs against a modular Go server. PostgreSQL is the source of truth for room state and accepted answers. Redis provides disposable coordination and caching; losing Redis does not erase committed points.
 
-| Evidence                                                                                      | What it establishes                                                                                              |
-| --------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| [Database query output](docs/evidence/database.txt) and [read-only SQL](docs/demo/verify.sql) | The demonstrated room's player count, answer records, timeouts and per-player scores                             |
-| [Guest-client receipts](docs/evidence/demo-clients.json)                                      | Eleven separate protocol clients received answer acknowledgements and a twelve-player final leaderboard          |
-| [Validation record](docs/evidence/validation.md)                                              | Commands and results for Go race tests, PostgreSQL/Redis integration tests, frontend build and browser workflows |
-| [Reproducible capture](docs/demo/capture.cjs)                                                 | Real signup, room creation, guest joining, answers, results, replay and solo navigation                          |
+| Evidence                                                                                             | What it establishes                                                                                                        |
+| ---------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| [Database query output](docs/evidence/database.txt) and [read-only SQL](docs/demo/verify.sql)        | The demonstrated room's player count, answer records, timeouts and per-player scores                                       |
+| [Guest-client receipts](docs/evidence/demo-clients.json)                                             | Eleven separate protocol clients received answer acknowledgements and a twelve-player final leaderboard                    |
+| [Validation record](docs/evidence/validation.md)                                                     | Fresh capture and persistence checks, with earlier test results clearly dated separately                                   |
+| [Reproducible capture](docs/demo/capture.cjs)                                                        | Real signup, room creation, guest joining, answers, results, replay and solo navigation                                    |
+| [Screenshot manifest](docs/evidence/screenshots.json) and [media checks](docs/demo/verify-media.cjs) | Capture revision, timestamps, image dimensions, missing-image and document-overflow checks; local links and video decoding |
 
 ![Backend verification from the recorded room](docs/media/screenshots/31-backend-evidence.png)
 

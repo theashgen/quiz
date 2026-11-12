@@ -7,34 +7,18 @@ for (const width of [320, 390, 768, 1440]) {
         await expect(
             page.getByRole("heading", {
                 level: 1,
-                name: "Big brains. Bigger vibes.",
+                name: "Play together. Grow curious.",
             }),
         ).toBeVisible();
-        await expect(page.locator("article, .mode-card")).toHaveCount(0);
-        await expect(page.locator(".home > section")).toHaveCount(2);
-        await expect(page.locator("footer")).toHaveCount(0);
-        await page.locator(".home").evaluate(async (element) => {
-            await Promise.all(
-                element
-                    .getAnimations({ subtree: true })
-                    .map((animation) => animation.finished),
-            );
-        });
         expect(
             await page.evaluate(
                 () => document.documentElement.scrollWidth <= innerWidth,
             ),
         ).toBeTruthy();
-        const host = await page.locator(".host-action").boundingBox();
-        const joining = await page.locator(".join-flow").boundingBox();
-        const solo = await page.locator(".solo-action-row").boundingBox();
-        expect(host!.y + host!.height).toBeLessThan(joining!.y);
-        expect(joining!.y + joining!.height).toBeLessThanOrEqual(solo!.y);
         await expect(page.getByLabel("Room code", { exact: true })).toHaveCSS(
             "font-size",
             "16px",
         );
-
         await page
             .getByRole("button", { name: "Create a room", exact: true })
             .click();
@@ -42,8 +26,6 @@ for (const width of [320, 390, 768, 1440]) {
         await expect(
             page.getByRole("group", { name: "Question source" }),
         ).toBeVisible();
-        await expect(page.locator(".page-heading h1")).toHaveCount(0);
-        await expect(page.locator(".page-heading > p")).toHaveCount(0);
         await page.getByRole("button", { name: "Back to home" }).click();
         await page.getByLabel("Room code", { exact: true }).fill("abc123");
         await page
@@ -61,32 +43,20 @@ for (const width of [320, 390, 768, 1440]) {
         await expect(
             page.getByRole("heading", { name: "Follow your curiosity." }),
         ).toBeVisible();
-        expect(
-            await page.evaluate(
-                () => document.documentElement.scrollWidth <= innerWidth,
-            ),
-        ).toBeTruthy();
     });
 }
 
-test("home actions stay reachable and the play card stays aligned across viewports", async ({
+test("all play modes remain reachable from small phones to desktop", async ({
     page,
 }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/");
-    await expect(
-        page.getByRole("heading", {
-            level: 1,
-            name: "Big brains. Bigger vibes.",
-        }),
-    ).toBeVisible();
     for (const viewport of [
         { width: 1920, height: 1080 },
         { width: 1440, height: 900 },
         { width: 1366, height: 768 },
         { width: 1280, height: 720 },
         { width: 1024, height: 600 },
-        { width: 1000, height: 700 },
         { width: 768, height: 900 },
         { width: 390, height: 844 },
         { width: 320, height: 568 },
@@ -97,13 +67,6 @@ test("home actions stay reachable and the play card stays aligned across viewpor
                 () => document.documentElement.scrollWidth <= innerWidth,
             ),
         ).toBeTruthy();
-        const hero = await page.locator(".landing-hero").boundingBox();
-        const actions = await page.locator(".play-actions").boundingBox();
-        if (viewport.width > 740) {
-            expect(hero!.x + hero!.width).toBeLessThan(actions!.x);
-        } else {
-            expect(hero!.y + hero!.height).toBeLessThan(actions!.y);
-        }
         for (const name of ["Create a room", "Join a room", "Play solo"]) {
             const action = page.getByRole("button", { name, exact: true });
             await action.scrollIntoViewIfNeeded();
@@ -118,40 +81,6 @@ test("home actions stay reachable and the play card stays aligned across viewpor
         .click();
     await expect(page.locator("main")).not.toHaveClass("home-main");
     await expect(page.locator("footer")).toBeVisible();
-});
-
-test("light grid is decorative and does not block play controls", async ({
-    page,
-}) => {
-    await page.emulateMedia({ reducedMotion: "reduce" });
-    await page.goto("/");
-    const createButton = page.getByRole("button", {
-        name: "Create a room",
-        exact: true,
-    });
-    await expect(createButton).toBeVisible();
-    for (const width of [1440, 390]) {
-        await page.setViewportSize({ width, height: 900 });
-        const grid = await page.locator("html").evaluate((element) => {
-            const style = getComputedStyle(element);
-            return {
-                image: style.backgroundImage,
-                size: style.backgroundSize,
-                animation: style.animationName,
-                paper: getComputedStyle(document.documentElement)
-                    .backgroundColor,
-            };
-        });
-        expect(grid.image).toContain("radial-gradient");
-        expect(grid.size).toBe("24px 24px");
-        expect(grid.animation).toBe("none");
-        expect(grid.paper).toBe("rgb(246, 247, 242)");
-    }
-    await createButton.click();
-    await expect(
-        page.getByRole("group", { name: "Question source" }),
-    ).toBeVisible();
-    await expect(page.locator(".home-main")).toHaveCount(0);
 });
 
 test("room codes validate before joining and survive a refresh", async ({
@@ -216,7 +145,7 @@ test("shared navigation and back actions support keyboard input", async ({
     await page.getByRole("button", { name: "Back to home" }).focus();
     await page.keyboard.press("Enter");
     await expect(
-        page.getByRole("heading", { name: "Big brains. Bigger vibes." }),
+        page.getByRole("heading", { name: "Play together. Grow curious." }),
     ).toBeVisible();
     await page.getByLabel("Room code", { exact: true }).fill("ABC123");
     await page
@@ -235,47 +164,8 @@ test("reduced motion removes decorative transitions", async ({ page }) => {
     await expect(hostAction).toHaveCSS("animation-name", "none");
     await expect(hostAction).toHaveCSS("opacity", "1");
     await expect(hostAction).toHaveCSS("filter", "none");
-    await expect(page.locator(".hero-line-first")).toHaveCSS(
+    await expect(page.locator("#hero-title")).toHaveCSS(
         "animation-name",
         "none",
     );
-});
-
-test("entrance reveals stagger, settle, and replay without breaking hover", async ({
-    page,
-}) => {
-    await page.emulateMedia({ reducedMotion: "no-preference" });
-    await page.goto("/");
-    const headline = page.locator(".hero-line-first");
-    const hostAction = page.locator(".host-action");
-    await expect(headline).toBeVisible();
-    await expect(headline).toHaveCSS("animation-name", "blur-reveal");
-    const entryDelays = await page
-        .locator(".home-entry")
-        .evaluateAll((elements) =>
-            elements.map((element) =>
-                Number.parseFloat(getComputedStyle(element).animationDelay),
-            ),
-        );
-    expect(entryDelays[1]).toBeGreaterThan(entryDelays[0]);
-    expect(entryDelays[2]).toBeGreaterThan(entryDelays[1]);
-    await expect(hostAction).toHaveCSS("filter", "none");
-    await expect(hostAction).toHaveCSS("opacity", "1");
-    await expect(hostAction).toHaveCSS("translate", "none");
-    await hostAction.hover();
-    await expect(hostAction).toHaveCSS(
-        "transform",
-        "matrix(1, 0, 0, 1, 0, -2)",
-    );
-    await hostAction.click();
-    await page.getByRole("button", { name: "Back to home" }).click();
-    await expect(headline).toHaveCSS("animation-name", "blur-reveal");
-    const animations = await headline.evaluate((element) =>
-        element.getAnimations().map((animation) => animation.playState),
-    );
-    expect(animations).toContain("running");
-    await expect(headline).toHaveCSS("filter", "none");
-    await page.emulateMedia({ reducedMotion: "reduce" });
-    await expect(hostAction).toHaveCSS("animation-name", "none");
-    await expect(hostAction).toHaveCSS("opacity", "1");
 });

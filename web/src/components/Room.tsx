@@ -106,7 +106,9 @@ export function Room({
                 {banner}
                 <div className="page-heading centered lobby-sharing">
                     <div className="lobby-intro">
-                        <div className="eyebrow">THE GANG’S GETTING TOGETHER</div>
+                        <div className="eyebrow">
+                            THE GANG’S GETTING TOGETHER
+                        </div>
                         <h1>A good time is on its way.</h1>
                         <p>Share this code. Bring your people.</p>
                     </div>
@@ -132,6 +134,11 @@ export function Room({
                             <Button
                                 intent="secondary"
                                 className="invite-copy-button"
+                                aria-label={
+                                    linkCopied
+                                        ? "Invite link copied"
+                                        : "Copy invite link"
+                                }
                                 data-copied={linkCopied}
                                 onClick={async () => {
                                     setLinkCopied(false);
@@ -146,7 +153,11 @@ export function Room({
                                     }
                                 }}
                             >
-                                <span aria-live="polite" aria-atomic="true">
+                                <span
+                                    role="status"
+                                    aria-live="polite"
+                                    aria-atomic="true"
+                                >
                                     {linkCopied
                                         ? "Invite link copied"
                                         : "Copy invite link"}
@@ -161,14 +172,29 @@ export function Room({
                                         <path d="m4 10 4 4 8-8" />
                                     </svg>
                                 ) : (
-                                    <span className="invite-copy-icon" aria-hidden="true">⧉</span>
+                                    <span
+                                        className="invite-copy-icon"
+                                        aria-hidden="true"
+                                    >
+                                        ⧉
+                                    </span>
                                 )}
                             </Button>
                             {linkCopyError && (
-                                <ErrorMessage>
-                                    Copy unavailable. Try again or share the room
-                                    code instead.
-                                </ErrorMessage>
+                                <>
+                                    <input
+                                        aria-label="Invite players with a link"
+                                        value={inviteURL}
+                                        readOnly
+                                        onFocus={(event) =>
+                                            event.currentTarget.select()
+                                        }
+                                    />
+                                    <ErrorMessage>
+                                        Copy unavailable. Select and copy the
+                                        invite link above.
+                                    </ErrorMessage>
+                                </>
                             )}
                         </div>
                     )}

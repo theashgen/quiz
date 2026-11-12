@@ -165,11 +165,12 @@ test("laptop results use two columns with score and replay actions in view", asy
             ),
         ).toBeTruthy();
         await expect(page.locator(".leaderboard li")).toHaveCount(10);
-        if (viewport.height >= 768) {
-            await expect(
-                page.locator(".ranked-players li").last(),
-            ).toBeInViewport({ ratio: 1 });
-        }
+        const lastPlayer = page.locator(".ranked-players li").last();
+        await lastPlayer.scrollIntoViewIfNeeded();
+        await expect(lastPlayer).toBeInViewport({ ratio: 1 });
+        await expect(
+            page.getByRole("button", { name: "Set up the next quiz" }),
+        ).toBeInViewport({ ratio: 1 });
     }
 });
 
@@ -191,6 +192,54 @@ test("mobile keeps the podium above naturally scrolling rankings", async ({
     await expect(
         page.getByText("Sofia Patel", { exact: true }),
     ).toBeInViewport();
+});
+
+test("desktop podium stays balanced with visible ranks and a shared baseline", async ({
+    page,
+}) => {
+    await showResults(page, tenPlayers, true);
+    for (const viewport of [
+        { width: 1440, height: 1000 },
+        { width: 1440, height: 900 },
+        { width: 1280, height: 720 },
+        { width: 1024, height: 768 },
+    ]) {
+        await page.setViewportSize(viewport);
+        await page.screenshot({
+            path: test
+                .info()
+                .outputPath(`podium-${viewport.width}-${viewport.height}.png`),
+            animations: "disabled",
+        });
+        const heading = await page
+            .locator(".leaderboard-heading")
+            .boundingBox();
+        const note = await page
+            .locator(".leaderboard-final-note")
+            .boundingBox();
+        const podium = await page.locator(".winner-podium").boundingBox();
+        const winner = await page.locator(".podium-place-1").boundingBox();
+        const topGap = winner!.y - (heading!.y + heading!.height);
+        const bottomGap = note!.y - (podium!.y + podium!.height);
+        expect(topGap).toBeLessThan(180);
+        expect(bottomGap).toBeGreaterThanOrEqual(-1);
+        const baseline = winner!.y + winner!.height;
+        for (const step of await page.locator(".podium-step").all()) {
+            const box = await step.boundingBox();
+            const rank = await step.locator("strong").boundingBox();
+            expect(box!.y + box!.height).toBeCloseTo(baseline, 0);
+            expect(rank!.y).toBeGreaterThanOrEqual(box!.y);
+            expect(rank!.y + rank!.height).toBeLessThanOrEqual(
+                box!.y + box!.height,
+            );
+            await expect(step).toBeInViewport({ ratio: 1 });
+            expect(
+                await step.evaluate(
+                    (element) => getComputedStyle(element).backgroundImage,
+                ),
+            ).not.toContain("transparent");
+        }
+    }
 });
 
 test("large laptop rooms scroll their rankings without moving replay controls", async ({

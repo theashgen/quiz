@@ -39,7 +39,7 @@ test("custom studio uses a flat writing surface instead of nested cards", async 
         ).toHaveAttribute("aria-pressed", "true");
         await expect(
             page.getByRole("button", { name: "Save a copy" }),
-        ).toHaveCSS("border-radius", "10px");
+        ).toHaveCSS("border-radius", "100px");
         expect(
             await page.evaluate(
                 () => document.documentElement.scrollWidth <= innerWidth,
