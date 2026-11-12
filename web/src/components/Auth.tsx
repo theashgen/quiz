@@ -58,7 +58,6 @@ export function AuthPage({
         <section className="auth-page" aria-labelledby="auth-heading">
             <ShadcnButton
                 variant="unstyled"
-                type="submit"
                 className="back text-button"
                 onClick={() => go("/")}
             >
@@ -97,7 +96,6 @@ export function AuthPage({
                         </span>
                         <ShadcnButton
                             variant="unstyled"
-                            type="submit"
                             className="text-button"
                             onClick={() => go("/join")}
                         >
@@ -244,6 +242,7 @@ export function AuthPage({
                         {error && <ErrorMessage>{error}</ErrorMessage>}
                         <Button
                             fullWidth
+                            type="submit"
                             className="auth-submit"
                             disabled={busy}
                         >
@@ -260,7 +259,6 @@ export function AuthPage({
                             : "New around here?"}{" "}
                         <ShadcnButton
                             variant="unstyled"
-                            type="submit"
                             className="text-button"
                             onClick={() =>
                                 go(`${signup ? "/login" : "/signup"}${next}`)
@@ -303,7 +301,6 @@ export function AccountMenu({
             {user ? (
                 <ShadcnButton
                     variant="unstyled"
-                    type="submit"
                     className="text-button account-link"
                     onClick={() => go("/account")}
                 >
@@ -315,7 +312,6 @@ export function AccountMenu({
                 <>
                     <ShadcnButton
                         variant="unstyled"
-                        type="submit"
                         className="text-button"
                         onClick={() => go("/login")}
                     >
@@ -363,7 +359,6 @@ export function AccountPage({
         <section className="account-page">
             <ShadcnButton
                 variant="unstyled"
-                type="submit"
                 className="back text-button"
                 onClick={() => go("/")}
             >
@@ -400,7 +395,6 @@ export function AccountPage({
                 </Button>
                 <ShadcnButton
                     variant="unstyled"
-                    type="submit"
                     className="text-button"
                     onClick={() => go("/solo")}
                 >
@@ -428,7 +422,6 @@ export function AccountPage({
             {error && <ErrorMessage>{error}</ErrorMessage>}
             <ShadcnButton
                 variant="unstyled"
-                type="submit"
                 className="text-button"
                 disabled={busy}
                 onClick={logout}

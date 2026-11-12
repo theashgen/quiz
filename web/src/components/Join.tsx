@@ -52,7 +52,6 @@ export function Join({
         <section className="join-page" aria-labelledby="join-heading">
             <ShadcnButton
                 variant="unstyled"
-                type="submit"
                 className="back text-button"
                 onClick={() => go("/")}
             >
@@ -120,7 +119,7 @@ export function Join({
                             </span>
                         </Label>
                         {error && <ErrorMessage>{error}</ErrorMessage>}
-                        <Button fullWidth disabled={busy}>
+                        <Button fullWidth type="submit" disabled={busy}>
                             {busy ? "Joining…" : "Join the room →"}
                         </Button>
                         <p className="join-form-note">

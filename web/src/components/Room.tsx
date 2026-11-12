@@ -116,7 +116,6 @@ export function Room({
                     </div>
                     <ShadcnButton
                         variant="unstyled"
-                        type="submit"
                         className="room-code"
                         aria-label={`Copy room code ${code}`}
                         onClick={async () => {
@@ -336,7 +335,6 @@ export function Room({
                         {q.options.map((option, i) => (
                             <ShadcnButton
                                 variant="unstyled"
-                                type="submit"
                                 key={i}
                                 disabled={reveal || disabled || remaining <= 0}
                                 aria-pressed={selected === i}
@@ -509,7 +507,6 @@ export function Room({
                     )}
                     <ShadcnButton
                         variant="unstyled"
-                        type="submit"
                         className="text-button"
                         onClick={() => go("/")}
                     >

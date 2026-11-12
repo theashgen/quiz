@@ -20,7 +20,6 @@ export function Button({
             variant={intent === "primary" || !intent ? "default" : intent}
             size={size === "small" ? "sm" : "default"}
             className={cn(fullWidth && "w-full", className)}
-            type="submit"
             {...props}
         />
     );

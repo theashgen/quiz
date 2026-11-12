@@ -144,7 +144,6 @@ export function SetupPage({
         >
             <ShadcnButton
                 variant="unstyled"
-                type="submit"
                 className="back text-button"
                 onClick={onBack}
             >
@@ -745,6 +744,7 @@ export function SetupPage({
                         {error && <ErrorMessage>{error}</ErrorMessage>}
                         <Button
                             fullWidth
+                            type="submit"
                             disabled={
                                 busy ||
                                 (setup.source === "preset" &&

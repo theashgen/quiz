@@ -97,6 +97,10 @@ function App() {
     const invite = /^\/join\/([^/]*)\/?$/i.exec(path);
     const isJoin = path === "/join" || !!invite;
     const isAuth = ["/signup", "/login", "/account"].includes(path);
+    const createSource =
+        new URLSearchParams(location.search).get("source") === "custom"
+            ? "custom"
+            : "preset";
     const isHome =
         !room &&
         !isJoin &&
@@ -114,7 +118,6 @@ function App() {
                 <header className="site-header">
                     <ShadcnButton
                         variant="unstyled"
-                        type="submit"
                         className="site-brand"
                         onClick={() => go("/")}
                         aria-label="Quiz home"
@@ -148,7 +151,6 @@ function App() {
                                 <ErrorMessage>{error}</ErrorMessage>
                                 <ShadcnButton
                                     variant="unstyled"
-                                    type="submit"
                                     onClick={() => location.reload()}
                                 >
                                     Try again
@@ -196,20 +198,8 @@ function App() {
                     )
                 ) : path === "/create" ? (
                     <SetupPage
-                        key={
-                            new URLSearchParams(location.search).get(
-                                "source",
-                            ) === "custom"
-                                ? "custom"
-                                : "preset"
-                        }
-                        initialSource={
-                            new URLSearchParams(location.search).get(
-                                "source",
-                            ) === "custom"
-                                ? "custom"
-                                : "preset"
-                        }
+                        key={createSource}
+                        initialSource={createSource}
                         catalog={catalog}
                         accountName={user?.name}
                         onBack={() => go("/")}
