@@ -33,6 +33,11 @@
     --color-canvas: #faf7f0;
     --color-brand: #f58038;
     --color-brand-dark: #8c3c0d;
+    --color-input: var(--color-line);
+    --color-ring: var(--color-brand);
+    --color-foreground: var(--color-ink);
+    --color-muted-foreground: var(--color-muted);
+    --color-destructive: #dc2626;
     --background-image-dot-grid: radial-gradient(
         circle,
         var(--grid-dot) 1.2px,

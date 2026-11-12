@@ -99,6 +99,9 @@ test("students cannot host and guests can still join", async ({
     await expect(
         page.getByRole("button", { name: "Create a quiz" }),
     ).toHaveCount(0);
+    await expect(
+        page.getByRole("button", { name: "Question bank", exact: true }),
+    ).toHaveCount(0);
     await page.goto("/create");
     await expect(page.getByRole("status")).toContainText(
         "Only teachers can create quizzes",

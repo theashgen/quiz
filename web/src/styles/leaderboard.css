@@ -281,7 +281,7 @@
         @apply mb-6;
     }
     .podium-board ol.winner-podium {
-        @apply pr-0 pl-0 gap-[3px];
+        @apply pr-0 pl-0 gap-[3px] max-w-full overflow-x-clip;
     }
     .podium-board .winner-podium > li {
         @apply [--podium-height:155px];
