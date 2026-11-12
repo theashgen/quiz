@@ -5,7 +5,6 @@
     --peach-deep: #8c3c0d;
     --peach-on-orange: #34200d;
     --peach-lilac: #f0e7ff;
-    background-image: none;
 }
 .site-brand > span:not(.brand-period) {
     color: var(--peach-on-orange);
@@ -331,49 +330,41 @@ a:focus-visible {
     width: 100%;
     gap: 0;
     padding: 22px 0 12px;
+    margin-block: auto;
     overflow-y: auto;
 }
 .playground-hero {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
     align-items: center;
     gap: clamp(24px, 5vw, 72px);
     flex-shrink: 0;
 }
-.playground-kicker {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    border-radius: 100px;
-    background: var(--peach-soft);
-    color: var(--peach-deep);
-    padding: 9px 13px;
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 0.8px;
+.playground-intro,
+.playground-showcase {
+    min-width: 0;
 }
-.playground-kicker > span {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: currentColor;
+.playground-intro {
+    grid-column: 1;
+    grid-row: 1;
 }
-.playground-intro h1 {
-    font-size: clamp(44px, 5.3vw, 72px);
-    line-height: 1.04;
-    font-weight: 900;
-    letter-spacing: -0.06em;
-    margin: 24px 0 18px;
+.playground-showcase {
+    grid-column: 2;
+    grid-row: 1;
 }
-.playground-intro h1 > span {
-    color: #c45313;
+.home-action-heading {
+    max-width: 16ch;
+    margin: 0 0 20px;
+    font-size: clamp(28px, 3vw, 40px);
+    line-height: 1.15;
+    text-wrap: balance;
 }
-.playground-intro > p {
-    font-size: 15px;
-    line-height: 1.8;
-    color: var(--color-muted);
+.home-action-description {
     max-width: 390px;
-    margin: 0;
+    margin: 0 0 36px;
+    color: var(--color-muted);
+    font-size: 15px;
+    line-height: 1.6;
 }
 .playground-community {
     display: flex;
@@ -487,9 +478,10 @@ a:focus-visible {
 }
 .peach-home .playground-modes {
     display: grid;
-    grid-template-columns: 1.12fr 1fr 0.85fr;
-    gap: 18px;
-    margin-top: 32px;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: 14px;
+    margin-top: 0;
     flex-shrink: 0;
 }
 .peach-home .playground-mode {
@@ -501,12 +493,56 @@ a:focus-visible {
     width: auto;
     max-width: none;
     margin: 0;
-    padding: 24px;
+    padding: 0;
     text-align: left;
-    border: 1px solid var(--color-line);
-    border-radius: 26px;
-    background: var(--color-paper);
+    border: 0;
+    background: transparent;
     gap: 0;
+}
+.room-menu-positioner {
+    z-index: 20;
+}
+.room-menu {
+    box-sizing: border-box;
+    width: max(260px, var(--anchor-width));
+    max-width: var(--available-width);
+    max-height: var(--available-height);
+    overflow-y: auto;
+    padding: 6px;
+    border: 1px solid var(--color-line);
+    border-radius: 20px;
+    background: var(--color-paper);
+    color: var(--color-ink);
+    box-shadow: 0 12px 30px #34200d18;
+}
+.room-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 44px;
+    padding: 12px;
+    border-radius: 14px;
+    cursor: pointer;
+}
+.room-menu-item svg {
+    width: 21px;
+    height: 21px;
+    flex-shrink: 0;
+    color: var(--peach-deep);
+}
+.room-menu-item strong,
+.room-menu-item span > span {
+    display: block;
+    font-size: 12px;
+    line-height: 1.6;
+}
+.room-menu-item span > span {
+    color: var(--color-muted);
+}
+.room-menu-item[data-highlighted] {
+    background: var(--peach-soft);
+    outline: 2px solid var(--peach-deep);
+    outline-offset: -2px;
 }
 .playground-mode-icon {
     display: grid;
@@ -553,12 +589,20 @@ a:focus-visible {
 }
 .playground-join-controls {
     display: flex;
+    align-items: center;
     min-width: 0;
-    padding: 4px;
-    gap: 4px;
-    background: var(--color-canvas);
+    padding: 0;
+    gap: 0;
+    background: var(--color-paper);
     border: 1px solid var(--color-line);
     border-radius: 100px;
+}
+.room-code-icon {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    margin-left: 12px;
+    color: var(--color-muted);
 }
 .playground-join-controls:focus-within {
     outline: 2px solid var(--peach-deep);
@@ -574,15 +618,23 @@ a:focus-visible {
     background: transparent;
     border: 0;
     border-radius: 0;
-    padding: 7px 4px 7px 14px;
+    padding: 7px 8px;
     min-height: 38px;
     outline: none;
 }
+.peach-home .home-code-input:placeholder-shown {
+    letter-spacing: normal;
+    font-weight: 400;
+}
 .peach-home .playground-join {
-    padding: 9px 12px;
-    min-height: 38px;
+    padding: 9px 14px;
+    min-height: 46px;
+    align-self: stretch;
+    border: 0;
+    border-left: 1px solid var(--color-line);
+    border-radius: 0 100px 100px 0;
     flex-shrink: 0;
-    font-size: 11px;
+    font-size: 12px;
 }
 .playground-footnote {
     display: flex;
@@ -600,18 +652,8 @@ a:focus-visible {
     .playground-bento {
         height: 265px;
     }
-    .playground-intro h1 {
-        font-size: 54px;
-        margin-top: 18px;
-    }
     .playground-community {
         margin-top: 14px;
-    }
-    .peach-home .playground-modes {
-        margin-top: 22px;
-    }
-    .peach-home .playground-mode {
-        padding: 18px;
     }
     .playground-mode-icon {
         margin-bottom: 12px;
@@ -627,13 +669,16 @@ a:focus-visible {
 @media (min-width: 741px) and (max-width: 1000px) {
     .playground-hero {
         gap: 24px;
+        grid-template-columns: minmax(0, 1fr);
     }
-    .playground-intro h1 {
-        font-size: 48px;
+    .playground-showcase {
+        width: min(100%, 440px);
+        justify-self: center;
     }
-    .playground-kicker {
-        font-size: 8px;
-        padding: 8px 10px;
+    .playground-intro,
+    .playground-showcase {
+        grid-column: auto;
+        grid-row: auto;
     }
     .playground-tile {
         padding: 18px;
@@ -641,19 +686,13 @@ a:focus-visible {
     }
     .peach-home .playground-modes {
         gap: 12px;
-        grid-template-columns: 1fr 1fr 1fr;
-    }
-    .peach-home .playground-mode {
-        padding: 16px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
     .playground-mode h2 {
         font-size: 17px;
     }
     .playground-mode .ui-button {
         padding-inline: 12px;
-    }
-    .playground-join > span {
-        display: none;
     }
 }
 @media (max-width: 740px) {
@@ -667,7 +706,6 @@ a:focus-visible {
         align-items: stretch;
     }
     .playground-bento {
-        order: -1;
         height: 230px;
         gap: 10px;
     }
@@ -694,30 +732,12 @@ a:focus-visible {
         bottom: -18px;
         width: 67%;
     }
-    .playground-kicker {
-        font-size: 8px;
-        letter-spacing: 0.65px;
-        padding: 8px 11px;
-    }
-    .playground-intro h1 {
-        font-size: clamp(40px, 10.8vw, 60px);
-        margin: 16px 0 12px;
-    }
-    .playground-intro > p {
-        font-size: 13px;
-        line-height: 1.7;
-    }
     .playground-community {
         margin-top: 16px;
     }
     .peach-home .playground-modes {
         grid-template-columns: 1fr;
         gap: 12px;
-        margin-top: 24px;
-    }
-    .peach-home .playground-mode {
-        padding: 20px;
-        border-radius: 22px;
     }
     .playground-mode-icon {
         margin-bottom: 12px;
@@ -731,9 +751,6 @@ a:focus-visible {
     }
     .playground-mode .ui-button {
         min-height: 46px;
-    }
-    .peach-home .playground-join {
-        min-height: 38px;
     }
     .playground-footnote {
         font-size: 9px;

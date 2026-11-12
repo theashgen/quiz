@@ -1,14 +1,109 @@
 import { expect, test } from "./teacher-fixture";
 
+test("home restores the dotted grid background", async ({ page }) => {
+    await page.goto("/");
+    await expect(page.locator("html")).toHaveCSS(
+        "background-image",
+        /radial-gradient/,
+    );
+    await expect(page.locator("html")).toHaveCSS(
+        "background-size",
+        "24px 24px",
+    );
+});
+
+test("desktop puts heading and actions left with artwork right", async ({
+    page,
+}) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.goto("/");
+    const intro = page.locator(".playground-intro");
+    await expect(
+        intro.getByRole("region", { name: "Start playing" }),
+    ).toBeVisible();
+    const actions = await page.locator(".playground-modes").boundingBox();
+    await expect(page.locator("#hero-title, .playground-kicker")).toHaveCount(
+        0,
+    );
+    const description = intro.locator(".home-action-description");
+    await expect(description).toBeVisible();
+    const showcase = await page.locator(".playground-showcase").boundingBox();
+    const host = await page.locator(".mode-host").boundingBox();
+    const join = await page.locator(".join-flow").boundingBox();
+    expect(showcase!.x).toBeGreaterThanOrEqual(actions!.x + actions!.width);
+    const heading = page.getByRole("heading", {
+        level: 1,
+        name: "Good questions. Great company.",
+    });
+    await expect(heading).toBeVisible();
+    const headingBox = await heading.boundingBox();
+    const descriptionBox = await description.boundingBox();
+    expect(descriptionBox!.y).toBeGreaterThan(
+        headingBox!.y + headingBox!.height,
+    );
+    expect(actions!.y).toBeGreaterThan(
+        descriptionBox!.y + descriptionBox!.height,
+    );
+    expect(
+        Math.abs(join!.y + join!.height / 2 - host!.y - host!.height / 2),
+    ).toBeLessThan(1);
+    await expect(
+        page.getByRole("heading", { name: /Bring your people|Got an invite/ }),
+    ).toHaveCount(0);
+    await expect(
+        page.getByRole("region", { name: "Start playing" }).getByRole("button"),
+    ).toHaveCount(2);
+    const joinGroup = page.getByRole("group", {
+        name: "Join with a room code",
+    });
+    await expect(
+        joinGroup.getByRole("textbox", { name: "Room code" }),
+    ).toBeVisible();
+    await expect(
+        joinGroup.getByRole("button", { name: "Join a room" }),
+    ).toBeDisabled();
+    await expect(page.getByLabel("Room code", { exact: true })).toHaveAttribute(
+        "placeholder",
+        "Enter a room code",
+    );
+    await expect(page.locator(".solo-action-row")).toHaveCount(0);
+    await expect(page.getByRole("menu")).toHaveCount(0);
+    await expect(page.locator(".playground-community")).toBeInViewport();
+    const community = await intro
+        .locator(".playground-community")
+        .boundingBox();
+    expect(community!.y).toBeGreaterThan(actions!.y + actions!.height);
+    expect(Math.abs(community!.x - actions!.x)).toBeLessThan(1);
+    await expect(
+        page.locator(".playground-showcase .playground-community"),
+    ).toHaveCount(0);
+    await expect(
+        page.getByRole("button", { name: "Create a room", exact: true }),
+    ).toBeInViewport();
+});
+
+test("mobile puts actions before supporting artwork", async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/");
+    await expect(
+        page.getByRole("button", { name: "Create a room", exact: true }),
+    ).toBeInViewport();
+    const actions = await page.locator(".playground-modes").boundingBox();
+    const showcase = await page.locator(".playground-showcase").boundingBox();
+    const host = await page.locator(".mode-host").boundingBox();
+    const join = await page.locator(".join-flow").boundingBox();
+    expect(showcase!.y).toBeGreaterThanOrEqual(actions!.y + actions!.height);
+    expect(join!.y).toBeGreaterThanOrEqual(host!.y + host!.height);
+});
+
 for (const width of [320, 390, 768, 1440]) {
     test(`home actions and layouts work at ${width}px`, async ({ page }) => {
         await page.setViewportSize({ width, height: 900 });
         await page.goto("/");
         await expect(
-            page.getByRole("heading", {
-                level: 1,
-                name: "Play together. Grow curious.",
-            }),
+            page.getByRole("region", { name: "Start playing" }),
         ).toBeVisible();
         expect(
             await page.evaluate(
@@ -19,9 +114,20 @@ for (const width of [320, 390, 768, 1440]) {
             "font-size",
             "16px",
         );
+        const joinButton = page.getByRole("button", {
+            name: "Join a room",
+            exact: true,
+        });
+        await expect(
+            joinButton.getByText("Join", { exact: true }),
+        ).toBeVisible();
+        expect((await joinButton.boundingBox())!.height).toBeGreaterThanOrEqual(
+            44,
+        );
         await page
             .getByRole("button", { name: "Create a room", exact: true })
             .click();
+        await page.getByRole("menuitem", { name: /Host with friends/ }).click();
         await expect(page).toHaveURL(/\/create$/);
         await expect(
             page.getByRole("group", { name: "Question source" }),
@@ -38,8 +144,9 @@ for (const width of [320, 390, 768, 1440]) {
         await expect(page.getByLabel("Your name")).toBeFocused();
         await page.getByRole("button", { name: "Back to home" }).click();
         await page
-            .getByRole("button", { name: "Play solo", exact: true })
+            .getByRole("button", { name: "Create a room", exact: true })
             .click();
+        await page.getByRole("menuitem", { name: /Create solo room/ }).click();
         await expect(
             page.getByRole("heading", { name: "Follow your curiosity." }),
         ).toBeVisible();
@@ -51,6 +158,7 @@ test("all play modes remain reachable from small phones to desktop", async ({
 }) => {
     await page.emulateMedia({ reducedMotion: "reduce" });
     await page.goto("/");
+    await page.getByLabel("Room code", { exact: true }).fill("ABC123");
     for (const viewport of [
         { width: 1920, height: 1080 },
         { width: 1440, height: 900 },
@@ -67,7 +175,7 @@ test("all play modes remain reachable from small phones to desktop", async ({
                 () => document.documentElement.scrollWidth <= innerWidth,
             ),
         ).toBeTruthy();
-        for (const name of ["Create a room", "Join a room", "Play solo"]) {
+        for (const name of ["Create a room", "Join a room"]) {
             const action = page.getByRole("button", { name, exact: true });
             await action.scrollIntoViewIfNeeded();
             await expect(action).toBeInViewport({ ratio: 0.99 });
@@ -75,12 +183,58 @@ test("all play modes remain reachable from small phones to desktop", async ({
         const input = page.getByLabel("Room code", { exact: true });
         await input.scrollIntoViewIfNeeded();
         await expect(input).toBeInViewport({ ratio: 0.99 });
+        await page
+            .getByRole("button", { name: "Create a room", exact: true })
+            .click();
+        for (const name of [/Host with friends/, /Create solo room/]) {
+            await expect(page.getByRole("menuitem", { name })).toBeInViewport({
+                ratio: 0.99,
+            });
+        }
+        await page.keyboard.press("Escape");
+        await expect(page.getByRole("menu")).toHaveCount(0);
     }
     await page
         .getByRole("button", { name: "Create a room", exact: true })
         .click();
+    await page.getByRole("menuitem", { name: /Host with friends/ }).click();
     await expect(page.locator("main")).not.toHaveClass("home-main");
     await expect(page.locator("footer")).toBeVisible();
+});
+
+test("room menu supports keyboard selection, Escape, and outside dismissal", async ({
+    page,
+}) => {
+    await page.goto("/");
+    const trigger = page.getByRole("button", {
+        name: "Create a room",
+        exact: true,
+    });
+    await trigger.focus();
+    await page.keyboard.press("Enter");
+    await expect(trigger).toHaveAttribute("aria-expanded", "true");
+    await expect(
+        page.getByRole("menuitem", { name: /Host with friends/ }),
+    ).toBeFocused();
+    await page.keyboard.press("Escape");
+    await expect(page.getByRole("menu")).toHaveCount(0);
+    await expect(trigger).toBeFocused();
+    await trigger.click();
+    await page
+        .getByRole("heading", { name: "Good questions. Great company." })
+        .click();
+    await expect(page.getByRole("menu")).toHaveCount(0);
+    await trigger.focus();
+    await page.keyboard.press("Enter");
+    await expect(
+        page.getByRole("menuitem", { name: /Host with friends/ }),
+    ).toBeFocused();
+    await page.keyboard.press("ArrowDown");
+    await expect(
+        page.getByRole("menuitem", { name: /Create solo room/ }),
+    ).toBeFocused();
+    await page.keyboard.press("Enter");
+    await expect(page).toHaveURL(/\/solo$/);
 });
 
 test("room codes validate before joining and survive a refresh", async ({
@@ -145,7 +299,7 @@ test("shared navigation and back actions support keyboard input", async ({
     await page.getByRole("button", { name: "Back to home" }).focus();
     await page.keyboard.press("Enter");
     await expect(
-        page.getByRole("heading", { name: "Play together. Grow curious." }),
+        page.getByRole("region", { name: "Start playing" }),
     ).toBeVisible();
     await page.getByLabel("Room code", { exact: true }).fill("ABC123");
     await page
@@ -164,8 +318,4 @@ test("reduced motion removes decorative transitions", async ({ page }) => {
     await expect(hostAction).toHaveCSS("animation-name", "none");
     await expect(hostAction).toHaveCSS("opacity", "1");
     await expect(hostAction).toHaveCSS("filter", "none");
-    await expect(page.locator("#hero-title")).toHaveCSS(
-        "animation-name",
-        "none",
-    );
 });

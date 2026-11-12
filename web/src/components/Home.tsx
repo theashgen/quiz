@@ -1,7 +1,9 @@
 import { useState, type FormEvent } from "react";
+import { Menu } from "@base-ui/react/menu";
 import { normalizeRoomCode } from "../setup";
 import { Avatar } from "./Avatar";
 import { Button } from "./Button";
+import { ButtonGroup } from "./ButtonGroup";
 import { PlaygroundTrophy, PlayIcon } from "./PeachArt";
 
 export function Home({ go }: { go: (path: string) => void }) {
@@ -14,20 +16,134 @@ export function Home({ go }: { go: (path: string) => void }) {
 
     return (
         <div className="home peach-home">
-            <section className="playground-hero" aria-labelledby="hero-title">
+            <section className="playground-hero" aria-label="Quiz home">
                 <div className="playground-intro">
-                    <div className="playground-kicker">
-                        <span /> A LITTLE FRIENDLY COMPETITION
-                    </div>
-                    <h1 id="hero-title">
-                        Play together.
-                        <br />
-                        <span>Grow curious.</span>
+                    <h1 className="home-action-heading">
+                        Good questions. Great company.
                     </h1>
-                    <p>
-                        Good questions. Great company. Turn what you know into
-                        your next good time.
+                    <p className="home-action-description">
+                        Bring your people together for a quick quiz, or take on
+                        a solo challenge. Free to play, with no sign-up needed
+                        to join.
                     </p>
+                    <section
+                        className="playground-modes"
+                        aria-label="Start playing"
+                    >
+                        <div className="playground-mode mode-host">
+                            <Menu.Root modal={false}>
+                                <Menu.Trigger className="ui-button primary w-full host-action">
+                                    <PlayIcon kind="group" />
+                                    Create a room{" "}
+                                    <span aria-hidden="true">⌄</span>
+                                </Menu.Trigger>
+                                <Menu.Portal>
+                                    <Menu.Positioner
+                                        sideOffset={8}
+                                        align="start"
+                                        className="room-menu-positioner"
+                                    >
+                                        <Menu.Popup
+                                            className="room-menu"
+                                            aria-label="Choose a room type"
+                                        >
+                                            <Menu.Item
+                                                className="room-menu-item"
+                                                onClick={() => go("/create")}
+                                            >
+                                                <PlayIcon kind="group" />
+                                                <span>
+                                                    <strong>
+                                                        Host with friends
+                                                    </strong>
+                                                    <span>
+                                                        Create a multiplayer
+                                                        room.
+                                                    </span>
+                                                </span>
+                                            </Menu.Item>
+                                            <Menu.Item
+                                                className="room-menu-item"
+                                                onClick={() => go("/solo")}
+                                            >
+                                                <PlayIcon kind="play" />
+                                                <span>
+                                                    <strong>
+                                                        Create solo room
+                                                    </strong>
+                                                    <span>
+                                                        A little challenge. All
+                                                        for yourself.
+                                                    </span>
+                                                </span>
+                                            </Menu.Item>
+                                        </Menu.Popup>
+                                    </Menu.Positioner>
+                                </Menu.Portal>
+                            </Menu.Root>
+                        </div>
+                        <form
+                            className="playground-mode join-flow"
+                            aria-label="Join your friends"
+                            onSubmit={joinRoom}
+                        >
+                            <label className="sr-only" htmlFor="home-room-code">
+                                Enter your six-character room code to join.
+                            </label>
+                            <ButtonGroup
+                                className="playground-join-controls"
+                                aria-label="Join with a room code"
+                            >
+                                <svg
+                                    className="room-code-icon"
+                                    viewBox="0 0 24 24"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    strokeWidth="1.7"
+                                    aria-hidden="true"
+                                >
+                                    <rect
+                                        x="3"
+                                        y="5"
+                                        width="18"
+                                        height="14"
+                                        rx="2"
+                                    />
+                                    <path d="M6 9h2m3 0h2m3 0h2M6 12h2m3 0h2m3 0h2M8 15h8" />
+                                </svg>
+                                <input
+                                    id="home-room-code"
+                                    className="home-code-input"
+                                    aria-label="Room code"
+                                    value={code}
+                                    onChange={(event) =>
+                                        setCode(
+                                            normalizeRoomCode(
+                                                event.target.value,
+                                            ),
+                                        )
+                                    }
+                                    placeholder="Enter a room code"
+                                    required
+                                    minLength={6}
+                                    pattern="[A-Z0-9]{6}"
+                                    autoCapitalize="characters"
+                                    autoComplete="off"
+                                    spellCheck={false}
+                                    enterKeyHint="go"
+                                />
+                                <Button
+                                    intent="secondary"
+                                    className="playground-join"
+                                    type="submit"
+                                    aria-label="Join a room"
+                                    disabled={code.length !== 6}
+                                >
+                                    <span>Join</span>
+                                </Button>
+                            </ButtonGroup>
+                        </form>
+                    </section>
                     <div className="playground-community">
                         <div className="playground-faces" aria-hidden="true">
                             {["memoji-21", "memoji-42", "memoji-58"].map(
@@ -44,105 +160,36 @@ export function Home({ go }: { go: (path: string) => void }) {
                         </div>
                     </div>
                 </div>
-                <div className="playground-bento" aria-hidden="true">
-                    <div className="playground-tile tile-blue">
-                        <strong>
-                            PLAY.
-                            <br />
-                            LEARN.
-                            <br />
-                            REPEAT.
-                        </strong>
-                        <Avatar value="memoji-21" decorative />
+                <div className="playground-showcase">
+                    <div className="playground-bento" aria-hidden="true">
+                        <div className="playground-tile tile-blue">
+                            <strong>
+                                PLAY.
+                                <br />
+                                LEARN.
+                                <br />
+                                REPEAT.
+                            </strong>
+                            <Avatar value="memoji-21" decorative />
+                        </div>
+                        <div className="playground-tile tile-violet">
+                            <strong>
+                                Better
+                                <br />
+                                together.
+                            </strong>
+                            <Avatar value="memoji-42" decorative />
+                            <span className="bento-question">?</span>
+                        </div>
+                        <div className="playground-tile tile-gold">
+                            <strong>
+                                Your next
+                                <br />
+                                big win.
+                            </strong>
+                            <PlaygroundTrophy />
+                        </div>
                     </div>
-                    <div className="playground-tile tile-violet">
-                        <strong>
-                            Better
-                            <br />
-                            together.
-                        </strong>
-                        <Avatar value="memoji-42" decorative />
-                        <span className="bento-question">?</span>
-                    </div>
-                    <div className="playground-tile tile-gold">
-                        <strong>
-                            Your next
-                            <br />
-                            big win.
-                        </strong>
-                        <PlaygroundTrophy />
-                    </div>
-                </div>
-            </section>
-            <section className="playground-modes" aria-label="Start playing">
-                <div className="playground-mode mode-host">
-                    <span className="playground-mode-icon">
-                        <PlayIcon kind="group" />
-                    </span>
-                    <h2>Bring your people.</h2>
-                    <p>Host ready-made trivia or create your own quiz.</p>
-                    <Button
-                        className="host-action"
-                        fullWidth
-                        onClick={() => go("/create")}
-                    >
-                        Create a room <PlayIcon kind="arrow" />
-                    </Button>
-                </div>
-                <form
-                    className="playground-mode join-flow"
-                    aria-label="Join your friends"
-                    onSubmit={joinRoom}
-                >
-                    <span className="playground-mode-icon">
-                        <PlayIcon kind="play" />
-                    </span>
-                    <h2>Got an invite?</h2>
-                    <label htmlFor="home-room-code">
-                        Enter your six-character room code to join.
-                    </label>
-                    <div className="playground-join-controls">
-                        <input
-                            id="home-room-code"
-                            className="home-code-input"
-                            aria-label="Room code"
-                            value={code}
-                            onChange={(event) =>
-                                setCode(normalizeRoomCode(event.target.value))
-                            }
-                            placeholder="ABC123"
-                            required
-                            minLength={6}
-                            pattern="[A-Z0-9]{6}"
-                            autoCapitalize="characters"
-                            autoComplete="off"
-                            spellCheck={false}
-                            enterKeyHint="go"
-                        />
-                        <Button
-                            className="playground-join"
-                            type="submit"
-                            aria-label="Join a room"
-                            disabled={code.length !== 6}
-                        >
-                            <span>Join</span>
-                            <PlayIcon kind="arrow" />
-                        </Button>
-                    </div>
-                </form>
-                <div className="playground-mode solo-action-row">
-                    <span className="playground-mode-icon">
-                        <PlayIcon />
-                    </span>
-                    <h2>Go solo.</h2>
-                    <p>A little challenge. All for yourself.</p>
-                    <Button
-                        intent="secondary"
-                        fullWidth
-                        onClick={() => go("/solo")}
-                    >
-                        Play solo <PlayIcon kind="arrow" />
-                    </Button>
                 </div>
             </section>
             <div className="playground-footnote">

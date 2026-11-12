@@ -4,7 +4,7 @@ import type { Page } from "@playwright/test";
 async function home(page: Page) {
     await page.goto("/");
     await expect(
-        page.getByRole("heading", { name: "Play together. Grow curious." }),
+        page.getByRole("region", { name: "Start playing" }),
     ).toBeVisible();
 }
 
@@ -38,6 +38,7 @@ test("phone layout, custom save/reuse, host-only play, and newer-tab takeover", 
         ),
     ).toBeTruthy();
     await page.getByRole("button", { name: /^Create a room/ }).click();
+    await page.getByRole("menuitem", { name: /Host with friends/ }).click();
     await page.getByRole("button", { name: "Your own questions" }).click();
     await page
         .getByLabel("Question text")
@@ -173,7 +174,10 @@ test("solo presets finish without a lobby and keep a personal score", async ({
     page,
 }) => {
     await home(page);
-    await page.getByRole("button", { name: "Play solo" }).click();
+    await page
+        .getByRole("button", { name: "Create a room", exact: true })
+        .click();
+    await page.getByRole("menuitem", { name: /Create solo room/ }).click();
     await page.getByRole("button", { name: "Let’s play" }).click();
     for (let i = 1; i <= 5; i++) {
         await expect(
@@ -231,6 +235,7 @@ test("unavailable local storage shows a visible save failure without losing the 
     });
     await home(page);
     await page.getByRole("button", { name: /^Create a room/ }).click();
+    await page.getByRole("menuitem", { name: /Host with friends/ }).click();
     await page.getByRole("button", { name: "Your own questions" }).click();
     await page.getByLabel("Question text").fill("Unsaved question");
     await page.getByRole("button", { name: "Save a copy" }).click();

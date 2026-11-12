@@ -807,3 +807,17 @@ input[type="radio"] {
 .replay-actions .waiting {
     @apply justify-center;
 }
+.ui-button-group {
+    display: flex;
+    align-items: stretch;
+    min-width: 0;
+    gap: 0;
+}
+.ui-button-group > :not(:first-child) {
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+}
+.ui-button-group > :not(:last-child) {
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+}
