@@ -33,6 +33,61 @@ export function Room({
     useEffect(() => {
         setSelected(null);
     }, [s?.personal?.question?.id, s?.roundId]);
+    useEffect(() => {
+        const personal = s?.personal;
+        const question = personal?.question;
+        if (
+            connection !== "live" ||
+            pending ||
+            s?.status !== "active" ||
+            personal?.phase !== "question" ||
+            !question
+        )
+            return;
+
+        function onKeyDown(event: KeyboardEvent) {
+            if (
+                event.defaultPrevented ||
+                event.repeat ||
+                event.isComposing ||
+                event.altKey ||
+                event.ctrlKey ||
+                event.metaKey ||
+                event.shiftKey ||
+                Date.now() + live.offset.current >= personal!.deadline
+            )
+                return;
+            const target = event.target;
+            if (
+                target instanceof Element &&
+                target.closest(
+                    'input, textarea, select, [contenteditable]:not([contenteditable="false"]), [role="textbox"], [role="dialog"], [role="menu"]',
+                )
+            )
+                return;
+            // Keep Enter's native behavior on navigation and unrelated controls.
+            if (
+                event.key === "Enter" &&
+                target instanceof Element &&
+                target.closest("a, button") &&
+                !target.closest(".answer-option, [data-answer-submit]")
+            )
+                return;
+
+            if (/^[1-9]$/.test(event.key)) {
+                const choice = Number(event.key) - 1;
+                if (choice < question!.options.length) {
+                    event.preventDefault();
+                    setSelected(choice);
+                }
+            } else if (event.key === "Enter" && selected !== null) {
+                event.preventDefault();
+                send("answer", { questionId: question!.id, choice: selected });
+            }
+        }
+        window.addEventListener("keydown", onKeyDown);
+        return () => window.removeEventListener("keydown", onKeyDown);
+    }, [s, connection, pending, selected, send, live.offset]);
     const serverNow = now + live.offset.current;
     if (connection === "displaced")
         return (
@@ -338,6 +393,7 @@ export function Room({
                                 key={i}
                                 disabled={reveal || disabled || remaining <= 0}
                                 aria-pressed={selected === i}
+                                aria-keyshortcuts={String(i + 1)}
                                 className={
                                     "answer-option" +
                                     (selected === i ? " chosen" : "") +
@@ -347,9 +403,7 @@ export function Room({
                                 }
                                 onClick={() => setSelected(i)}
                             >
-                                <span className="option-letter">
-                                    {"ABCD"[i]}
-                                </span>
+                                <span className="option-letter">{i + 1}</span>
                                 <span>{option}</span>
                                 {reveal && p.receipt?.correct === i && (
                                     <span className="correct-mark">✓</span>
@@ -383,9 +437,11 @@ export function Room({
                                     ? "Time’s up. Waiting for the server…"
                                     : pending
                                       ? "Submitting your answer…"
-                                      : "One answer. Make it count."}
+                                      : `Press 1–${q.options.length} to select, then Enter to submit.`}
                             </span>
                             <Button
+                                data-answer-submit
+                                aria-keyshortcuts="Enter"
                                 disabled={
                                     disabled ||
                                     selected === null ||
