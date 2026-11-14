@@ -301,6 +301,17 @@ a:focus-visible {
     font-family: var(--font-sans);
     font-weight: 900;
 }
+.podium-step {
+    background: linear-gradient(
+        to bottom,
+        var(--podium-color),
+        color-mix(in srgb, var(--podium-color) 88%, #665241)
+    );
+    border-radius: 0 0 10px 10px;
+}
+.podium-player:not(.podium-place-1) .podium-laurel {
+    display: none;
+}
 .podium-board .ranked-players > li {
     border-radius: 100px;
 }
