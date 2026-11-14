@@ -18,6 +18,7 @@ export function Leaderboard({
 }) {
     const [scrollableStandings, setScrollableStandings] = useState(false);
     useEffect(() => {
+        // Match the scrollable standings breakpoint in styles/leaderboard.css.
         const media = window.matchMedia("(min-width: 1001px)");
         const update = () => setScrollableStandings(media.matches);
         update();
@@ -60,7 +61,7 @@ export function Leaderboard({
                                 </strong>
                             </div>
                             <Button intent="ghost" onClick={findMe}>
-                                Find me ↓
+                                Find me <span aria-hidden="true">↓</span>
                             </Button>
                         </div>
                     )}
@@ -100,7 +101,7 @@ export function Leaderboard({
                                     entry.id === currentPlayer ? -1 : undefined
                                 }
                                 className={`podium-player podium-place-${index + 1}${entry.id === currentPlayer ? " me" : ""}`}
-                                aria-label={`Rank ${entry.rank}: ${entry.name}${entry.id === currentPlayer ? ", you" : ""}, ${entry.score} points`}
+                                aria-label={`Rank ${entry.rank}: ${entry.name}${entry.id === currentPlayer ? ", you" : ""}, ${entry.score.toLocaleString()} points`}
                             >
                                 <div className="podium-person">
                                     {index === 0 && (
@@ -229,7 +230,7 @@ export function Leaderboard({
                                 tabIndex={
                                     entry.id === currentPlayer ? -1 : undefined
                                 }
-                                aria-label={`Rank ${entry.rank}: ${entry.name}${entry.id === currentPlayer ? ", you" : ""}, ${entry.score} points`}
+                                aria-label={`Rank ${entry.rank}: ${entry.name}${entry.id === currentPlayer ? ", you" : ""}, ${entry.score.toLocaleString()} points`}
                                 className={
                                     entry.id === currentPlayer ? "me" : ""
                                 }

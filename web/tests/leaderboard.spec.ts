@@ -703,3 +703,28 @@ test("mobile preparation status keeps the player's results available", async ({
         page.getByRole("button", { name: "Back to home" }),
     ).toBeInViewport({ ratio: 1 });
 });
+
+test("mid-height mobile dock leaves standings and host actions reachable", async ({
+    page,
+}) => {
+    await page.setViewportSize({ width: 390, height: 640 });
+    await showResults(page, tenPlayers, true);
+    for (const name of [
+        "Count me in for another",
+        "Set up the next quiz",
+        "Back to home",
+    ]) {
+        await expect(page.getByRole("button", { name })).toBeInViewport({
+            ratio: 1,
+        });
+    }
+    const last = page.locator(".ranked-players li").last();
+    await last.scrollIntoViewIfNeeded();
+    await expect(last).toBeInViewport({ ratio: 1 });
+    const row = await last.boundingBox();
+    const dock = await page.locator(".replay-actions").boundingBox();
+    expect(row!.y + row!.height).toBeLessThanOrEqual(dock!.y);
+    await expect(
+        page.getByRole("button", { name: "Find me" }),
+    ).toHaveAccessibleName("Find me");
+});
