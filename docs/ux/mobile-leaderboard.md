@@ -29,7 +29,7 @@ Check widths 320, 360, 390, and 430px; short 568px screens; long names; large po
 
 ## Implementation notes
 
-- Results use one scrollable workspace with a content-sized replay area outside it. At heights of 600px or less, the whole result scrolls together so actions cannot consume the screen. Safe-area padding is included.
+- Results use one scrollable workspace with a content-sized replay area outside it. At heights of 600px or less, or when the rendered replay area exceeds 40% of the results viewport, the whole result scrolls together so actions cannot consume the screen. A Next round actions shortcut keeps replay discoverable without traversing the standings. Safe-area padding is included.
 - Narrow phones (360px or less) put the standings score below the name, right aligned, to make long names and enlarged text readable. Other phone widths keep the existing row composition.
 - Podium names use two visible lines; full names remain in the accessible entry label and title. Original avatars, palette, typefaces, podium artwork, and button variants are retained.
 - Find me targets either the podium or standings entry, moves focus, and announces rank and score. Ties retain their supplied rank via list-item values.
@@ -37,3 +37,12 @@ Check widths 320, 360, 390, and 430px; short 568px screens; long names; large po
 - Desktop retains its scrollable, keyboard-focusable standings list; mobile removes that extra list focus stop. Solo results retain their original layout.
 
 Validation: production build passed; all 24 Playwright leaderboard checks passed against Vite and the local backend. Coverage includes desktop/solo regressions, phone widths 320/360/390/430px, 150-player standings, replay transition, preparing status, tied ranks, missing personal entries, 0–3 players, and enlarged text at 320×568. These are automated assertions; no manual device or screen-reader audit has been performed.
+
+
+## Independent implementation reviews and follow-up
+
+GLM independently reproduced the build and 24-test suite, rated the reviewed implementation 8.5/10, and found no blockers. DeepSeek independently reproduced those checks and rated it 8/10, identifying enlarged-text podium overflow and dock/focus improvements. These ratings apply to the implementation reviewed before the follow-up fixes.
+
+Follow-up changes stack and wrap podium score/place labels, switch oversized docks to the full scroll flow using their measured height, provide a shortcut to replay actions, preserve focus on replay confirmation, use the existing deep-peach focus token with inset control outlines, and provide a level-two standings heading on mobile. A persistent live region announces host preparation.
+
+Final validation: production build passed and all 30 leaderboard Playwright tests passed. Added checks measure individual podium text fragments inside their columns at 320/360/390/430px with enlarged text, cover the 390×640 height band, and exercise action shortcuts and confirmation focus with 150 players on a 320×568 screen. Enlarged-text CSS simulation remains a proxy, not a manual browser-zoom, device, visual, or screen-reader audit.

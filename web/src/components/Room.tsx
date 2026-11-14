@@ -1,7 +1,7 @@
 import { Button as ShadcnButton } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Button } from "./Button";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Catalog } from "../types";
 import { useRoom } from "../useRoom";
 import { ErrorMessage } from "./Common";
@@ -20,6 +20,47 @@ export function Room({
 }) {
     const live = useRoom(code);
     const { snapshot: s, connection, error, pending, send } = live;
+    const resultsPage = useRef<HTMLElement>(null);
+    const replayActions = useRef<HTMLDivElement>(null);
+    const restoreReplayFocus = useRef(false);
+    const [flowActions, setFlowActions] = useState(false);
+    const replayRequested = !!s?.members.find((member) => member.id === s.me)
+        ?.replay;
+    useEffect(() => {
+        if (s?.status !== "results" || s.solo) return;
+        const page = resultsPage.current;
+        const dock = replayActions.current;
+        if (!page || !dock) return;
+        const media = window.matchMedia("(max-width: 740px)");
+        const update = () =>
+            setFlowActions(
+                media.matches &&
+                    dock.getBoundingClientRect().height >
+                        page.clientHeight * 0.4,
+            );
+        const observer = new ResizeObserver(update);
+        observer.observe(page);
+        observer.observe(dock);
+        media.addEventListener("change", update);
+        update();
+        return () => {
+            observer.disconnect();
+            media.removeEventListener("change", update);
+        };
+    }, [s?.status, s?.solo, s?.preparingNextQuiz]);
+    useEffect(() => {
+        if (!replayRequested || !restoreReplayFocus.current) return;
+        restoreReplayFocus.current = false;
+        const dock = replayActions.current;
+        if (
+            document.activeElement === document.body ||
+            dock?.contains(document.activeElement)
+        ) {
+            dock?.querySelector<HTMLElement>(
+                ".waiting, button:not(:disabled)",
+            )?.focus();
+        }
+    }, [replayRequested]);
     const [now, setNow] = useState(Date.now());
     const [selected, setSelected] = useState<number | null>(null);
     const [copied, setCopied] = useState(false);
@@ -464,7 +505,8 @@ export function Room({
     }
     return (
         <section
-            className={`results-page${s.status === "results" ? " podium-results" : ""}${s.solo ? " solo-results" : s.status === "results" ? " mobile-results" : ""}`}
+            ref={resultsPage}
+            className={`results-page${flowActions ? " flow-results" : ""}${s.status === "results" ? " podium-results" : ""}${s.solo ? " solo-results" : s.status === "results" ? " mobile-results" : ""}`}
         >
             <div className="results-content">
                 {banner}
@@ -518,15 +560,32 @@ export function Room({
                         solo={s.solo}
                         hideHeading={s.solo}
                         code={code}
+                        onShowActions={() => {
+                            replayActions.current?.scrollIntoView({
+                                block: "start",
+                                behavior: "instant",
+                            });
+                            replayActions.current
+                                ?.querySelector<HTMLButtonElement>(
+                                    "button:not(:disabled)",
+                                )
+                                ?.focus({ preventScroll: true });
+                        }}
                     />
                 )}
             </div>
             {s.status === "results" && (
                 <div
                     className="replay-actions"
+                    ref={replayActions}
                     role="group"
                     aria-label="Next round actions"
                 >
+                    <span className="sr-only" role="status">
+                        {!s.isHost && s.preparingNextQuiz
+                            ? "Your host is setting up the next quiz. Results remain available."
+                            : ""}
+                    </span>
                     {s.solo ? (
                         <Button onClick={() => go("/solo")}>
                             Another solo round →
@@ -547,7 +606,10 @@ export function Room({
                                         intent="secondary"
                                         className="replay-opt-in"
                                         disabled={disabled}
-                                        onClick={() => send("replay")}
+                                        onClick={() => {
+                                            restoreReplayFocus.current = true;
+                                            send("replay");
+                                        }}
                                     >
                                         Count me in for another
                                     </Button>
@@ -555,7 +617,11 @@ export function Room({
                             {!s.isHost &&
                                 s.members.find((m) => m.id === s.me)?.replay &&
                                 !s.preparingNextQuiz && (
-                                    <div className="waiting" role="status">
+                                    <div
+                                        className="waiting"
+                                        role="status"
+                                        tabIndex={-1}
+                                    >
                                         <span /> You’re in! Waiting for the host
                                         to set up the next quiz.
                                     </div>

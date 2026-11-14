@@ -728,3 +728,86 @@ test("mid-height mobile dock leaves standings and host actions reachable", async
         page.getByRole("button", { name: "Find me" }),
     ).toHaveAccessibleName("Find me");
 });
+
+for (const width of [320, 360, 390, 430]) {
+    test(`enlarged podium text stays inside each column at ${width}px`, async ({
+        page,
+    }) => {
+        await page.setViewportSize({ width, height: 844 });
+        await showResults(
+            page,
+            tenPlayers.map((entry) => ({ ...entry, score: 999999 })),
+            true,
+        );
+        await page.addStyleTag({
+            content:
+                ".mobile-results { font-size: 200%; } .mobile-results :is(button, p, strong, small, span, h1, h2, h3) { font-size: inherit !important; }",
+        });
+        await expect(page.locator(".mobile-results")).toHaveClass(
+            /flow-results/,
+        );
+        for (const player of await page.locator(".winner-podium > li").all()) {
+            const overflow = await player.evaluate((node) => {
+                const column = node.getBoundingClientRect();
+                const errors: string[] = [];
+                for (const label of node.querySelectorAll(
+                    ".podium-score, .podium-you",
+                )) {
+                    const walker = document.createTreeWalker(
+                        label,
+                        NodeFilter.SHOW_TEXT,
+                    );
+                    while (walker.nextNode()) {
+                        if (!walker.currentNode.textContent?.trim()) continue;
+                        const range = document.createRange();
+                        range.selectNodeContents(walker.currentNode);
+                        for (const rect of range.getClientRects()) {
+                            if (
+                                rect.left < column.left - 1 ||
+                                rect.right > column.right + 1
+                            )
+                                errors.push(label.className);
+                        }
+                    }
+                }
+                return errors;
+            });
+            expect(overflow).toEqual([]);
+        }
+        await page.getByRole("button", { name: "Next round actions" }).click();
+        await expect(
+            page.getByRole("button", { name: "Count me in for another" }),
+        ).toBeFocused();
+        await expect(
+            page.getByRole("button", { name: "Count me in for another" }),
+        ).toBeInViewport({ ratio: 1 });
+    });
+}
+
+test("short-screen shortcut reaches replay after 150 players and preserves confirmation focus", async ({
+    page,
+}) => {
+    await page.setViewportSize({ width: 320, height: 568 });
+    const entries = Array.from({ length: 150 }, (_, index) => ({
+        id: index === 100 ? "me" : `p-${index}`,
+        name: `Player ${index + 1}`,
+        avatar: "🐱",
+        score: 1000 - index,
+        rank: index + 1,
+    }));
+    await showResults(page, entries, true, false, { isHost: false });
+    const shortcut = page.getByRole("button", { name: "Next round actions" });
+    await shortcut.scrollIntoViewIfNeeded();
+    await shortcut.click();
+    const replay = page.getByRole("button", {
+        name: "Count me in for another",
+    });
+    await expect(replay).toBeFocused();
+    await expect(replay).toBeInViewport({ ratio: 1 });
+    await page.keyboard.press("Enter");
+    await expect(page.locator(".waiting")).toBeFocused();
+    await expect(page.locator(".waiting")).toHaveCSS(
+        "outline-color",
+        "rgb(140, 60, 13)",
+    );
+});

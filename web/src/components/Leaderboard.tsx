@@ -9,12 +9,14 @@ export function Leaderboard({
     solo,
     hideHeading = false,
     code,
+    onShowActions,
 }: {
     entries: NonNullable<Snapshot["leaderboard"]>;
     currentPlayer: string;
     solo: boolean;
     hideHeading?: boolean;
     code: string;
+    onShowActions?: () => void;
 }) {
     const [scrollableStandings, setScrollableStandings] = useState(false);
     useEffect(() => {
@@ -65,6 +67,13 @@ export function Leaderboard({
                             </Button>
                         </div>
                     )}
+                    <Button
+                        intent="ghost"
+                        className="mobile-actions-shortcut"
+                        onClick={onShowActions}
+                    >
+                        Next round actions <span aria-hidden="true">↓</span>
+                    </Button>
                     <span className="sr-only" role="status">
                         {announcement}
                     </span>
@@ -210,6 +219,9 @@ export function Leaderboard({
                     </div>
                     <div className="leaderboard-list-heading">
                         <h3>The good company</h3>
+                        <h2 className="mobile-standings-heading">
+                            The good company
+                        </h2>
                         <span>POINTS</span>
                     </div>
                     <ol
