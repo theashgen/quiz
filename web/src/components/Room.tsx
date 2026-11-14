@@ -32,12 +32,21 @@ export function Room({
         const dock = replayActions.current;
         if (!page || !dock) return;
         const media = window.matchMedia("(max-width: 740px)");
-        const update = () =>
-            setFlowActions(
-                media.matches &&
-                    dock.getBoundingClientRect().height >
-                        page.clientHeight * 0.4,
-            );
+        let frame = 0;
+        const update = () => {
+            cancelAnimationFrame(frame);
+            // Defer layout changes until after ResizeObserver's delivery phase.
+            frame = requestAnimationFrame(() => {
+                const dockHeight = dock.getBoundingClientRect().height;
+                const pageHeight = page.clientHeight;
+                setFlowActions(
+                    (flowing) =>
+                        media.matches &&
+                        // Separate entry/exit thresholds prevent mode oscillation.
+                        dockHeight > pageHeight * (flowing ? 0.39 : 0.4),
+                );
+            });
+        };
         const observer = new ResizeObserver(update);
         observer.observe(page);
         observer.observe(dock);
@@ -45,6 +54,7 @@ export function Room({
         update();
         return () => {
             observer.disconnect();
+            cancelAnimationFrame(frame);
             media.removeEventListener("change", update);
         };
     }, [s?.status, s?.solo, s?.preparingNextQuiz]);

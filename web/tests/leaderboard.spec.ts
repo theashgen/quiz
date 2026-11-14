@@ -811,3 +811,39 @@ test("short-screen shortcut reaches replay after 150 players and preserves confi
         "rgb(140, 60, 13)",
     );
 });
+
+test("replay dock resizing settles without ResizeObserver errors", async ({
+    page,
+}) => {
+    const errors: string[] = [];
+    page.on("pageerror", (error) => errors.push(error.message));
+    await page.setViewportSize({ width: 390, height: 844 });
+    await showResults(page, tenPlayers, true);
+    for (const viewport of [
+        { width: 390, height: 640 },
+        { width: 320, height: 568 },
+        { width: 390, height: 844 },
+    ]) {
+        await page.setViewportSize(viewport);
+        const enlarged = await page.addStyleTag({
+            content:
+                ".mobile-results { font-size: 200%; } .mobile-results :is(button, p, strong, small, span, h1, h2, h3) { font-size: inherit !important; }",
+        });
+        await expect(page.locator(".mobile-results")).toHaveClass(
+            /flow-results/,
+        );
+        await enlarged.evaluate((node) => node.remove());
+        await expect(page.locator(".mobile-results")).not.toHaveClass(
+            /flow-results/,
+        );
+    }
+    await page.evaluate(
+        () =>
+            new Promise<void>((resolve) =>
+                requestAnimationFrame(() =>
+                    requestAnimationFrame(() => resolve()),
+                ),
+            ),
+    );
+    expect(errors).toEqual([]);
+});
