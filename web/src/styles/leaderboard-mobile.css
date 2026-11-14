@@ -1,0 +1,208 @@
+/* Preserve the existing desktop and solo composition. */
+.results-content {
+    display: contents;
+}
+.mobile-results-summary,
+.mobile-final-note {
+    display: none;
+}
+
+@media (max-width: 740px) {
+    /* One results scroll region, with a content-sized action area beside it.
+       The dock reserves its own space instead of covering the final standing. */
+    #root > main > .results-page.mobile-results {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        min-height: 0;
+        margin-block: 0;
+        padding-block: 0;
+        overflow: hidden;
+    }
+    .mobile-results .results-content {
+        display: block;
+        flex: 1 1 auto;
+        min-height: 0;
+        overflow-y: auto;
+        overflow-x: clip;
+        scroll-padding-block: 16px;
+        padding: 4px 4px 16px;
+    }
+    .mobile-results .page-heading,
+    .mobile-results .leaderboard-heading,
+    .mobile-results .leaderboard-final-note {
+        display: none;
+    }
+    .mobile-results-summary {
+        display: block;
+        margin-bottom: 12px;
+    }
+    .mobile-results-summary h1 {
+        font-size: 24px;
+        margin-bottom: 6px;
+    }
+    .mobile-results-summary > p {
+        font-size: 12px;
+        color: var(--color-muted);
+        margin-bottom: 12px;
+    }
+    .personal-result {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+    }
+    .personal-result > div {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        min-width: 0;
+        overflow-wrap: anywhere;
+    }
+    .personal-result span {
+        font-size: 12px;
+        color: var(--color-muted);
+    }
+    .personal-result strong {
+        font-size: 16px;
+        font-variant-numeric: tabular-nums;
+    }
+    .personal-result button {
+        min-height: 44px;
+        flex-shrink: 0;
+    }
+    .mobile-results .podium-board ol.winner-podium {
+        padding-top: 30px;
+        margin-block: 0 16px;
+        overflow: visible;
+    }
+    .mobile-results .podium-board .winner-podium > li {
+        --podium-height: 90px;
+        scroll-margin-block: 16px;
+    }
+    .mobile-results .podium-board .winner-podium .podium-place-2 {
+        --podium-height: 70px;
+    }
+    .mobile-results .podium-board .winner-podium .podium-place-3 {
+        --podium-height: 60px;
+    }
+    .mobile-results .podium-person {
+        padding: 0 3px 26px;
+        gap: 4px;
+    }
+    .mobile-results .podium-name {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+        line-height: 1.4;
+        max-height: 2.8em;
+        padding-top: 0;
+    }
+    .mobile-results .podium-you,
+    .mobile-results .podium-score small,
+    .mobile-results .list-player-name small,
+    .mobile-results .list-score small,
+    .mobile-results .leaderboard-list-heading > span {
+        font-size: 11px;
+    }
+    .mobile-results .podium-step {
+        padding-top: 6px;
+    }
+    .mobile-results .podium-step strong {
+        font-size: 32px;
+    }
+    .mobile-results .podium-laurel {
+        height: 20px;
+        max-width: 100%;
+    }
+    .mobile-results .podium-board ol.ranked-players {
+        max-height: none;
+        overflow: visible;
+    }
+    .mobile-results .ranked-players > li {
+        scroll-margin-block: 16px;
+    }
+    .mobile-results .list-score {
+        flex-shrink: 0;
+        font-variant-numeric: tabular-nums;
+    }
+    .mobile-results .leaderboard li:focus {
+        outline: 2px solid var(--color-brand);
+        outline-offset: -2px;
+    }
+    .mobile-final-note {
+        display: block;
+        margin: 16px 0 0;
+        font-size: 11px;
+        text-align: center;
+        color: var(--color-muted);
+    }
+    .mobile-results .replay-actions {
+        position: static;
+        flex: 0 0 auto;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 8px;
+        margin: 0;
+        padding: 8px 4px max(8px, env(safe-area-inset-bottom));
+        background: var(--color-canvas);
+    }
+    .mobile-results .replay-actions > p {
+        margin: 0;
+        font-size: 12px;
+    }
+    .mobile-results .replay-actions > button {
+        width: 100%;
+        min-height: 44px;
+        height: auto;
+        white-space: normal;
+        overflow-wrap: anywhere;
+        margin: 0;
+    }
+    .mobile-results .replay-actions .waiting {
+        margin: 0;
+        min-height: 44px;
+        padding: 0;
+        font-size: 12px;
+    }
+}
+
+/* Allow the entire result to scroll when a persistent dock would dominate the
+   viewport (small phones, landscape, or browser zoom). Every action stays reachable. */
+@media (max-width: 740px) and (max-height: 600px) {
+    #root > main > .results-page.mobile-results {
+        display: block;
+        overflow-y: auto;
+    }
+    .mobile-results .results-content {
+        overflow: visible;
+    }
+}
+
+/* On narrow phones, give long names their own row above right-aligned points. */
+@media (max-width: 360px) {
+    .mobile-results .podium-board .ranked-players > li {
+        display: grid;
+        grid-template-columns: auto 36px minmax(0, 1fr);
+        gap: 6px 9px;
+    }
+    .mobile-results .list-player-name {
+        grid-column: 3;
+    }
+    .mobile-results .list-player-name small {
+        display: none;
+    }
+    .mobile-results .list-score {
+        grid-column: 3;
+        grid-row: 2;
+        justify-self: end;
+    }
+    .mobile-results .list-you {
+        display: block;
+        grid-column: 1 / 3;
+        grid-row: 2;
+        justify-self: start;
+    }
+}

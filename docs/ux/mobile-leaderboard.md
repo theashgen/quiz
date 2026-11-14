@@ -1,6 +1,6 @@
 # Mobile leaderboard layout proposal
 
-Scope: layout and UX for multiplayer final results at phone widths. Preserve the current palette, fonts, avatars, podium artwork, button variants, and desktop layout. The accompanying HTML is a neutral wireframe, not a replacement visual design. Application code has not been changed.
+Scope: layout and UX for multiplayer final results at phone widths. Preserve the current palette, fonts, avatars, podium artwork, button variants, and desktop layout. The accompanying HTML is a neutral wireframe, not a replacement visual design. The layout is now implemented on `fix/mobile-leaderboard-ux`; the HTML remains the original concept wireframe.
 
 ## Content order
 
@@ -25,3 +25,15 @@ Scope: layout and UX for multiplayer final results at phone widths. Preserve the
 ## Implementation acceptance checks
 
 Check widths 320, 360, 390, and 430px; short 568px screens; long names; large point values; 200% text zoom; and 0/1/2/3/10/150-player results. Verify no horizontal overflow, 44px minimum action targets, no clipped focus outlines, complete access to the final standing, replay state feedback, and unchanged desktop layout.
+
+
+## Implementation notes
+
+- Results use one scrollable workspace with a content-sized replay area outside it. At heights of 600px or less, the whole result scrolls together so actions cannot consume the screen. Safe-area padding is included.
+- Narrow phones (360px or less) put the standings score below the name, right aligned, to make long names and enlarged text readable. Other phone widths keep the existing row composition.
+- Podium names use two visible lines; full names remain in the accessible entry label and title. Original avatars, palette, typefaces, podium artwork, and button variants are retained.
+- Find me targets either the podium or standings entry, moves focus, and announces rank and score. Ties retain their supplied rank via list-item values.
+- Nonplaying hosts see setup; participating hosts retain replay opt-in. Waiting and preparing states retain the existing server commands and announcements.
+- Desktop retains its scrollable, keyboard-focusable standings list; mobile removes that extra list focus stop. Solo results retain their original layout.
+
+Validation: production build passed; all 24 Playwright leaderboard checks passed against Vite and the local backend. Coverage includes desktop/solo regressions, phone widths 320/360/390/430px, 150-player standings, replay transition, preparing status, tied ranks, missing personal entries, 0–3 players, and enlarged text at 320×568. These are automated assertions; no manual device or screen-reader audit has been performed.

@@ -464,85 +464,94 @@ export function Room({
     }
     return (
         <section
-            className={`results-page${s.status === "results" ? " podium-results" : ""}${s.solo ? " solo-results" : ""}`}
+            className={`results-page${s.status === "results" ? " podium-results" : ""}${s.solo ? " solo-results" : s.status === "results" ? " mobile-results" : ""}`}
         >
-            {banner}
-            {!s.isHost && s.preparingNextQuiz && (
-                <div className="notice" role="status">
-                    <strong>Your host is setting up the next quiz…</strong>
-                    <br />
-                    Hang tight — the next lobby will appear here when it’s
-                    ready.
-                </div>
-            )}
-            {!s.solo && (
-                <div className="page-heading centered">
-                    <div className="results-intro">
-                        <div className="result-star">✦</div>
-                        <div className="eyebrow">
-                            {s.status === "results"
-                                ? "THAT’S A WRAP"
-                                : "YOUR PART IS DONE"}
-                        </div>
-                        <h1>
-                            {p
-                                ? "Nicely played."
-                                : s.status === "results"
-                                  ? "A round well hosted."
-                                  : "Let them cook."}
-                        </h1>
+            <div className="results-content">
+                {banner}
+                {!s.isHost && s.preparingNextQuiz && (
+                    <div className="notice" role="status">
+                        <strong>Your host is setting up the next quiz…</strong>
+                        <br />
+                        Hang tight — the next lobby will appear here when it’s
+                        ready.
                     </div>
-                    {p && (
-                        <div className="results-score">
-                            <p>Your score</p>
-                            <div className="big-score">
-                                {p.score}
-                                <small> / {p.total * 100}</small>
+                )}
+                {!s.solo && (
+                    <div className="page-heading centered">
+                        <div className="results-intro">
+                            <div className="result-star">✦</div>
+                            <div className="eyebrow">
+                                {s.status === "results"
+                                    ? "THAT’S A WRAP"
+                                    : "YOUR PART IS DONE"}
                             </div>
+                            <h1>
+                                {p
+                                    ? "Nicely played."
+                                    : s.status === "results"
+                                      ? "A round well hosted."
+                                      : "Let them cook."}
+                            </h1>
                         </div>
-                    )}
-                    <p className="results-caption">
-                        {s.status === "active"
-                            ? `${s.finished} of ${s.total} players finished. Final ranks appear when everyone is done.`
-                            : s.solo
-                              ? "A little wiser. Ready for another?"
-                              : "The guesses are in. Here’s how everyone landed."}
-                    </p>
-                </div>
-            )}
+                        {p && (
+                            <div className="results-score">
+                                <p>Your score</p>
+                                <div className="big-score">
+                                    {p.score}
+                                    <small> / {p.total * 100}</small>
+                                </div>
+                            </div>
+                        )}
+                        <p className="results-caption">
+                            {s.status === "active"
+                                ? `${s.finished} of ${s.total} players finished. Final ranks appear when everyone is done.`
+                                : s.solo
+                                  ? "A little wiser. Ready for another?"
+                                  : "The guesses are in. Here’s how everyone landed."}
+                        </p>
+                    </div>
+                )}
+                {s.status === "results" && (
+                    <Leaderboard
+                        entries={s.leaderboard ?? []}
+                        currentPlayer={s.me}
+                        solo={s.solo}
+                        hideHeading={s.solo}
+                        code={code}
+                    />
+                )}
+            </div>
             {s.status === "results" && (
-                <Leaderboard
-                    entries={s.leaderboard ?? []}
-                    currentPlayer={s.me}
-                    solo={s.solo}
-                    hideHeading={s.solo}
-                    code={code}
-                />
-            )}
-            {s.status === "results" && (
-                <div className="replay-actions">
+                <div
+                    className="replay-actions"
+                    role="group"
+                    aria-label="Next round actions"
+                >
                     {s.solo ? (
                         <Button onClick={() => go("/solo")}>
                             Another solo round →
                         </Button>
                     ) : (
                         <>
-                            <p>
+                            <p role="status">
                                 {s.replayCount}{" "}
                                 {s.replayCount === 1
                                     ? "player wants"
                                     : "players want"}{" "}
                                 to play again
                             </p>
-                            {!s.members.find((m) => m.id === s.me)?.replay && (
-                                <Button
-                                    intent="secondary"
-                                    disabled={disabled}
-                                    onClick={() => send("replay")}
-                                >
-                                    Count me in for another
-                                </Button>
-                            )}
+                            {(!!p || !s.isHost) &&
+                                !s.members.find((m) => m.id === s.me)
+                                    ?.replay && (
+                                    <Button
+                                        intent="secondary"
+                                        className="replay-opt-in"
+                                        disabled={disabled}
+                                        onClick={() => send("replay")}
+                                    >
+                                        Count me in for another
+                                    </Button>
+                                )}
                             {!s.isHost &&
                                 s.members.find((m) => m.id === s.me)?.replay &&
                                 !s.preparingNextQuiz && (
