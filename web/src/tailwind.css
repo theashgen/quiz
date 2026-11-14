@@ -16,6 +16,7 @@
 @import "./styles/redesign.css" layer(components);
 @import "./styles/viewport.css" layer(components);
 @import "./styles/peach.css" layer(components);
+@import "./styles/leaderboard-mobile.css" layer(components);
 
 @theme {
     --font-sans: "DM Sans", Arial, sans-serif;

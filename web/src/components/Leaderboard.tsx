@@ -1,3 +1,5 @@
+import { useEffect, useRef, useState } from "react";
+import { Button } from "./Button";
 import type { Snapshot } from "../types";
 import { Avatar } from "./Avatar";
 
@@ -7,13 +9,36 @@ export function Leaderboard({
     solo,
     hideHeading = false,
     code,
+    onShowActions,
 }: {
     entries: NonNullable<Snapshot["leaderboard"]>;
     currentPlayer: string;
     solo: boolean;
     hideHeading?: boolean;
     code: string;
+    onShowActions?: () => void;
 }) {
+    const [scrollableStandings, setScrollableStandings] = useState(false);
+    useEffect(() => {
+        // Match the scrollable standings breakpoint in styles/leaderboard.css.
+        const media = window.matchMedia("(min-width: 1001px)");
+        const update = () => setScrollableStandings(media.matches);
+        update();
+        media.addEventListener("change", update);
+        return () => media.removeEventListener("change", update);
+    }, []);
+    const currentEntry = useRef<HTMLLIElement>(null);
+    const [announcement, setAnnouncement] = useState("");
+    const me = entries.find((entry) => entry.id === currentPlayer);
+    function findMe() {
+        const target = currentEntry.current;
+        if (!target || !me) return;
+        target.scrollIntoView({ block: "center", behavior: "instant" });
+        target.focus({ preventScroll: true });
+        setAnnouncement(
+            `Your place: ${me.rank} of ${entries.length}, ${me.score.toLocaleString()} points.`,
+        );
+    }
     const winners = entries.slice(0, 3);
     const remaining = entries.slice(3);
 
@@ -21,6 +46,39 @@ export function Leaderboard({
         <div
             className={`leaderboard podium-board${remaining.length > 0 ? " has-standings" : ""}`}
         >
+            {!solo && (
+                <div className="mobile-results-summary">
+                    <h1>Final leaderboard</h1>
+                    <p>
+                        Room {code} · {entries.length}{" "}
+                        {entries.length === 1 ? "player" : "players"}
+                    </p>
+                    {me && (
+                        <div className="personal-result">
+                            <div>
+                                <span>Your result</span>
+                                <strong>
+                                    #{me.rank} of {entries.length} ·{" "}
+                                    {me.score.toLocaleString()} pts
+                                </strong>
+                            </div>
+                            <Button intent="ghost" onClick={findMe}>
+                                Find me <span aria-hidden="true">↓</span>
+                            </Button>
+                        </div>
+                    )}
+                    <Button
+                        intent="ghost"
+                        className="mobile-actions-shortcut"
+                        onClick={onShowActions}
+                    >
+                        Next round actions <span aria-hidden="true">↓</span>
+                    </Button>
+                    <span className="sr-only" role="status">
+                        {announcement}
+                    </span>
+                </div>
+            )}
             <div className="leaderboard-stage">
                 {!hideHeading && (
                     <div className="leaderboard-heading">
@@ -42,8 +100,17 @@ export function Leaderboard({
                         {winners.map((entry, index) => (
                             <li
                                 key={entry.id}
+                                value={entry.rank}
+                                ref={
+                                    entry.id === currentPlayer
+                                        ? currentEntry
+                                        : undefined
+                                }
+                                tabIndex={
+                                    entry.id === currentPlayer ? -1 : undefined
+                                }
                                 className={`podium-player podium-place-${index + 1}${entry.id === currentPlayer ? " me" : ""}`}
-                                aria-label={`Rank ${entry.rank}: ${entry.name}${entry.id === currentPlayer ? ", you" : ""}, ${entry.score} points`}
+                                aria-label={`Rank ${entry.rank}: ${entry.name}${entry.id === currentPlayer ? ", you" : ""}, ${entry.score.toLocaleString()} points`}
                             >
                                 <div className="podium-person">
                                     {index === 0 && (
@@ -78,7 +145,10 @@ export function Leaderboard({
                                             decorative
                                         />
                                     </span>
-                                    <strong className="podium-name">
+                                    <strong
+                                        className="podium-name"
+                                        title={entry.name}
+                                    >
                                         {entry.name}
                                     </strong>
                                     <span
@@ -149,25 +219,35 @@ export function Leaderboard({
                     </div>
                     <div className="leaderboard-list-heading">
                         <h3>The good company</h3>
+                        <h2 className="mobile-standings-heading">
+                            The good company
+                        </h2>
                         <span>POINTS</span>
                     </div>
                     <ol
                         className="ranked-players"
-                        start={4}
+                        start={remaining[0].rank}
                         aria-label="Remaining players"
-                        tabIndex={0}
+                        tabIndex={scrollableStandings ? 0 : undefined}
                     >
                         {remaining.map((entry) => (
                             <li
                                 key={entry.id}
+                                value={entry.rank}
+                                ref={
+                                    entry.id === currentPlayer
+                                        ? currentEntry
+                                        : undefined
+                                }
+                                tabIndex={
+                                    entry.id === currentPlayer ? -1 : undefined
+                                }
+                                aria-label={`Rank ${entry.rank}: ${entry.name}${entry.id === currentPlayer ? ", you" : ""}, ${entry.score.toLocaleString()} points`}
                                 className={
                                     entry.id === currentPlayer ? "me" : ""
                                 }
                             >
-                                <span
-                                    className="list-rank"
-                                    aria-label={`Rank ${entry.rank}`}
-                                >
+                                <span className="list-rank" aria-hidden="true">
                                     {entry.rank}
                                 </span>
                                 <span
@@ -195,6 +275,11 @@ export function Leaderboard({
                         ))}
                     </ol>
                 </div>
+            )}
+            {!solo && (
+                <p className="mobile-final-note">
+                    All scores are final. Bragging rights are yours.
+                </p>
             )}
         </div>
     );

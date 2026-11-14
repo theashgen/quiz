@@ -1,7 +1,7 @@
 import { Button as ShadcnButton } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Button } from "./Button";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Catalog } from "../types";
 import { useRoom } from "../useRoom";
 import { ErrorMessage } from "./Common";
@@ -20,6 +20,57 @@ export function Room({
 }) {
     const live = useRoom(code);
     const { snapshot: s, connection, error, pending, send } = live;
+    const resultsPage = useRef<HTMLElement>(null);
+    const replayActions = useRef<HTMLDivElement>(null);
+    const restoreReplayFocus = useRef(false);
+    const [flowActions, setFlowActions] = useState(false);
+    const replayRequested = !!s?.members.find((member) => member.id === s.me)
+        ?.replay;
+    useEffect(() => {
+        if (s?.status !== "results" || s.solo) return;
+        const page = resultsPage.current;
+        const dock = replayActions.current;
+        if (!page || !dock) return;
+        const media = window.matchMedia("(max-width: 740px)");
+        let frame = 0;
+        const update = () => {
+            cancelAnimationFrame(frame);
+            // Defer layout changes until after ResizeObserver's delivery phase.
+            frame = requestAnimationFrame(() => {
+                const dockHeight = dock.getBoundingClientRect().height;
+                const pageHeight = page.clientHeight;
+                setFlowActions(
+                    (flowing) =>
+                        media.matches &&
+                        // Separate entry/exit thresholds prevent mode oscillation.
+                        dockHeight > pageHeight * (flowing ? 0.39 : 0.4),
+                );
+            });
+        };
+        const observer = new ResizeObserver(update);
+        observer.observe(page);
+        observer.observe(dock);
+        media.addEventListener("change", update);
+        update();
+        return () => {
+            observer.disconnect();
+            cancelAnimationFrame(frame);
+            media.removeEventListener("change", update);
+        };
+    }, [s?.status, s?.solo, s?.preparingNextQuiz]);
+    useEffect(() => {
+        if (!replayRequested || !restoreReplayFocus.current) return;
+        restoreReplayFocus.current = false;
+        const dock = replayActions.current;
+        if (
+            document.activeElement === document.body ||
+            dock?.contains(document.activeElement)
+        ) {
+            dock?.querySelector<HTMLElement>(
+                ".waiting, button:not(:disabled)",
+            )?.focus();
+        }
+    }, [replayRequested]);
     const [now, setNow] = useState(Date.now());
     const [selected, setSelected] = useState<number | null>(null);
     const [copied, setCopied] = useState(false);
@@ -464,89 +515,123 @@ export function Room({
     }
     return (
         <section
-            className={`results-page${s.status === "results" ? " podium-results" : ""}${s.solo ? " solo-results" : ""}`}
+            ref={resultsPage}
+            className={`results-page${flowActions ? " flow-results" : ""}${s.status === "results" ? " podium-results" : ""}${s.solo ? " solo-results" : s.status === "results" ? " mobile-results" : ""}`}
         >
-            {banner}
-            {!s.isHost && s.preparingNextQuiz && (
-                <div className="notice" role="status">
-                    <strong>Your host is setting up the next quiz…</strong>
-                    <br />
-                    Hang tight — the next lobby will appear here when it’s
-                    ready.
-                </div>
-            )}
-            {!s.solo && (
-                <div className="page-heading centered">
-                    <div className="results-intro">
-                        <div className="result-star">✦</div>
-                        <div className="eyebrow">
-                            {s.status === "results"
-                                ? "THAT’S A WRAP"
-                                : "YOUR PART IS DONE"}
-                        </div>
-                        <h1>
-                            {p
-                                ? "Nicely played."
-                                : s.status === "results"
-                                  ? "A round well hosted."
-                                  : "Let them cook."}
-                        </h1>
+            <div className="results-content">
+                {banner}
+                {!s.isHost && s.preparingNextQuiz && (
+                    <div className="notice" role="status">
+                        <strong>Your host is setting up the next quiz…</strong>
+                        <br />
+                        Hang tight — the next lobby will appear here when it’s
+                        ready.
                     </div>
-                    {p && (
-                        <div className="results-score">
-                            <p>Your score</p>
-                            <div className="big-score">
-                                {p.score}
-                                <small> / {p.total * 100}</small>
+                )}
+                {!s.solo && (
+                    <div className="page-heading centered">
+                        <div className="results-intro">
+                            <div className="result-star">✦</div>
+                            <div className="eyebrow">
+                                {s.status === "results"
+                                    ? "THAT’S A WRAP"
+                                    : "YOUR PART IS DONE"}
                             </div>
+                            <h1>
+                                {p
+                                    ? "Nicely played."
+                                    : s.status === "results"
+                                      ? "A round well hosted."
+                                      : "Let them cook."}
+                            </h1>
                         </div>
-                    )}
-                    <p className="results-caption">
-                        {s.status === "active"
-                            ? `${s.finished} of ${s.total} players finished. Final ranks appear when everyone is done.`
-                            : s.solo
-                              ? "A little wiser. Ready for another?"
-                              : "The guesses are in. Here’s how everyone landed."}
-                    </p>
-                </div>
-            )}
+                        {p && (
+                            <div className="results-score">
+                                <p>Your score</p>
+                                <div className="big-score">
+                                    {p.score}
+                                    <small> / {p.total * 100}</small>
+                                </div>
+                            </div>
+                        )}
+                        <p className="results-caption">
+                            {s.status === "active"
+                                ? `${s.finished} of ${s.total} players finished. Final ranks appear when everyone is done.`
+                                : s.solo
+                                  ? "A little wiser. Ready for another?"
+                                  : "The guesses are in. Here’s how everyone landed."}
+                        </p>
+                    </div>
+                )}
+                {s.status === "results" && (
+                    <Leaderboard
+                        entries={s.leaderboard ?? []}
+                        currentPlayer={s.me}
+                        solo={s.solo}
+                        hideHeading={s.solo}
+                        code={code}
+                        onShowActions={() => {
+                            replayActions.current?.scrollIntoView({
+                                block: "start",
+                                behavior: "instant",
+                            });
+                            replayActions.current
+                                ?.querySelector<HTMLButtonElement>(
+                                    "button:not(:disabled)",
+                                )
+                                ?.focus({ preventScroll: true });
+                        }}
+                    />
+                )}
+            </div>
             {s.status === "results" && (
-                <Leaderboard
-                    entries={s.leaderboard ?? []}
-                    currentPlayer={s.me}
-                    solo={s.solo}
-                    hideHeading={s.solo}
-                    code={code}
-                />
-            )}
-            {s.status === "results" && (
-                <div className="replay-actions">
+                <div
+                    className="replay-actions"
+                    ref={replayActions}
+                    role="group"
+                    aria-label="Next round actions"
+                >
+                    <span className="sr-only" role="status">
+                        {!s.isHost && s.preparingNextQuiz
+                            ? "Your host is setting up the next quiz. Results remain available."
+                            : ""}
+                    </span>
                     {s.solo ? (
                         <Button onClick={() => go("/solo")}>
                             Another solo round →
                         </Button>
                     ) : (
                         <>
-                            <p>
+                            <p role="status">
                                 {s.replayCount}{" "}
                                 {s.replayCount === 1
                                     ? "player wants"
                                     : "players want"}{" "}
                                 to play again
                             </p>
-                            {!s.members.find((m) => m.id === s.me)?.replay && (
-                                <Button
-                                    intent="secondary"
-                                    disabled={disabled}
-                                    onClick={() => send("replay")}
-                                >
-                                    Count me in for another
-                                </Button>
-                            )}
+                            {(!!p || !s.isHost) &&
+                                !s.members.find((m) => m.id === s.me)
+                                    ?.replay && (
+                                    <Button
+                                        intent="secondary"
+                                        className="replay-opt-in"
+                                        disabled={disabled}
+                                        onClick={() => {
+                                            restoreReplayFocus.current = true;
+                                            send("replay");
+                                        }}
+                                    >
+                                        Count me in for another
+                                    </Button>
+                                )}
                             {!s.isHost &&
                                 s.members.find((m) => m.id === s.me)?.replay &&
                                 !s.preparingNextQuiz && (
-                                    <div className="waiting" role="status">
+                                    <div
+                                        className="waiting"
+                                        role="status"
+                                        tabIndex={-1}
+                                    >
                                         <span /> You’re in! Waiting for the host
                                         to set up the next quiz.
                                     </div>

@@ -1,16 +1,16 @@
-.podium-results > .page-heading {
+.podium-results .page-heading {
     @apply mb-7;
 }
-.podium-results > .page-heading .result-star {
+.podium-results .page-heading .result-star {
     @apply hidden;
 }
-.podium-results > .page-heading h1 {
+.podium-results .page-heading h1 {
     @apply text-[24px] mb-2;
 }
-.podium-results > .page-heading .eyebrow {
+.podium-results .page-heading .eyebrow {
     @apply mb-[10px] text-[#738067];
 }
-.podium-results > .page-heading > p {
+.podium-results .page-heading > p {
     @apply text-[12px];
 }
 .results-score > p {
@@ -172,7 +172,7 @@
     .results-page.podium-results {
         @apply max-w-none pt-6;
     }
-    .podium-results > .page-heading {
+    .podium-results .page-heading {
         @apply grid grid-cols-[minmax(0,_1fr)_auto] items-center gap-[5px_28px] text-left mb-5;
     }
     .podium-results .results-intro {
@@ -193,7 +193,7 @@
     .podium-results .big-score {
         @apply text-[34px] m-0;
     }
-    .podium-results > .page-heading > .results-caption {
+    .podium-results .page-heading > .results-caption {
         @apply col-[1] m-0;
     }
     .podium-results .podium-board {
@@ -277,7 +277,7 @@
     }
 }
 @media (max-width: 740px) {
-    .podium-results > .page-heading {
+    .podium-results .page-heading {
         @apply mb-6;
     }
     .podium-board ol.winner-podium {

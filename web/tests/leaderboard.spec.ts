@@ -33,6 +33,7 @@ async function showResults(
     entries = players,
     participating = false,
     solo = false,
+    overrides: Partial<Snapshot> = {},
 ) {
     const snapshot: Snapshot = {
         revision: 1,
@@ -64,12 +65,37 @@ async function showResults(
                   },
               }
             : {}),
+        ...overrides,
     };
     await page.route("**/api/rooms/POD123", (route) =>
         route.fulfill({ json: snapshot }),
     );
     await page.routeWebSocket(/\/api\/rooms\/POD123\/ws/, (socket) => {
         socket.send(JSON.stringify({ type: "snapshot", snapshot }));
+        socket.onMessage((message) => {
+            const command = JSON.parse(String(message));
+            if (command.type !== "replay") return;
+            snapshot.revision++;
+            snapshot.replayCount++;
+            snapshot.members = [
+                {
+                    id: "me",
+                    name: "Me",
+                    avatar: "🐱",
+                    host: snapshot.isHost,
+                    playing: true,
+                    finished: true,
+                    replay: true,
+                },
+            ];
+            socket.send(
+                JSON.stringify({
+                    type: "snapshot",
+                    snapshot,
+                    requestId: command.requestId,
+                }),
+            );
+        });
     });
     await page.goto("/room/POD123");
     if (solo) {
@@ -77,7 +103,7 @@ async function showResults(
     } else {
         await expect(
             page.getByRole("heading", {
-                name: "The final leaderboard",
+                name: /^(The final leaderboard|Final leaderboard)$/,
                 exact: true,
             }),
         ).toBeVisible();
@@ -178,7 +204,10 @@ test("result separators use only their intended edges on desktop and mobile", as
         await page.setViewportSize({ width, height: 900 });
         for (const [selector, expected] of [
             [".replay-actions", [1, 0, 0, 0]],
-            [".results-score", width > 1000 ? [0, 0, 0, 1] : [0, 0, 0, 0]],
+            [
+                width <= 740 ? ".personal-result" : ".results-score",
+                width > 1000 ? [0, 0, 0, 1] : [0, 0, 0, 0],
+            ],
         ] as const) {
             const element = page.locator(selector);
             await expect(element).toBeVisible();
@@ -433,6 +462,7 @@ for (const count of [0, 1, 2, 3]) {
     test(`leaderboard handles ${count} players without invented podium entries`, async ({
         page,
     }) => {
+        await page.setViewportSize({ width: 390, height: 844 });
         await showResults(page, players.slice(0, count));
         await expect(page.locator(".leaderboard li")).toHaveCount(count);
         await expect(page.locator(".ranked-players")).toHaveCount(0);
@@ -491,4 +521,329 @@ test("two tied mobile players retain the original podium and centered results", 
             () => document.documentElement.scrollWidth <= innerWidth,
         ),
     ).toBeTruthy();
+});
+
+for (const width of [320, 360, 390, 430]) {
+    test(`mobile ${width}px has one heading, reachable actions and a focusable personal rank`, async ({
+        page,
+    }) => {
+        await page.setViewportSize({ width, height: 844 });
+        const entries = Array.from({ length: 150 }, (_, index) => ({
+            id: index === 100 ? "me" : `player-${index}`,
+            name:
+                index === 100
+                    ? "My extraordinarily long player name"
+                    : `Player ${index + 1}`,
+            avatar: "🐱",
+            rank: index + 1,
+            score: 100000 - index,
+        }));
+        await showResults(page, entries, true, false, { isHost: false });
+        await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+            "Final leaderboard",
+        );
+        await expect(
+            page.getByRole("heading", { name: "The final leaderboard" }),
+        ).toHaveCount(0);
+        await expect(page.locator(".personal-result")).toContainText(
+            "#101 of 150",
+        );
+        const replay = page.getByRole("button", {
+            name: "Count me in for another",
+        });
+        await expect(replay).toBeInViewport({ ratio: 1 });
+        await page.getByRole("button", { name: "Find me" }).click();
+        const me = page.locator(".ranked-players li.me");
+        await expect(me).toBeFocused();
+        await expect(me).toBeInViewport({ ratio: 1 });
+        await expect(
+            page.locator(".mobile-results-summary [role=status]"),
+        ).toContainText("101 of 150");
+        await expect(replay).toBeInViewport({ ratio: 1 });
+        await page
+            .locator(".ranked-players li")
+            .last()
+            .scrollIntoViewIfNeeded();
+        const last = await page
+            .locator(".ranked-players li")
+            .last()
+            .boundingBox();
+        const dock = await page.locator(".replay-actions").boundingBox();
+        expect(last!.y + last!.height).toBeLessThanOrEqual(dock!.y);
+        await replay.click();
+        await expect(
+            page.getByText("You’re in! Waiting for the host", { exact: false }),
+        ).toBeVisible();
+        await expect(replay).toHaveCount(0);
+        await expect(
+            page.getByRole("button", { name: "Back to home" }),
+        ).toBeInViewport({ ratio: 1 });
+        expect(
+            await page.evaluate(
+                () => document.documentElement.scrollWidth <= innerWidth,
+            ),
+        ).toBeTruthy();
+    });
+}
+
+test("mobile host states preserve setup and participating host opt-in", async ({
+    page,
+}) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await showResults(
+        page,
+        tenPlayers.filter((entry) => entry.id !== "me"),
+    );
+    await expect(page.locator(".personal-result")).toHaveCount(0);
+    await expect(page.getByRole("button", { name: "Find me" })).toHaveCount(0);
+    await expect(
+        page.getByRole("button", { name: "Count me in for another" }),
+    ).toHaveCount(0);
+    await expect(
+        page.getByRole("button", { name: "Set up the next quiz" }),
+    ).toBeInViewport({ ratio: 1 });
+    await page.unrouteAll({ behavior: "wait" });
+    await showResults(page, tenPlayers, true);
+    await expect(
+        page.getByRole("button", { name: "Set up the next quiz" }),
+    ).toBeInViewport({ ratio: 1 });
+    await expect(
+        page.getByRole("button", { name: "Count me in for another" }),
+    ).toBeInViewport({ ratio: 1 });
+});
+
+test("mobile Find me targets the podium and tied ranks retain list semantics", async ({
+    page,
+}) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    const entries = players.slice(0, 4).map((entry, index) => ({
+        ...entry,
+        rank: index >= 2 ? 3 : index + 1,
+    }));
+    await showResults(page, entries, true, false, { me: "third" });
+    await page.getByRole("button", { name: "Find me" }).click();
+    await expect(page.locator(".podium-player.me")).toBeFocused();
+    await expect(page.locator(".podium-player.me")).toBeInViewport({
+        ratio: 1,
+    });
+    await expect(page.locator(".ranked-players")).toHaveAttribute("start", "3");
+    await expect(page.locator(".ranked-players li")).toHaveAttribute(
+        "value",
+        "3",
+    );
+    await expect(page.locator(".ranked-players")).not.toHaveAttribute(
+        "tabindex",
+        "0",
+    );
+});
+
+test("short mobile screens and enlarged text keep all results and actions reachable", async ({
+    page,
+}) => {
+    await page.setViewportSize({ width: 320, height: 568 });
+    await showResults(
+        page,
+        tenPlayers.map((entry) => ({
+            ...entry,
+            name: "ExtraordinarilyLongPlayerNameXYZ",
+            score: 999999,
+        })),
+        true,
+    );
+    // Exercise enlarged text without scaling the viewport geometry or hiding overflow.
+    await page.addStyleTag({
+        content:
+            ".mobile-results { font-size: 200%; } .mobile-results :is(button, p, strong, small, span, h1, h2, h3) { font-size: inherit !important; }",
+    });
+    for (const selector of [
+        ".ranked-players li:last-child",
+        ".replay-opt-in",
+        ".replay-actions button:last-child",
+    ]) {
+        const target = page.locator(selector);
+        await target.scrollIntoViewIfNeeded();
+        await expect(target).toBeInViewport({ ratio: 1 });
+    }
+    expect(
+        await page.evaluate(
+            () => document.documentElement.scrollWidth <= innerWidth,
+        ),
+    ).toBeTruthy();
+});
+
+test("mobile preparation status keeps the player's results available", async ({
+    page,
+}) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await showResults(page, tenPlayers, true, false, {
+        isHost: false,
+        preparingNextQuiz: true,
+        members: [
+            {
+                id: "me",
+                name: "Me",
+                avatar: "🐱",
+                host: false,
+                playing: true,
+                finished: true,
+                replay: true,
+            },
+        ],
+    });
+    await expect(
+        page.getByText("Your host is setting up the next quiz…"),
+    ).toBeVisible();
+    await expect(
+        page.getByRole("heading", { name: "Final leaderboard", exact: true }),
+    ).toBeVisible();
+    await expect(
+        page.getByRole("button", { name: "Count me in for another" }),
+    ).toHaveCount(0);
+    await expect(
+        page.getByRole("button", { name: "Back to home" }),
+    ).toBeInViewport({ ratio: 1 });
+});
+
+test("mid-height mobile dock leaves standings and host actions reachable", async ({
+    page,
+}) => {
+    await page.setViewportSize({ width: 390, height: 640 });
+    await showResults(page, tenPlayers, true);
+    for (const name of [
+        "Count me in for another",
+        "Set up the next quiz",
+        "Back to home",
+    ]) {
+        await expect(page.getByRole("button", { name })).toBeInViewport({
+            ratio: 1,
+        });
+    }
+    const last = page.locator(".ranked-players li").last();
+    await last.scrollIntoViewIfNeeded();
+    await expect(last).toBeInViewport({ ratio: 1 });
+    const row = await last.boundingBox();
+    const dock = await page.locator(".replay-actions").boundingBox();
+    expect(row!.y + row!.height).toBeLessThanOrEqual(dock!.y);
+    await expect(
+        page.getByRole("button", { name: "Find me" }),
+    ).toHaveAccessibleName("Find me");
+});
+
+for (const width of [320, 360, 390, 430]) {
+    test(`enlarged podium text stays inside each column at ${width}px`, async ({
+        page,
+    }) => {
+        await page.setViewportSize({ width, height: 844 });
+        await showResults(
+            page,
+            tenPlayers.map((entry) => ({ ...entry, score: 999999 })),
+            true,
+        );
+        await page.addStyleTag({
+            content:
+                ".mobile-results { font-size: 200%; } .mobile-results :is(button, p, strong, small, span, h1, h2, h3) { font-size: inherit !important; }",
+        });
+        await expect(page.locator(".mobile-results")).toHaveClass(
+            /flow-results/,
+        );
+        for (const player of await page.locator(".winner-podium > li").all()) {
+            const overflow = await player.evaluate((node) => {
+                const column = node.getBoundingClientRect();
+                const errors: string[] = [];
+                for (const label of node.querySelectorAll(
+                    ".podium-score, .podium-you",
+                )) {
+                    const walker = document.createTreeWalker(
+                        label,
+                        NodeFilter.SHOW_TEXT,
+                    );
+                    while (walker.nextNode()) {
+                        if (!walker.currentNode.textContent?.trim()) continue;
+                        const range = document.createRange();
+                        range.selectNodeContents(walker.currentNode);
+                        for (const rect of range.getClientRects()) {
+                            if (
+                                rect.left < column.left - 1 ||
+                                rect.right > column.right + 1
+                            )
+                                errors.push(label.className);
+                        }
+                    }
+                }
+                return errors;
+            });
+            expect(overflow).toEqual([]);
+        }
+        await page.getByRole("button", { name: "Next round actions" }).click();
+        await expect(
+            page.getByRole("button", { name: "Count me in for another" }),
+        ).toBeFocused();
+        await expect(
+            page.getByRole("button", { name: "Count me in for another" }),
+        ).toBeInViewport({ ratio: 1 });
+    });
+}
+
+test("short-screen shortcut reaches replay after 150 players and preserves confirmation focus", async ({
+    page,
+}) => {
+    await page.setViewportSize({ width: 320, height: 568 });
+    const entries = Array.from({ length: 150 }, (_, index) => ({
+        id: index === 100 ? "me" : `p-${index}`,
+        name: `Player ${index + 1}`,
+        avatar: "🐱",
+        score: 1000 - index,
+        rank: index + 1,
+    }));
+    await showResults(page, entries, true, false, { isHost: false });
+    const shortcut = page.getByRole("button", { name: "Next round actions" });
+    await shortcut.scrollIntoViewIfNeeded();
+    await shortcut.click();
+    const replay = page.getByRole("button", {
+        name: "Count me in for another",
+    });
+    await expect(replay).toBeFocused();
+    await expect(replay).toBeInViewport({ ratio: 1 });
+    await page.keyboard.press("Enter");
+    await expect(page.locator(".waiting")).toBeFocused();
+    await expect(page.locator(".waiting")).toHaveCSS(
+        "outline-color",
+        "rgb(140, 60, 13)",
+    );
+});
+
+test("replay dock resizing settles without ResizeObserver errors", async ({
+    page,
+}) => {
+    const errors: string[] = [];
+    page.on("pageerror", (error) => errors.push(error.message));
+    await page.setViewportSize({ width: 390, height: 844 });
+    await showResults(page, tenPlayers, true);
+    for (const viewport of [
+        { width: 390, height: 640 },
+        { width: 320, height: 568 },
+        { width: 390, height: 844 },
+    ]) {
+        await page.setViewportSize(viewport);
+        const enlarged = await page.addStyleTag({
+            content:
+                ".mobile-results { font-size: 200%; } .mobile-results :is(button, p, strong, small, span, h1, h2, h3) { font-size: inherit !important; }",
+        });
+        await expect(page.locator(".mobile-results")).toHaveClass(
+            /flow-results/,
+        );
+        await enlarged.evaluate((node) => node.remove());
+        await expect(page.locator(".mobile-results")).not.toHaveClass(
+            /flow-results/,
+        );
+    }
+    await page.evaluate(
+        () =>
+            new Promise<void>((resolve) =>
+                requestAnimationFrame(() =>
+                    requestAnimationFrame(() => resolve()),
+                ),
+            ),
+    );
+    expect(errors).toEqual([]);
 });

@@ -268,7 +268,7 @@ a:focus-visible {
     border-radius: 24px;
 }
 .leaderboard-heading .eyebrow,
-.podium-results > .page-heading .eyebrow {
+.podium-results .page-heading .eyebrow {
     color: var(--peach-deep);
 }
 .podium-board .winner-podium > .podium-place-1 {
