@@ -39,7 +39,7 @@ make dev
 
 `make dev` sets `LOCAL_HTTP=true` and binds to `127.0.0.1:8443`. Running `go run ./cmd/server` without that flag keeps HTTPS; generate certificates first with `make certs`. Switching protocols starts a separate guest identity, so rejoin a room if necessary.
 
-Migrations in `migrations/` run at backend startup, under an advisory lock and a transaction. Do not modify an already-applied migration; add another numbered file. Development trivia is embedded, so no seed command is needed. Review the seed questions for accuracy and ambiguity before public use.
+Goose applies migrations from `migrations/` at backend startup. A PostgreSQL advisory lock serializes startup migrations, and goose runs each migration in its own transaction. On databases set up by the original runner, the first two migrations reuse the existing tables and record their versions in goose. Add a new numbered file for each schema change. Development trivia is embedded, so no seed command is needed. Review the seed questions for accuracy and ambiguity before public use.
 
 ### Use a Tailscale IP over HTTP
 
@@ -112,6 +112,8 @@ For hosted deployment with PostgreSQL and Redis, see [Deploy on Railway](railway
 The displayed sample password is a local development credential. Real credentials belong in environment/secret files outside version control. `.env` is ignored, but Go does not automatically load it; export variables in your shell or provide them through Compose.
 
 ## Work with the code
+
+Run `make generate` after changing the SQL queries in `internal/db/queries/` or adding a migration. The target uses a pinned sqlc version. Commit the generated Go files in `internal/db/` with their SQL sources.
 
 - `internal/content`, `rooms`, `gameplay`, `scoring`, `sessions`: core rules and identities.
 - `internal/storage`: migrations, row-locked transactions, answer uniqueness, cache.

@@ -35,7 +35,7 @@ After this one-time setup, pushes to `main` deploy the GitHub-connected app usin
 | `postgres` | Railway PostgreSQL service starts PostgreSQL | Railway provisions credentials and persistent database storage |
 | `redis` | Railway Redis service starts Redis | Railway provisions its connection URL |
 
-Go applies `migrations/*.sql` automatically at startup under a PostgreSQL advisory lock and transaction, before serving requests. Do not add a separate SQL initialization or seed command. Deploy one app replica initially; validate multi-replica room behavior before scaling.
+Goose applies `migrations/*.sql` automatically before the server accepts requests. A PostgreSQL advisory lock serializes startup migrations, and each migration runs in its own transaction. Do not add a separate SQL initialization or seed command. Deploy one app replica initially and validate multi-replica room behavior before scaling.
 
 Railway terminates public HTTPS and forwards HTTP to Go. `BEHIND_PROXY=true` enables that listener on `[::]:$PORT` (or port 8443 if `PORT` is unset), while retaining secure `__Host-` cookies. **Do not set `LOCAL_HTTP=true` in Railway**, and do not expose the plain-HTTP listener outside the trusted proxy network. No TLS certificate files or local certificate mounts are needed. The image includes CA certificates for TLS connections to external services.
 
@@ -57,6 +57,6 @@ Open the generated HTTPS domain and verify teacher signup, room creation, joinin
 - `BEHIND_PROXY requires APP_ORIGIN or RAILWAY_PUBLIC_DOMAIN`: generate the app's public domain and redeploy, or explicitly set `APP_ORIGIN`.
 - Browser actions fail origin checks: match `APP_ORIGIN` exactly to the URL in the browser, including its scheme and any non-default port.
 - Missing SDK import: run `npm ci --prefix .railway` before planning.
-- Back up PostgreSQL before applying new migrations; migrations are forward-only and rollback of an app deployment does not undo database changes.
+- Back up PostgreSQL before applying new migrations. Startup runs only upward migrations. Reverting an app deployment leaves database changes in place.
 
 Official references: [Railway IaC](https://docs.railway.com/infrastructure-as-code), [authoring reference](https://docs.railway.com/infrastructure-as-code/reference), and [Docker Compose migration](https://docs.railway.com/guides/docker-compose).

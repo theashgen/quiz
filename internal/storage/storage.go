@@ -4,9 +4,8 @@ import (
     "context"
     "encoding/json"
     "errors"
-    "fmt"
     "os"
-    "path/filepath"
+    "quiz/internal/db"
     "quiz/internal/gameplay"
     "quiz/internal/rooms"
     "strings"
@@ -14,6 +13,9 @@ import (
 
     "github.com/jackc/pgx/v5"
     "github.com/jackc/pgx/v5/pgxpool"
+    "github.com/jackc/pgx/v5/stdlib"
+    "github.com/pressly/goose/v3"
+    "github.com/pressly/goose/v3/lock"
     "github.com/redis/go-redis/v9"
 )
 
@@ -70,55 +72,28 @@ func (s *Store) Close() {
 }
 
 func (s *Store) Migrate(ctx context.Context, dir string) error {
-    tx, err := s.DB.Begin(ctx)
+    // Coordinate with any old instance still using the original migration runner.
+    locker, err := lock.NewPostgresSessionLocker(lock.WithLockID(81390994))
 
     if err != nil {
         return err
     }
 
-    defer tx.Rollback(ctx)
+    migrationDB := stdlib.OpenDBFromPool(s.DB)
+    defer migrationDB.Close()
 
-    if _, err = tx.Exec(ctx, "SELECT pg_advisory_xact_lock(81390994)"); err != nil {
-        return err
-    }
-
-    if _, err = tx.Exec(ctx, "CREATE TABLE IF NOT EXISTS schema_migrations(version text PRIMARY KEY)"); err != nil {
-        return err
-    }
-
-    files, err := filepath.Glob(filepath.Join(dir, "*.sql"))
+    provider, err := goose.NewProvider(goose.DialectPostgres, migrationDB, os.DirFS(dir), goose.WithSessionLocker(locker))
 
     if err != nil {
         return err
     }
 
-    for _, path := range files {
-        var applied bool
+    _, err = provider.Up(ctx)
+    return err
+}
 
-        if err = tx.QueryRow(ctx, "SELECT EXISTS(SELECT 1 FROM schema_migrations WHERE version=$1)", filepath.Base(path)).Scan(&applied); err != nil {
-            return err
-        }
-
-        if applied {
-            continue
-        }
-
-        b, e := os.ReadFile(path)
-
-        if e != nil {
-            return e
-        }
-
-        if _, err = tx.Exec(ctx, string(b)); err != nil {
-            return fmt.Errorf("migration %s: %w", path, err)
-        }
-
-        if _, err = tx.Exec(ctx, "INSERT INTO schema_migrations(version) VALUES($1)", filepath.Base(path)); err != nil {
-            return err
-        }
-    }
-
-    return tx.Commit(ctx)
+func (s *Store) Queries() *db.Queries {
+    return db.New(s.DB)
 }
 
 func (s *Store) Create(ctx context.Context, r *rooms.Room) error {
@@ -128,9 +103,7 @@ func (s *Store) Create(ctx context.Context, r *rooms.Room) error {
         return err
     }
 
-    _, err = s.DB.Exec(ctx, "INSERT INTO rooms(id,code,state) VALUES($1,$2,$3)", r.ID, r.Code, b)
-
-    return err
+    return s.Queries().CreateRoom(ctx, db.CreateRoomParams{ID: r.ID, Code: r.Code, State: b})
 }
 
 type AnswerRecord struct {
@@ -166,8 +139,8 @@ func (s *Store) Mutate(ctx context.Context, code string, fn func(*rooms.Room, in
     }
 
     defer tx.Rollback(ctx)
-    var raw []byte
-    err = tx.QueryRow(ctx, "SELECT state FROM rooms WHERE code=$1 FOR UPDATE", strings.ToUpper(code)).Scan(&raw)
+    queries := s.Queries().WithTx(tx)
+    raw, err := queries.LockRoomState(ctx, strings.ToUpper(code))
 
     if errors.Is(err, pgx.ErrNoRows) {
         return nil, 0, ErrNotFound
@@ -177,9 +150,9 @@ func (s *Store) Mutate(ctx context.Context, code string, fn func(*rooms.Room, in
         return nil, 0, err
     }
 
-    var now time.Time
+    now, err := queries.DatabaseTime(ctx)
 
-    if err = tx.QueryRow(ctx, "SELECT clock_timestamp()").Scan(&now); err != nil {
+    if err != nil {
         return nil, 0, err
     }
 
@@ -226,18 +199,27 @@ func (s *Store) Mutate(ctx context.Context, code string, fn func(*rooms.Room, in
             }
 
             p := a.Receipt
-            tag, e := tx.Exec(ctx, "INSERT INTO accepted_answers(attempt_id,question_id,room_id,round_id,session_id,choice,points,accepted_at) VALUES($1,$2,$3,$4,$5,$6,$7,$8) ON CONFLICT DO NOTHING", p.AttemptID, p.QuestionID, r.ID, a.RoundID, a.SessionID, p.Choice, p.Points, time.UnixMilli(p.AcceptedAt))
+            inserted, err := queries.InsertAcceptedAnswer(ctx, db.InsertAcceptedAnswerParams{
+                AttemptID:  p.AttemptID,
+                QuestionID: p.QuestionID,
+                RoomID:     r.ID,
+                RoundID:    a.RoundID,
+                SessionID:  a.SessionID,
+                Choice:     p.Choice,
+                Points:     p.Points,
+                AcceptedAt: time.UnixMilli(p.AcceptedAt),
+            })
 
-            if e != nil {
-                return nil, 0, e
+            if err != nil {
+                return nil, 0, err
             }
 
-            if tag.RowsAffected() != 1 {
+            if inserted != 1 {
                 return nil, 0, errors.New("Durable answer conflict; transaction aborted")
             }
         }
 
-        if _, err = tx.Exec(ctx, "UPDATE rooms SET state=$1,updated_at=clock_timestamp() WHERE id=$2", after, r.ID); err != nil {
+        if err = queries.UpdateRoomState(ctx, db.UpdateRoomStateParams{State: after, ID: r.ID}); err != nil {
             return nil, 0, err
         }
     }
@@ -265,29 +247,9 @@ func (s *Store) Notify(ctx context.Context, code string) {
 }
 
 func (s *Store) Due(ctx context.Context) error {
-    rows, err := s.DB.Query(ctx, "SELECT code FROM rooms WHERE state->>'status' IN ('lobby','active')")
+    codes, err := s.Queries().ListDueRoomCodes(ctx)
 
     if err != nil {
-        return err
-    }
-
-    codes := []string{}
-
-    for rows.Next() {
-        var c string
-
-        if err = rows.Scan(&c); err != nil {
-            rows.Close()
-
-            return err
-        }
-
-        codes = append(codes, c)
-    }
-
-    rows.Close()
-
-    if err = rows.Err(); err != nil {
         return err
     }
 
@@ -315,8 +277,7 @@ func (s *Store) View(ctx context.Context, code string) (*rooms.Room, int64, erro
         }
     }
 
-    var now time.Time
-    err := s.DB.QueryRow(ctx, "SELECT state,clock_timestamp() FROM rooms WHERE code=$1", code).Scan(&raw, &now)
+    row, err := s.Queries().ViewRoomState(ctx, code)
 
     if errors.Is(err, pgx.ErrNoRows) {
         return nil, 0, ErrNotFound
@@ -328,13 +289,13 @@ func (s *Store) View(ctx context.Context, code string) (*rooms.Room, int64, erro
 
     var room rooms.Room
 
-    if err = json.Unmarshal(raw, &room); err != nil {
+    if err = json.Unmarshal(row.State, &room); err != nil {
         return nil, 0, err
     }
 
     cacheCtx, cancel = context.WithTimeout(ctx, 10*time.Millisecond)
-    _ = s.Redis.Set(cacheCtx, "room:"+code, raw, 200*time.Millisecond).Err()
+    _ = s.Redis.Set(cacheCtx, "room:"+code, row.State, 200*time.Millisecond).Err()
     cancel()
 
-    return &room, now.UnixMilli(), nil
+    return &room, row.ObservedAt.UnixMilli(), nil
 }
