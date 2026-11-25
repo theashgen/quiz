@@ -26,6 +26,17 @@ import (
 
 func integrationStore(t *testing.T) *storage.Store {
     t.Helper()
+    s := openIntegrationStore(t)
+
+    if err := s.Migrate(context.Background(), filepath.Join("..", "..", "migrations")); err != nil {
+        t.Fatal(err)
+    }
+
+    return s
+}
+
+func openIntegrationStore(t *testing.T) *storage.Store {
+    t.Helper()
     dsn := os.Getenv("TEST_DATABASE_URL")
 
     if dsn == "" {
@@ -63,10 +74,6 @@ func integrationStore(t *testing.T) *storage.Store {
     s, err := storage.Open(ctx, u.String(), redisURL)
 
     if err != nil {
-        t.Fatal(err)
-    }
-
-    if err = s.Migrate(ctx, filepath.Join("..", "..", "migrations")); err != nil {
         t.Fatal(err)
     }
 

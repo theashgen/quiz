@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"net/mail"
 	"quiz/internal/content"
+	"quiz/internal/db"
 	"quiz/internal/sessions"
 	"quiz/internal/storage"
 	"strings"
@@ -86,15 +87,21 @@ func Current(ctx context.Context, store *storage.Store, r *http.Request) (*User,
 	if err != nil || len(cookie.Value) != 64 {
 		return nil, ErrSignedOut
 	}
-	var user User
-	err = store.DB.QueryRow(ctx, `SELECT a.id,a.name,a.email,a.role,a.player_id,s.expires_at FROM account_sessions s JOIN accounts a ON a.id=s.account_id WHERE s.token_hash=$1 AND s.expires_at>clock_timestamp()`, digest(cookie.Value)).Scan(&user.ID, &user.Name, &user.Email, &user.Role, &user.PlayerID, &user.ExpiresAt)
+	row, err := store.Queries().GetCurrentAccount(ctx, digest(cookie.Value))
 	if errors.Is(err, pgx.ErrNoRows) {
 		return nil, ErrSignedOut
 	}
 	if err != nil {
 		return nil, err
 	}
-	return &user, nil
+	return &User{
+		ID:        row.ID,
+		Name:      row.Name,
+		Email:     row.Email,
+		Role:      row.Role,
+		PlayerID:  row.PlayerID,
+		ExpiresAt: row.ExpiresAt,
+	}, nil
 }
 
 func Signup(ctx context.Context, store *storage.Store, name, email, password, role string) (*User, string, error) {
@@ -127,9 +134,21 @@ func Signup(ctx context.Context, store *storage.Store, name, email, password, ro
 		return nil, "", err
 	}
 	defer tx.Rollback(ctx)
-	_, err = tx.Exec(ctx, "INSERT INTO guest_sessions(id,token_hash,expires_at) VALUES($1,$2,$3)", user.PlayerID, digest(playerToken), time.Now().Add(sessions.Lifetime))
+	queries := store.Queries().WithTx(tx)
+	err = queries.CreateGuestSession(ctx, db.CreateGuestSessionParams{
+		ID:        user.PlayerID,
+		TokenHash: digest(playerToken),
+		ExpiresAt: time.Now().Add(sessions.Lifetime),
+	})
 	if err == nil {
-		_, err = tx.Exec(ctx, "INSERT INTO accounts(id,name,email,role,password_hash,player_id) VALUES($1,$2,$3,$4,$5,$6)", user.ID, user.Name, user.Email, user.Role, encoded, user.PlayerID)
+		err = queries.CreateAccount(ctx, db.CreateAccountParams{
+			ID:           user.ID,
+			Name:         user.Name,
+			Email:        user.Email,
+			Role:         user.Role,
+			PasswordHash: encoded,
+			PlayerID:     user.PlayerID,
+		})
 	}
 	var databaseError *pgconn.PgError
 	if errors.As(err, &databaseError) && databaseError.Code == "23505" {
@@ -138,7 +157,11 @@ func Signup(ctx context.Context, store *storage.Store, name, email, password, ro
 	if err != nil {
 		return nil, "", err
 	}
-	_, err = tx.Exec(ctx, "INSERT INTO account_sessions(token_hash,account_id,expires_at) VALUES($1,$2,$3)", digest(sessionToken), user.ID, time.Now().Add(Lifetime))
+	err = queries.CreateAccountSession(ctx, db.CreateAccountSessionParams{
+		TokenHash: digest(sessionToken),
+		AccountID: user.ID,
+		ExpiresAt: time.Now().Add(Lifetime),
+	})
 	if err != nil {
 		return nil, "", err
 	}
@@ -153,9 +176,7 @@ func Login(ctx context.Context, store *storage.Store, email, password string) (*
 	if err != nil || len(password) > 1024 {
 		return nil, "", ErrCredentials
 	}
-	var user User
-	var encoded string
-	err = store.DB.QueryRow(ctx, "SELECT id,name,email,role,player_id,password_hash FROM accounts WHERE email=$1", normalized).Scan(&user.ID, &user.Name, &user.Email, &user.Role, &user.PlayerID, &encoded)
+	row, err := store.Queries().GetAccountByEmail(ctx, normalized)
 	if errors.Is(err, pgx.ErrNoRows) {
 		CheckPassword(password, "pbkdf2-sha256$600000$AAAAAAAAAAAAAAAAAAAAAA$AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
 		return nil, "", ErrCredentials
@@ -163,7 +184,7 @@ func Login(ctx context.Context, store *storage.Store, email, password string) (*
 	if err != nil {
 		return nil, "", err
 	}
-	if !CheckPassword(password, encoded) {
+	if !CheckPassword(password, row.PasswordHash) {
 		return nil, "", ErrCredentials
 	}
 	sessionToken, err := token()
@@ -175,9 +196,17 @@ func Login(ctx context.Context, store *storage.Store, email, password string) (*
 		return nil, "", err
 	}
 	defer tx.Rollback(ctx)
-	_, err = tx.Exec(ctx, "UPDATE guest_sessions SET expires_at=$1 WHERE id=$2", time.Now().Add(sessions.Lifetime), user.PlayerID)
+	queries := store.Queries().WithTx(tx)
+	err = queries.UpdateGuestSessionExpiry(ctx, db.UpdateGuestSessionExpiryParams{
+		ExpiresAt: time.Now().Add(sessions.Lifetime),
+		ID:        row.PlayerID,
+	})
 	if err == nil {
-		_, err = tx.Exec(ctx, "INSERT INTO account_sessions(token_hash,account_id,expires_at) VALUES($1,$2,$3)", digest(sessionToken), user.ID, time.Now().Add(Lifetime))
+		err = queries.CreateAccountSession(ctx, db.CreateAccountSessionParams{
+			TokenHash: digest(sessionToken),
+			AccountID: row.ID,
+			ExpiresAt: time.Now().Add(Lifetime),
+		})
 	}
 	if err != nil {
 		return nil, "", err
@@ -185,7 +214,7 @@ func Login(ctx context.Context, store *storage.Store, email, password string) (*
 	if err = tx.Commit(ctx); err != nil {
 		return nil, "", err
 	}
-	return &user, sessionToken, nil
+	return &User{ID: row.ID, Name: row.Name, Email: row.Email, Role: row.Role, PlayerID: row.PlayerID}, sessionToken, nil
 }
 
 func Establish(ctx context.Context, store *storage.Store, w http.ResponseWriter, r *http.Request, value string) error {
@@ -198,7 +227,7 @@ func Establish(ctx context.Context, store *storage.Store, w http.ResponseWriter,
 
 func Logout(ctx context.Context, store *storage.Store, w http.ResponseWriter, r *http.Request) error {
 	if cookie, err := r.Cookie(cookieName(ctx)); err == nil {
-		if _, err = store.DB.Exec(ctx, "DELETE FROM account_sessions WHERE token_hash=$1", digest(cookie.Value)); err != nil {
+		if err = store.Queries().DeleteAccountSession(ctx, digest(cookie.Value)); err != nil {
 			return err
 		}
 	}
@@ -211,12 +240,12 @@ func Allow(ctx context.Context, store *storage.Store, r *http.Request, email str
 	if err != nil {
 		host = r.RemoteAddr
 	}
+	queries := store.Queries()
 	for _, budget := range []struct {
 		key     string
-		maximum int
+		maximum int32
 	}{{"ip:" + host, 100}, {"email:" + strings.ToLower(strings.TrimSpace(email)), 10}} {
-		var attempts int
-		err := store.DB.QueryRow(ctx, `INSERT INTO auth_throttle(key,attempts,reset_at) VALUES($1,1,clock_timestamp()+interval '15 minutes') ON CONFLICT(key) DO UPDATE SET attempts=CASE WHEN auth_throttle.reset_at<=clock_timestamp() THEN 1 ELSE auth_throttle.attempts+1 END,reset_at=CASE WHEN auth_throttle.reset_at<=clock_timestamp() THEN clock_timestamp()+interval '15 minutes' ELSE auth_throttle.reset_at END RETURNING attempts`, digest(budget.key)).Scan(&attempts)
+		attempts, err := queries.IncrementAuthThrottle(ctx, digest(budget.key))
 		if err != nil {
 			return false, err
 		}

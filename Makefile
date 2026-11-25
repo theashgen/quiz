@@ -1,4 +1,4 @@
-.PHONY: up infra certs dev test integration e2e build down load
+.PHONY: up infra certs dev test integration e2e build down load generate
 certs:
 	mkdir -p .local/certs
 	@if [ ! -f .local/certs/localhost.pem ]; then \
@@ -28,3 +28,5 @@ down:
 	docker compose down
 load:
 	go run ./cmd/loadtest -players 150
+generate:
+	go run github.com/sqlc-dev/sqlc/cmd/sqlc@v1.31.1 generate

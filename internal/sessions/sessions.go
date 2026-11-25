@@ -9,6 +9,7 @@ import (
     "errors"
     "net/http"
     "quiz/internal/content"
+    "quiz/internal/db"
     "quiz/internal/storage"
     "time"
 
@@ -63,7 +64,8 @@ func Get(ctx context.Context, s *storage.Store, r *http.Request) (string, error)
         return "", ErrRequired
     }
 
-    key := "session:" + hash(c.Value)
+    tokenHash := hash(c.Value)
+    key := "session:" + tokenHash
     cacheCtx, cancel := context.WithTimeout(ctx, 10*time.Millisecond)
     cached, cacheErr := s.Redis.Get(cacheCtx, key).Bytes()
     cancel()
@@ -73,7 +75,7 @@ func Get(ctx context.Context, s *storage.Store, r *http.Request) (string, error)
         return session.ID, nil
     }
 
-    err = s.DB.QueryRow(ctx, "SELECT id,expires_at FROM guest_sessions WHERE token_hash=$1 AND expires_at>clock_timestamp()", hash(c.Value)).Scan(&session.ID, &session.ExpiresAt)
+    row, err := s.Queries().GetActiveGuestSession(ctx, tokenHash)
 
     if errors.Is(err, pgx.ErrNoRows) {
         return "", ErrExpired
@@ -83,6 +85,7 @@ func Get(ctx context.Context, s *storage.Store, r *http.Request) (string, error)
         return "", err
     }
 
+    session = lookup{ID: row.ID, ExpiresAt: row.ExpiresAt}
     ttl := min(30*time.Second, time.Until(session.ExpiresAt))
 
     if ttl > 0 {
@@ -96,10 +99,7 @@ func Get(ctx context.Context, s *storage.Store, r *http.Request) (string, error)
 }
 
 func Expires(ctx context.Context, s *storage.Store, id string) (time.Time, error) {
-    var expires time.Time
-    err := s.DB.QueryRow(ctx, "SELECT expires_at FROM guest_sessions WHERE id=$1 AND expires_at>clock_timestamp()", id).Scan(&expires)
-
-    return expires, err
+    return s.Queries().GetActiveGuestSessionExpiry(ctx, id)
 }
 
 func Ensure(ctx context.Context, s *storage.Store, w http.ResponseWriter, r *http.Request) (string, error) {
@@ -115,7 +115,11 @@ func Ensure(ctx context.Context, s *storage.Store, w http.ResponseWriter, r *htt
 
     token := hex.EncodeToString(bytes[:])
     id := content.ID()
-    _, err := s.DB.Exec(ctx, "INSERT INTO guest_sessions(id,token_hash,expires_at) VALUES($1,$2,$3)", id, hash(token), time.Now().Add(Lifetime))
+    err := s.Queries().CreateGuestSession(ctx, db.CreateGuestSessionParams{
+        ID:        id,
+        TokenHash: hash(token),
+        ExpiresAt: time.Now().Add(Lifetime),
+    })
 
     if err != nil {
         return "", err

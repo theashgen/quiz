@@ -1,3 +1,4 @@
+-- +goose Up
 CREATE TABLE IF NOT EXISTS guest_sessions (
     id text PRIMARY KEY,
     token_hash text UNIQUE NOT NULL,
@@ -21,3 +22,8 @@ CREATE TABLE IF NOT EXISTS accepted_answers (
     accepted_at timestamptz NOT NULL,
     PRIMARY KEY (attempt_id, question_id)
 );
+
+-- +goose Down
+DROP TABLE accepted_answers;
+DROP TABLE rooms;
+DROP TABLE guest_sessions;
