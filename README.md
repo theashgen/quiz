@@ -6,9 +6,7 @@
 
 Built with **React · TypeScript · Go · WebSockets · PostgreSQL · Redis**. Teachers host preset or custom quizzes; students and anonymous guests join with a six-character code. Solo play works without an account.
 
-[Watch the full walkthrough](docs/media/video/quiz-walkthrough.mp4) · [Explore every captured state](#application-walkthrough) · [Verify the backend](#backend-you-can-verify) · [Run locally](#run-locally)
-
-**Deploy:** [Railway setup with PostgreSQL and Redis](docs/railway.md).
+[Watch the full walkthrough](docs/media/video/quiz-walkthrough.mp4) · [Explore every captured state](#application-walkthrough) · [Verify the backend](#backend-you-can-verify) · [Run locally](#run-locally) · [CI & Docker](#ci-pipeline-and-docker-images)
 
 [![Quiz — 12-player multiplayer room](docs/media/screenshots/08-player-lobby.png)](docs/media/video/quiz-walkthrough.mp4)
 
@@ -154,6 +152,59 @@ make test         # Go race tests and TypeScript checks
 make integration  # Isolated PostgreSQL schemas and Redis integration
 make e2e          # Browser workflows; requires a running app and Chromium
 ```
+
+## CI pipeline and Docker images
+
+Container images are built and published automatically to GitHub Container Registry (GHCR) by [`.github/workflows/ci.yml`](.github/workflows/ci.yml).
+
+### Pipeline architecture
+
+1. **Triggers**: Runs on every push to `main`, pull requests targeting `main`, and manual `workflow_dispatch` runs.
+2. **Test and validate (`test` job)**: Runs `go test -race ./...`, `go build ./cmd/server`, `npm --prefix web ci`, `npm --prefix web run check`, and `npm --prefix web run build`.
+3. **Build and publish (`docker` job)**: Runs after `test` succeeds. Uses Docker Buildx with GitHub Actions cache (`type=gha`) to build the multi-stage [Dockerfile](Dockerfile) (`node:26.8.2-bookworm-slim` frontend build → `golang:1.27.3-bookworm` static Go binary → `gcr.io/distroless/static-debian12:nonroot` runtime).
+4. **GHCR publishing**: On pushes to `main` and manual runs, authenticates with `GITHUB_TOKEN` and pushes to `ghcr.io/theashgen/quiz` tagged with `latest`, `sha-<short-sha>`, and the full Git commit SHA. Pull requests validate the Docker build without pushing.
+
+### Build, pull, and run the container locally
+
+Build the image locally:
+
+```sh
+docker build -t quiz:local .
+```
+
+Pull a published image from GHCR:
+
+```sh
+docker pull ghcr.io/theashgen/quiz:latest
+# Or pin a specific commit SHA:
+docker pull ghcr.io/theashgen/quiz:<git-commit-sha>
+```
+
+Run the container against local PostgreSQL and Redis (start them first with `make infra` and generate local certs with `make certs`):
+
+```sh
+docker run --rm \
+  --network host \
+  -e DATABASE_URL="postgres://quiz:local-quiz-only@127.0.0.1:55432/quiz?sslmode=disable" \
+  -e REDIS_URL="redis://127.0.0.1:56379/0" \
+  -e APP_ORIGIN="https://localhost:8443" \
+  -e LISTEN_ADDR=":8443" \
+  -e TLS_CERT="/certs/localhost.pem" \
+  -e TLS_KEY="/certs/localhost-key.pem" \
+  -v "$(pwd)/.local/certs:/certs:ro" \
+  ghcr.io/theashgen/quiz:latest
+```
+
+When running behind a TLS-terminating reverse proxy, set `BEHIND_PROXY=true`, `APP_ORIGIN=https://<your-domain>`, and optionally `PORT` (defaults to `8443`) instead of mounting TLS certificates.
+
+### Required GitHub repository and package settings
+
+- **Workflow permissions**: In **Settings → Actions → General → Workflow permissions**, ensure GitHub Actions is allowed to run and that workflow-level `permissions` (`packages: write` on the `docker` job) are not blocked by organization policy.
+- **Package visibility**: GHCR packages published from a private repository default to private; packages from a public repository may still require linking or changing visibility in **GitHub Profile / Org → Packages → `quiz` → Package settings**.
+- **Pulling private images**: If the GHCR package is private, authenticate locally before `docker pull` with a Personal Access Token (`read:packages` scope):
+  ```sh
+  echo "$GHCR_TOKEN" | docker login ghcr.io -u <github-username> --password-stdin
+  ```
 
 ## Scope and limitations
 
